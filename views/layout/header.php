@@ -1,652 +1,493 @@
-<!doctype html>
+<!DOCTYPE html>
+<!-- 
+Jampack
+Author: Hencework
+Contact: contact@hencework.com
+-->
 <html lang="en">
 
 <head>
-	<!-- Required meta tags -->
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- Meta Tags -->
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Jampack - Admin CRM Dashboard Template</title>
+	<meta name="description"
+		content="A modern CRM Dashboard Template with reusable and flexible components for your SaaS web applications by hencework. Based on Bootstrap." />
 
-	<link rel="icon" type="image/png" sizes="16x16" href="">
+	<!-- Favicon -->
+	<link rel="shortcut icon" href="favicon.ico">
+	<link rel="icon" href="favicon.ico" type="image/x-icon">
 
-	<!-- Font Awesome Icons -->
-	<link rel="stylesheet" href="{{ asset('vendor/css/all.min.css') }}">
+	<!-- Daterangepicker CSS -->
+	<link href="vendors/daterangepicker/daterangepicker.css" rel="stylesheet" type="text/css" />
 
-	<!-- Simple Line Icons -->
-	<link rel="stylesheet" href="{{ asset('vendor/css/simple-line-icons.css') }}">
+	<!-- Data Table CSS -->
+	<link href="vendors/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" />
+	<link href="vendors/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css" rel="stylesheet"
+		type="text/css" />
 
-	<!-- Datepicker -->
-	<link rel="stylesheet" href="{{ asset('vendor/css/datepicker.min.css') }}">
-
-	<!-- TimePicker -->
-	<link rel="stylesheet" href="{{ asset('vendor/css/bootstrap-timepicker.min.css') }}">
-
-	<!-- Select Plugin -->
-	<link rel="stylesheet" href="{{ asset('vendor/css/select2.min.css') }}">
-
-	<!-- Bootstrap Icons -->
-	<link rel="stylesheet" href="{{ asset('vendor/css/bootstrap-icons.css') }}">
-
-	@stack('datatable-styles')
-
-	<!-- Template CSS -->
-	<link type="text/css" rel="stylesheet" media="all" href="{{ asset('css/main.css') }}">
-
-	<title>@lang($pageTitle)</title>
-	<meta name="msapplication-TileColor" content="#ffffff">
-	<meta name="msapplication-TileImage" content="{{ global_setting()->favicon_url }}">
-	<meta name="theme-color" content="#ffffff">
-	<meta name="csrf-token" content="{{ csrf_token() }}" />
-	@isset($activeSettingMenu)
-	<style>
-		.preloader-container {
-			margin-left: 510px;
-			width: calc(100% - 510px)
-		}
-
-		.blur-code {
-			filter: blur(3px);
-
-		}
-
-		.purchase-code {
-			transition: filter .2s ease-out;
-			margin-right: 4px;
-		}
-	</style>
-	@endisset
-
-	@stack('styles')
-
-	<style>
-		:root {
-			--fc-border-color: #E8EEF3;
-			--fc-button-text-color: #99A5B5;
-			--fc-button-border-color: #99A5B5;
-			--fc-button-bg-color: #ffffff;
-			--fc-button-active-bg-color: #171f29;
-			--fc-today-bg-color: #f2f4f7;
-		}
-
-		.fc a[data-navlink] {
-			color: #99a5b5;
-		}
-	</style>
-
-	{{-- Custom theme styles --}}
-	@if (!user()->dark_theme)
-	@include('sections.theme_css')
-	@endif
-
-	@if (file_exists(public_path() . '/css/app-custom.css'))
-	<link href="{{ asset('css/app-custom.css') }}" rel="stylesheet">
-	@endif
-
-	<script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
-	<script src="{{ asset('vendor/jquery/modernizr.min.js') }}"></script>
-
-	{{-- Timepicker --}}
-	<script src="{{ asset('vendor/jquery/bootstrap-timepicker.min.js') }}"></script>
-
-	@if ($pushSetting->status == 'active')
-	<link rel="manifest" href="{{ asset('manifest.json') }}" />
-	<script src="{{ asset('vendor/onesignal/OneSignalSDK.js') }}" async='async'></script>
-	<script>
-		var OneSignal = window.OneSignal || [];
-		OneSignal.push(function() {
-			OneSignal.SERVICE_WORKER_PARAM = {
-				scope: '/vendor/onesignal/'
-			};
-			OneSignal.SERVICE_WORKER_PATH = 'vendor/onesignal/OneSignalSDKWorker.js'
-			OneSignal.SERVICE_WORKER_UPDATER_PATH = 'vendor/onesignal/OneSignalSDKUpdaterWorker.js'
-			OneSignal.init({
-				appId: "{{ $pushSetting->onesignal_app_id }}",
-				autoRegister: false,
-				notifyButton: {
-					enable: true,
-					showCredit: false,
-					theme: "inverse",
-					size: "small",
-					position: '{{ user()->rtl ? '
-					bottom - left ' : '
-					bottom - right ' }}',
-					text: {
-						'tip.state.unsubscribed': "@lang('app.onesignal.tip.state.unsubscribed')",
-						'tip.state.subscribed': "@lang('app.onesignal.tip.state.subscribed')",
-						'tip.state.blocked': "@lang('app.onesignal.tip.state.blocked')",
-						'message.prenotify': "@lang('app.onesignal.message.prenotify')",
-						'message.action.subscribed': "@lang('app.onesignal.message.action.subscribed')",
-						'message.action.resubscribed': "@lang('app.onesignal.message.action.resubscribed')",
-						'message.action.unsubscribed': "@lang('app.onesignal.message.action.unsubscribed')",
-						'dialog.main.title': "@lang('app.onesignal.dialog.main.title')",
-						'dialog.main.button.subscribe': "@lang('app.onesignal.dialog.main.button.subscribe')",
-						'dialog.main.button.unsubscribe': "@lang('app.onesignal.dialog.main.button.unsubscribe')",
-						'dialog.blocked.title': "@lang('app.onesignal.dialog.blocked.title')",
-						'dialog.blocked.message': "@lang('app.onesignal.dialog.blocked.message')"
-					}
-				},
-				promptOptions: {
-					/* actionMessage limited to 90 characters */
-					actionMessage: "@lang('app.onesignal.actionMessage')",
-					/* acceptButtonText limited to 15 characters */
-					acceptButtonText: "@lang('app.onesignal.acceptButtonText')",
-					/* cancelButtonText limited to 15 characters */
-					cancelButtonText: "@lang('app.onesignal.cancelButtonText')"
-				}
-			});
-			OneSignal.on('subscriptionChange', function(isSubscribed) {
-				console.log("The user's subscription state is now:", isSubscribed);
-			});
-
-
-			if (Notification.permission === "granted") {
-				// Automatically subscribe user if deleted cookies and browser shows "Allow"
-				OneSignal.getUserId()
-					.then(function(userId) {
-						if (!userId) {
-							OneSignal.registerForPushNotifications();
-						} else {
-							let db_onesignal_id = '{{ $user->onesignal_player_id }}';
-
-							if (db_onesignal_id == null || db_onesignal_id !==
-								userId) { //update onesignal ID if it is new
-								updateOnesignalPlayerId(userId);
-							}
-						}
-					})
-			} else {
-				OneSignal.isPushNotificationsEnabled(function(isEnabled) {
-
-					OneSignal.getUserId(function(userId) {
-						console.log("OneSignal User ID:", userId);
-						// (Output) OneSignal User ID: 270a35cd-4dda-4b3f-b04e-41d7463a2316
-						let db_onesignal_id = '{{ $user->onesignal_player_id }}';
-						console.log('database id : ' + db_onesignal_id);
-
-						if (db_onesignal_id == null || db_onesignal_id !==
-							userId) { //update onesignal ID if it is new
-							updateOnesignalPlayerId(userId);
-						}
-					});
-
-					if (isEnabled) {
-						console.log("Push notifications are enabled! - 2    ");
-						// console.log("unsubscribe");
-						// OneSignal.setSubscription(false);
-					} else {
-						console.log("Push notifications are not enabled yet. - 2");
-						OneSignal.showHttpPrompt();
-						// OneSignal.registerForPushNotifications({
-						//         modalPrompt: true
-						// });
-					}
-				});
-
-			}
-		});
-	</script>
-	@endif
-
-	@if ($pusherSettings->status && app()->environment('codecanyon'))
-	<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
-
-	<script>
-		// Enable pusher logging - don't include this in production
-		// Pusher.logToConsole = true;
-
-		var pusher = new Pusher('{{ $pusherSettings->pusher_app_key }}', {
-			cluster: '{{ $pusherSettings->pusher_cluster }}',
-			forceTLS: '{{ $pusherSettings->force_tls }}'
-		});
-	</script>
-	@endif
-
-	{{-- Include file for widgets if exist --}}
-	@includeif('sections.custom_script')
-
-
-	<script>
-		var checkMiniSidebar = localStorage.getItem("mini-sidebar");
-	</script>
-
+	<!-- CSS -->
+	<link href="dist/css/style.css" rel="stylesheet" type="text/css">
 </head>
 
+<body>
+	<!-- Wrapper -->
+	<div class="hk-wrapper" data-layout="vertical" data-layout-style="default" data-menu="light" data-footer="simple">
+		<!-- Top Navbar -->
+		<nav class="hk-navbar navbar navbar-expand-xl navbar-light fixed-top">
+			<div class="container-fluid">
+				<!-- Start Nav -->
+				<div class="nav-start-wrap">
+					<button
+						class="btn btn-icon btn-rounded btn-flush-dark flush-soft-hover navbar-toggle d-xl-none"><span
+							class="icon"><span class="feather-icon"><i
+									data-feather="align-left"></i></span></span></button>
 
-<body id="body" class="{{ user()->dark_theme ? 'dark-theme' : '' }} {{ user()->rtl ? 'rtl' : '' }}">
-	<script>
-		if (checkMiniSidebar == "yes" || checkMiniSidebar == "") {
-			$('body').addClass('sidebar-toggled');
-		}
-	</script>
-	{{-- include topbar --}}
-	@include('sections.topbar')
+					<!-- Search -->
+					<form class="dropdown navbar-search">
+						<div class="dropdown-toggle no-caret" data-bs-toggle="dropdown" data-dropdown-animation
+							data-bs-auto-close="outside">
+							<a href="#"
+								class="btn btn-icon btn-rounded btn-flush-dark flush-soft-hover  d-xl-none"><span
+									class="icon"><span class="feather-icon"><i
+											data-feather="search"></i></span></span></a>
+							<div class="input-group d-xl-flex d-none">
+								<span class="input-affix-wrapper input-search affix-border">
+									<input type="text" class="form-control  bg-transparent"
+										data-navbar-search-close="false" placeholder="Search..." aria-label="Search">
+									<span class="input-suffix"><span>/</span>
+										<span class="btn-input-clear"><i class="bi bi-x-circle-fill"></i></span>
+										<span class="spinner-border spinner-border-sm input-loader text-primary"
+											role="status">
+											<span class="sr-only">Loading...</span>
+										</span>
+									</span>
+								</span>
+							</div>
+						</div>
+						<div class="dropdown-menu p-0">
+							<!-- Mobile Search -->
+							<div class="dropdown-item d-xl-none bg-transparent">
+								<div class="input-group mobile-search">
+									<span class="input-affix-wrapper input-search">
+										<input type="text" class="form-control" placeholder="Search..."
+											aria-label="Search">
+										<span class="input-suffix">
+											<span class="btn-input-clear"><i class="bi bi-x-circle-fill"></i></span>
+											<span class="spinner-border spinner-border-sm input-loader text-primary"
+												role="status">
+												<span class="sr-only">Loading...</span>
+											</span>
+										</span>
+									</span>
+								</div>
+							</div>
+							<!--/ Mobile Search -->
 
-	{{-- include sidebar menu --}}
-	@include('sections.sidebar')
+						</div>
+					</form>
+					<!-- /Search -->
+				</div>
+				<!-- /Start Nav -->
 
-	<!-- BODY WRAPPER START -->
-	<div class="body-wrapper clearfix">
-
-
-		<!-- MAIN CONTAINER START -->
-		<section class="main-container bg-additional-grey" id="fullscreen">
-
-			<div class="preloader-container d-flex justify-content-center align-items-center">
-				<div class="spinner-border" role="status" aria-hidden="true"></div>
+				<!-- End Nav -->
+				<div class="nav-end-wrap">
+					<ul class="navbar-nav flex-row">
+						<li class="nav-item">
+							<a href="email.html" class="btn btn-icon btn-rounded btn-flush-dark flush-soft-hover"><span
+									class="icon"><span class=" position-relative"><span class="feather-icon"><i
+												data-feather="inbox"></i></span><span
+											class="badge badge-sm badge-soft-primary badge-sm badge-pill position-top-end-overflow-1">4</span></span></span></a>
+						</li>
+						<li class="nav-item">
+							<div class="dropdown dropdown-notifications">
+								<a href="#"
+									class="btn btn-icon btn-rounded btn-flush-dark flush-soft-hover dropdown-toggle no-caret"
+									data-bs-toggle="dropdown" data-dropdown-animation role="button" aria-haspopup="true"
+									aria-expanded="false"><span class="icon"><span class="position-relative"><span
+												class="feather-icon"><i data-feather="bell"></i></span><span
+												class="badge badge-success badge-indicator position-top-end-overflow-1"></span></span></span></a>
+								<div class="dropdown-menu dropdown-menu-end p-0">
+									<h6 class="dropdown-header px-4 fs-6">Notifications<a href="#"
+											class="btn btn-icon btn-flush-dark btn-rounded flush-soft-hover"><span
+												class="icon"><span class="feather-icon"><i
+														data-feather="settings"></i></span></span></a>
+									</h6>
+									<div data-simplebar class="dropdown-body  p-2">
+										<a href="javascript:void(0);" class="dropdown-item">
+											<div class="media">
+												<div class="media-head">
+													<div class="avatar avatar-rounded avatar-sm">
+														<img src="dist/img/avatar2.jpg" alt="user" class="avatar-img">
+													</div>
+												</div>
+												<div class="media-body">
+													<div>
+														<div class="notifications-text">Morgan Freeman accepted your
+															invitation to join the team</div>
+														<div class="notifications-info">
+															<span class="badge badge-soft-success">Collaboration</span>
+															<div class="notifications-time">Today, 10:14 PM</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</a>
+										<a href="javascript:void(0);" class="dropdown-item">
+											<div class="media">
+												<div class="media-head">
+													<div
+														class="avatar  avatar-icon avatar-sm avatar-success avatar-rounded">
+														<span class="initial-wrap">
+															<span class="feather-icon"><i
+																	data-feather="inbox"></i></span>
+														</span>
+													</div>
+												</div>
+												<div class="media-body">
+													<div>
+														<div class="notifications-text">New message received from Alan
+															Rickman</div>
+														<div class="notifications-info">
+															<div class="notifications-time">Today, 7:51 AM</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</a>
+										<a href="javascript:void(0);" class="dropdown-item">
+											<div class="media">
+												<div class="media-head">
+													<div
+														class="avatar  avatar-icon avatar-sm avatar-pink avatar-rounded">
+														<span class="initial-wrap">
+															<span class="feather-icon"><i
+																	data-feather="clock"></i></span>
+														</span>
+													</div>
+												</div>
+												<div class="media-body">
+													<div>
+														<div class="notifications-text">You have a follow up with
+															Jampack Head on Friday, Dec 19 at 9:30 am</div>
+														<div class="notifications-info">
+															<div class="notifications-time">Yesterday, 9:25 PM</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</a>
+										<a href="javascript:void(0);" class="dropdown-item">
+											<div class="media">
+												<div class="media-head">
+													<div class="avatar avatar-sm avatar-rounded">
+														<img src="dist/img/avatar3.jpg" alt="user" class="avatar-img">
+													</div>
+												</div>
+												<div class="media-body">
+													<div>
+														<div class="notifications-text">Application of Sarah Williams is
+															waiting for your approval</div>
+														<div class="notifications-info">
+															<div class="notifications-time">Today 10:14 PM</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</a>
+										<a href="javascript:void(0);" class="dropdown-item">
+											<div class="media">
+												<div class="media-head">
+													<div class="avatar avatar-sm avatar-rounded">
+														<img src="dist/img/avatar10.jpg" alt="user" class="avatar-img">
+													</div>
+												</div>
+												<div class="media-body">
+													<div>
+														<div class="notifications-text">Winston Churchil shared a
+															document with you</div>
+														<div class="notifications-info">
+															<span class="badge badge-soft-violet">File Manager</span>
+															<div class="notifications-time">2 Oct, 2021</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</a>
+										<a href="javascript:void(0);" class="dropdown-item">
+											<div class="media">
+												<div class="media-head">
+													<div
+														class="avatar  avatar-icon avatar-sm avatar-danger avatar-rounded">
+														<span class="initial-wrap">
+															<span class="feather-icon"><i
+																	data-feather="calendar"></i></span>
+														</span>
+													</div>
+												</div>
+												<div class="media-body">
+													<div>
+														<div class="notifications-text">Last 2 days left for the project
+															to be completed</div>
+														<div class="notifications-info">
+															<span class="badge badge-soft-orange">Updates</span>
+															<div class="notifications-time">14 Sep, 2021</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</a>
+									</div>
+									<div class="dropdown-footer"><a href="#"><u>View all notifications</u></a></div>
+								</div>
+							</div>
+						</li>
+						<li class="nav-item">
+							<div class="dropdown ps-2">
+								<a class=" dropdown-toggle no-caret" href="#" role="button" data-bs-display="static"
+									data-bs-toggle="dropdown" data-dropdown-animation data-bs-auto-close="outside"
+									aria-expanded="false">
+									<div class="avatar avatar-rounded avatar-xs">
+										<img src="dist/img/avatar12.jpg" alt="user" class="avatar-img">
+									</div>
+								</a>
+								<div class="dropdown-menu dropdown-menu-end">
+									<div class="p-2">
+										<div class="media">
+											<div class="media-head me-2">
+												<div class="avatar avatar-primary avatar-sm avatar-rounded">
+													<span class="initial-wrap">Hk</span>
+												</div>
+											</div>
+											<div class="media-body">
+												<div class="dropdown">
+													<a href="#" class="d-block dropdown-toggle link-dark fw-medium"
+														data-bs-toggle="dropdown" data-dropdown-animation
+														data-bs-auto-close="inside">Hencework</a>
+													<div class="dropdown-menu dropdown-menu-end">
+														<div class="p-2">
+															<div class="media align-items-center active-user mb-3">
+																<div class="media-head me-2">
+																	<div
+																		class="avatar avatar-primary avatar-xs avatar-rounded">
+																		<span class="initial-wrap">Hk</span>
+																	</div>
+																</div>
+																<div class="media-body">
+																	<a href="#"
+																		class="d-flex align-items-center link-dark">Hencework
+																		<i
+																			class="ri-checkbox-circle-fill fs-7 text-primary ms-1"></i></a>
+																	<a href="#"
+																		class="d-block fs-8 link-secondary"><u>Manage
+																			your account</u></a>
+																</div>
+															</div>
+															<div class="media align-items-center mb-3">
+																<div class="media-head me-2">
+																	<div class="avatar avatar-xs avatar-rounded">
+																		<img src="dist/img/avatar12.jpg" alt="user"
+																			class="avatar-img">
+																	</div>
+																</div>
+																<div class="media-body">
+																	<a href="#" class="d-block link-dark">Jampack
+																		Team</a>
+																	<a href="#"
+																		class="d-block fs-8 link-secondary">contact@hencework.com</a>
+																</div>
+															</div>
+															<button class="btn btn-block btn-outline-light btn-sm">
+																<span><span class="icon"><span class="feather-icon"><i
+																				data-feather="plus"></i></span></span>
+																	<span>Add Account</span></span>
+															</button>
+														</div>
+													</div>
+												</div>
+												<div class="fs-7">contact@hencework.com</div>
+												<a href="#" class="d-block fs-8 link-secondary"><u>Sign Out</u></a>
+											</div>
+										</div>
+									</div>
+									<div class="dropdown-divider"></div>
+									<a class="dropdown-item" href="profile.html">Profile</a>
+									<a class="dropdown-item" href="#"><span class="me-2">Offers</span><span
+											class="badge badge-sm badge-soft-pink">2</span></a>
+									<div class="dropdown-divider"></div>
+									<h6 class="dropdown-header">Manage Account</h6>
+									<a class="dropdown-item" href="#"><span class="dropdown-icon feather-icon"><i
+												data-feather="credit-card"></i></span><span>Payment methods</span></a>
+									<a class="dropdown-item" href="#"><span class="dropdown-icon feather-icon"><i
+												data-feather="check-square"></i></span><span>Subscriptions</span></a>
+									<a class="dropdown-item" href="#"><span class="dropdown-icon feather-icon"><i
+												data-feather="settings"></i></span><span>Settings</span></a>
+									<div class="dropdown-divider"></div>
+									<a class="dropdown-item" href="#"><span class="dropdown-icon feather-icon"><i
+												data-feather="tag"></i></span><span>Raise a ticket</span></a>
+									<div class="dropdown-divider"></div>
+									<a class="dropdown-item" href="#">Terms & Conditions</a>
+									<a class="dropdown-item" href="#">Help & Support</a>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<!-- /End Nav -->
 			</div>
+		</nav>
+		<!-- /Top Navbar -->
 
+		<!-- Vertical Nav -->
+		<div class="hk-menu">
+			<!-- Brand -->
+			<div class="menu-header">
+				<span>
+					<a class="navbar-brand" href="index.html">
+						<img class="brand-img img-fluid" src="dist/img/brand-sm.svg" alt="brand" />
+						<img class="brand-img img-fluid" src="dist/img/Jampack.svg" alt="brand" />
+					</a>
+					<button class="btn btn-icon btn-rounded btn-flush-dark flush-soft-hover navbar-toggle">
+						<span class="icon">
+							<span class="svg-icon fs-5">
+								<svg xmlns="http://www.w3.org/2000/svg"
+									class="icon icon-tabler icon-tabler-arrow-bar-to-left" width="24" height="24"
+									viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+									stroke-linecap="round" stroke-linejoin="round">
+									<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+									<line x1="10" y1="12" x2="20" y2="12"></line>
+									<line x1="10" y1="12" x2="14" y2="16"></line>
+									<line x1="10" y1="12" x2="14" y2="8"></line>
+									<line x1="4" y1="4" x2="4" y2="20"></line>
+								</svg>
+							</span>
+						</span>
+					</button>
+				</span>
+			</div>
+			<!-- /Brand -->
 
-			@yield('filter-section')
+			<!-- Main Menu -->
+			<div data-simplebar class="nicescroll-bar">
+				<div class="menu-content-wrap">
+					<div class="menu-group">
+						<ul class="navbar-nav flex-column">
+							<li class="nav-item active">
+								<a class="nav-link" href="index.html">
+									<span class="nav-icon-wrap">
+										<span class="svg-icon">
+											<svg xmlns="http://www.w3.org/2000/svg"
+												class="icon icon-tabler icon-tabler-template" width="24" height="24"
+												viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+												stroke-linecap="round" stroke-linejoin="round">
+												<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+												<rect x="4" y="4" width="16" height="4" rx="1" />
+												<rect x="4" y="12" width="6" height="8" rx="1" />
+												<line x1="14" y1="12" x2="20" y2="12" />
+												<line x1="14" y1="16" x2="20" y2="16" />
+												<line x1="14" y1="20" x2="20" y2="20" />
+											</svg>
+										</span>
+									</span>
+									<span class="nav-link-text">Dashboard</span>
+									<span class="badge badge-sm badge-soft-pink ms-auto">Hot</span>
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div class="menu-gap"></div>
+					<div class="menu-group">
 
-			<x-app-title class="d-block d-lg-none" :pageTitle="__($pageTitle)"></x-app-title>
+						<ul class="navbar-nav flex-column">
+							<li class="nav-item">
+								<a class="nav-link" href="javascript:void(0);" data-bs-toggle="collapse"
+									data-bs-target="#dash_chat">
+									<span class="nav-icon-wrap">
+										<span class="svg-icon">
+											<svg xmlns="http://www.w3.org/2000/svg"
+												class="icon icon-tabler icon-tabler-message-dots" width="24" height="24"
+												viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+												stroke-linecap="round" stroke-linejoin="round">
+												<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+												<path
+													d="M4 21v-13a3 3 0 0 1 3 -3h10a3 3 0 0 1 3 3v6a3 3 0 0 1 -3 3h-9l-4 4" />
+												<line x1="12" y1="11" x2="12" y2="11.01" />
+												<line x1="8" y1="11" x2="8" y2="11.01" />
+												<line x1="16" y1="11" x2="16" y2="11.01" />
+											</svg>
+										</span>
+									</span>
+									<span class="nav-link-text">Chat</span>
+								</a>
+								<ul id="dash_chat" class="nav flex-column collapse  nav-children">
+									<li class="nav-item">
+										<ul class="nav flex-column">
+											<li class="nav-item">
+												<a class="nav-link" href="chats.html"><span
+														class="nav-link-text">Chats</span></a>
+											</li>
+											<li class="nav-item">
+												<a class="nav-link" href="chats-group.html"><span
+														class="nav-link-text">Groups</span></a>
+											</li>
+											<li class="nav-item">
+												<a class="nav-link" href="chats-contact.html"><span
+														class="nav-link-text">Contacts</span></a>
+											</li>
+										</ul>
+									</li>
+								</ul>
+							</li>
 
-			@yield('content')
-
-
-		</section>
-		<!-- MAIN CONTAINER END -->
-	</div>
-	<!-- BODY WRAPPER END -->
-
-	<!-- also the modal itself -->
-	<div id="myModalDefault" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-		<div class="modal-dialog d-flex justify-content-center align-items-center">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="modelHeading">Modal title</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-							aria-hidden="true">×</span></button>
-				</div>
-				<div class="modal-body">
-					Loading...
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn-cancel rounded mr-3" data-dismiss="modal">Close</button>
-					<button type="button" class="btn-primary rounded">Save changes</button>
+							<li class="nav-item">
+								<a class="nav-link" href="javascript:void(0);" data-bs-toggle="collapse"
+									data-bs-target="#dash_profile">
+									<span class="nav-icon-wrap">
+										<span class="svg-icon">
+											<svg xmlns="http://www.w3.org/2000/svg"
+												class="icon icon-tabler icon-tabler-user-search" width="24" height="24"
+												viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+												stroke-linecap="round" stroke-linejoin="round">
+												<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+												<circle cx="12" cy="7" r="4" />
+												<path d="M6 21v-2a4 4 0 0 1 4 -4h1" />
+												<circle cx="16.5" cy="17.5" r="2.5" />
+												<path d="M18.5 19.5l2.5 2.5" />
+											</svg>
+										</span>
+									</span>
+									<span class="nav-link-text position-relative">Profile
+										<span
+											class="badge badge-danger badge-indicator position-absolute top-0 start-100"></span>
+									</span>
+								</a>
+								<ul id="dash_profile" class="nav flex-column collapse  nav-children">
+									<li class="nav-item">
+										<ul class="nav flex-column">
+											<li class="nav-item">
+												<a class="nav-link" href="profile.html">
+													<span class="nav-link-text">Profile</span>
+												</a>
+											</li>
+											<li class="nav-item">
+												<a class="nav-link" href="edit-profile.html">
+													<span class="nav-link-text">Edit Profile</span>
+												</a>
+											</li>
+											<li class="nav-item">
+												<a class="nav-link" href="account.html">
+													<span class="nav-link-text">Account</span>
+												</a>
+											</li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
 				</div>
 			</div>
+			<!-- /Main Menu -->
 		</div>
-	</div>
-
-	<!-- also the modal itself -->
-	<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-		<div class="modal-dialog d-flex justify-content-center align-items-center modal-lg">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="modelHeading">Modal title</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-							aria-hidden="true">×</span></button>
-				</div>
-				<div class="modal-body">
-					Loading...
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn-cancel rounded mr-3" data-dismiss="modal">Close</button>
-					<button type="button" class="btn-primary rounded">Save changes</button>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- also the modal itself -->
-	<div id="myModalXl" class="modal fade overflow-auto" tabindex="-1" role="dialog" aria-hidden="true">
-		<div class="modal-dialog d-flex justify-content-center align-items-center modal-xl">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="modelHeading">Modal title</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-							aria-hidden="true">×</span></button>
-				</div>
-				<div class="modal-body bg-grey">
-					Loading...
-				</div>
-
-			</div>
-		</div>
-	</div>
-
-	<x-right-modal />
-
-	<!-- Global Required Javascript -->
-	<script src="{{ asset('js/main.js') }}"></script>
-	<script>
-		const MODAL_DEFAULT = '#myModalDefault';
-		const MODAL_LG = '#myModal';
-		const MODAL_XL = '#myModalXl';
-		const MODAL_HEADING = '#modelHeading';
-		const RIGHT_MODAL = '#task-detail-1';
-		const RIGHT_MODAL_CONTENT = '#right-modal-content';
-		const RIGHT_MODAL_TITLE = '#right-modal-title';
-		const global_setting = @json(global_setting());
-		const pusher_setting = @json(pusher_settings());
-		const SEARCH_KEYWORD = "{{ request('search_keyword') }}";
-
-		const datepickerConfig = {
-			formatter: (input, date, instance) => {
-				input.value = moment(date).format('{{ global_setting()->moment_date_format }}')
-			},
-			showAllDates: true,
-			customDays: ["@lang('app.weeks.Sun')", "@lang('app.weeks.Mon')", "@lang('app.weeks.Tue')",
-				"@lang('app.weeks.Wed')", "@lang('app.weeks.Thu')", "@lang('app.weeks.Fri')",
-				"@lang('app.weeks.Sat')"
-			],
-			customMonths: ["@lang('app.months.January')", "@lang('app.months.February')",
-				"@lang('app.months.March')", "@lang('app.months.April')", "@lang('app.months.May')",
-				"@lang('app.months.June')", "@lang('app.months.July')", "@lang('app.months.August')",
-				"@lang('app.months.September')", "@lang('app.months.October')",
-				"@lang('app.months.November')", "@lang('app.months.December')"
-			],
-			customOverlayMonths: ["@lang('app.monthsShort.Jan')", "@lang('app.monthsShort.Feb')",
-				"@lang('app.monthsShort.Mar')", "@lang('app.monthsShort.Apr')",
-				"@lang('app.monthsShort.May')", "@lang('app.monthsShort.Jun')",
-				"@lang('app.monthsShort.Jul')", "@lang('app.monthsShort.Aug')",
-				"@lang('app.monthsShort.Sep')", "@lang('app.monthsShort.Oct')",
-				"@lang('app.monthsShort.Nov')", "@lang('app.monthsShort.Dec')"
-			],
-			overlayButton: "@lang('app.submit')",
-			overlayPlaceholder: "@lang('app.enterYear')",
-			startDay: parseInt("{{ attendance_setting()->week_start_from }}")
-		};
-
-		const daterangeConfig = {
-			"@lang('app.today')": [moment(), moment()],
-			"@lang('app.last30Days')": [moment().subtract(29, 'days'), moment()],
-			"@lang('app.thisMonth')": [moment().startOf('month'), moment().endOf('month')],
-			"@lang('app.lastMonth')": [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month')
-				.endOf(
-					'month')
-			],
-			"@lang('app.last90Days')": [moment().subtract(89, 'days'), moment()],
-			"@lang('app.last6Months')": [moment().subtract(6, 'months'), moment()],
-			"@lang('app.last1Year')": [moment().subtract(1, 'years'), moment()]
-		};
-
-		const daterangeLocale = {
-			"format": "{{ global_setting()->moment_date_format }}",
-			"customRangeLabel": "@lang('app.customRange')",
-			"separator": " @lang('app.to') ",
-			"applyLabel": "@lang('app.apply')",
-			"cancelLabel": "@lang('app.cancel')",
-			"daysOfWeek": ['@lang("app.weeks.Sun")', '@lang("app.weeks.Mon")',
-				'@lang("app.weeks.Tue")',
-				'@lang("app.weeks.Wed")', '@lang("app.weeks.Thu")', '@lang("app.weeks.Fri")',
-				'@lang("app.weeks.Sat")'
-			],
-			"monthNames": ['@lang("app.months.January")', '@lang("app.months.February")',
-				"@lang('app.months.March')", "@lang('app.months.April')",
-				"@lang('app.months.May')",
-				"@lang('app.months.June')", "@lang('app.months.July')",
-				"@lang('app.months.August')",
-				"@lang('app.months.September')", "@lang('app.months.October')",
-				"@lang('app.months.November')", "@lang('app.months.December')"
-			],
-			"firstDay": parseInt("{{ attendance_setting()->week_start_from }}")
-		};
-
-		const dropifyMessages = {
-			default: "@lang('app.dragDrop')",
-			replace: "@lang('app.dragDropReplace')",
-			remove: "@lang('app.remove')",
-			error: "@lang('messages.errorOccured')",
-		};
-
-		const DROPZONE_FILE_ALLOW = "{{ global_setting()->allowed_file_types }}";
-		const DROPZONE_MAX_FILESIZE = "{{ global_setting()->allowed_file_size }}";
-		Dropzone.prototype.defaultOptions.dictDefaultMessage = "{{ __('modules.projectTemplate.dropFile') }}";
-	</script>
-
-	<!-- Scripts -->
-	<script>
-		window.Laravel = {
-			!!json_encode([
-				'csrfToken' => csrf_token(),
-				'user' => user(),
-			]) !!
-		};
-	</script>
-
-	@stack('scripts')
-
-	<script>
-		$(window).on('load', function() {
-			// Animate loader off screen
-			init();
-			$(".preloader-container").fadeOut("slow", function() {
-				$(this).removeClass("d-flex");
-			});
-		});
-
-		$('body').on('click', '.view-notification', function(event) {
-			event.preventDefault();
-			var id = $(this).data('notification-id');
-			var href = $(this).attr('href');
-
-			$.easyAjax({
-				url: "{{ route('mark_single_notification_read') }}",
-				type: "POST",
-				data: {
-					'_token': "{{ csrf_token() }}",
-					'id': id
-				},
-				success: function() {
-					if (typeof href !== 'undefined') {
-						window.location = href;
-					}
-				}
-			});
-		});
-
-		$('body').on('click', '.img-lightbox', function() {
-			var imageUrl = $(this).data('image-url');
-			const url = "{{ route('invoices.show_image').'?image_url=' }}" + encodeURIComponent(imageUrl);
-			$(MODAL_LG + ' ' + MODAL_HEADING).html('...');
-			$.ajaxModal(MODAL_LG, url);
-		});
-
-		function updateOnesignalPlayerId(userId) {
-			$.easyAjax({
-				url: '{{ route('
-				profile.update_onesignal_id ') }}',
-				type: 'POST',
-				data: {
-					'userId': userId,
-					'_token': '{{ csrf_token() }}'
-				}
-			})
-		}
-
-		if (SEARCH_KEYWORD != '' && $('#search-text-field').length > 0) {
-			$('#search-text-field').val(SEARCH_KEYWORD);
-			$('#reset-filters').removeClass('d-none');
-		}
-
-		$('body').on('click', '.show-hide-purchase-code', function() {
-			$('> .icon', this).toggleClass('fa-eye-slash fa-eye');
-			$(this).siblings('span').toggleClass('blur-code ');
-		});
-	</script>
-
-	<script>
-		let quillArray = {};
-
-		function quillImageLoad(ID) {
-
-			quillArray[ID] = new Quill(ID, {
-				modules: {
-					toolbar: [
-						[{
-							header: [1, 2, 3, 4, 5, false]
-						}],
-						[{
-							'list': 'ordered'
-						}, {
-							'list': 'bullet'
-						}],
-						['bold', 'italic', 'underline', 'strike'],
-						['image', 'code-block', 'link'],
-						[{
-							'direction': 'rtl'
-						}],
-						['clean']
-					],
-					clipboard: {
-						matchVisual: false
-					},
-					"emoji-toolbar": true,
-					"emoji-textarea": true,
-					"emoji-shortname": true,
-				},
-				theme: 'snow'
-			});
-			$.each(quillArray, function(key, quill) {
-				quill.getModule('toolbar').addHandler('image', selectLocalImage);
-			});
-
-		}
-		/**
-		 * Step1. select local image
-		 *
-		 */
-		function selectLocalImage() {
-			const input = document.createElement('input');
-			input.setAttribute('type', 'file');
-			input.click();
-
-			// Listen upload local image and save to server
-			input.onchange = () => {
-				const file = input.files[0];
-
-				// file type is only image.
-				if (/^image\//.test(file.type)) {
-					saveToServer(file);
-				} else {
-					console.warn('You could only upload images.');
-				}
-			};
-		}
-
-		/**
-		 * Step2. save to server
-		 *
-		 * @param {File} file
-		 */
-		function saveToServer(file) {
-			const fd = new FormData();
-			fd.append('image', file);
-			$.ajax({
-				type: 'POST',
-				url: "{{ route('image.store') }}",
-				dataType: "json",
-				headers: {
-					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-				},
-				data: fd,
-				contentType: false,
-				processData: false,
-				success: function(response) {
-					insertToEditor(response)
-				},
-			});
-		}
-
-		function insertToEditor(url) {
-			// push image url to rich editor.
-			$.each(quillArray, function(key, quill) {
-				try {
-					let range = quill.getSelection();
-					quill.insertEmbed(range.index, 'image', url);
-				} catch (err) {}
-			});
-		}
-	</script>
-
-	<script>
-		$('body').on('click', '#pause-timer-btn', function() {
-			var id = $(this).data('time-id');
-			var url = "{{ route('timelogs.pause_timer', ':id') }}";
-			url = url.replace(':id', id);
-			var token = '{{ csrf_token() }}';
-			$.easyAjax({
-				url: url,
-				blockUI: true,
-				type: "POST",
-				disableButton: true,
-				buttonSelector: "#pause-timer-btn",
-				data: {
-					timeId: id,
-					_token: token
-				},
-				success: function(response) {
-					if (response.status == 'success') {
-						if ($('#myActiveTimer').length > 0) {
-							$(MODAL_XL + ' .modal-content').html(response.html);
-
-							if ($('#allTasks-table').length) {
-								window.LaravelDataTables["allTasks-table"].draw();
-							}
-						} else {
-							window.location.reload();
-						}
-					}
-				}
-			})
-		});
-
-		$('body').on('click', '#resume-timer-btn', function() {
-			var id = $(this).data('time-id');
-			var url = "{{ route('timelogs.resume_timer', ':id') }}";
-			url = url.replace(':id', id);
-			var token = '{{ csrf_token() }}';
-			$.easyAjax({
-				url: url,
-				blockUI: true,
-				type: "POST",
-				disableButton: true,
-				buttonSelector: "#resume-timer-btn",
-				data: {
-					timeId: id,
-					_token: token
-				},
-				success: function(response) {
-					if (response.status == 'success') {
-						if ($('#myActiveTimer').length > 0) {
-							$(MODAL_XL + ' .modal-content').html(response.html);
-						} else {
-							window.location.reload();
-						}
-					}
-				}
-			})
-		});
-
-		$('body').on('click', '.stop-active-timer', function() {
-			var id = $(this).data('time-id');
-			var url = "{{ route('timelogs.stop_timer', ':id') }}";
-			url = url.replace(':id', id);
-			var token = '{{ csrf_token() }}';
-			$.easyAjax({
-				url: url,
-				type: "POST",
-				data: {
-					timeId: id,
-					_token: token
-				},
-				success: function(response) {
-					if ($('#myActiveTimer').length > 0) {
-						$(MODAL_XL + ' .modal-content').html(response.html);
-						if (response.activeTimerCount > 0) {
-							$('#show-active-timer .active-timer-count').html(response
-								.activeTimerCount);
-						} else {
-							window.location.reload();
-						}
-					} else {
-						window.location.reload();
-					}
-				}
-			})
-
-		});
-	</script>
-</body>
-
-</html>
+		<div id="hk_menu_backdrop" class="hk-menu-backdrop"></div>
