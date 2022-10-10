@@ -1,9 +1,4 @@
 <!DOCTYPE html>
-<!-- 
-Jampack
-Author: Hencework
-Contact: contact@hencework.com
--->
 <html lang="en">
 
 <head>
@@ -11,7 +6,7 @@ Contact: contact@hencework.com
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Jampack - Admin CRM Dashboard Template</title>
+	<title></title>
 	<meta name="description"
 		content="A modern CRM Dashboard Template with reusable and flexible components for your SaaS web applications by hencework. Based on Bootstrap." />
 

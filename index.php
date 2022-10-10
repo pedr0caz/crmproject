@@ -14,7 +14,7 @@ $id = $url[3] ?? "";
 $controllers = [
     "home",
     "login",
-    "register",
+
     "logout",
 
 ];
