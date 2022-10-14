@@ -1,9 +1,5 @@
-<?php
-require_once("layout/header.php");
-?>
-
-
-
-
-<?php
-require_once("layout/footer.php");
+<nav>
+	<ul>
+		<li><a href="logout">Logout</a></li>
+	</ul>
+</nav>

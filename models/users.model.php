@@ -3,43 +3,12 @@ require_once("base.model.php");
 
 class User extends Base
 {
-    public function newUser($data)
-    {
-        $query = $this->db->prepare("
-            INSERT INTO
-            users
-            (name, email, password, street, postal_code, city, country)
-            VALUES
-            ( ?, ?, ?, ?, ?, ?, ? )
-        ");
-        $password_hash = password_hash($data["password"], PASSWORD_DEFAULT);
-        try {
-            $query->execute([
-                $data["name"],
-                $data["email"],
-                $password_hash,
-                $data["street"],
-                $data["postal_code"],
-                $data["city"],
-                $data["country"]
-            ]);
-            $user_id = $this->db->lastInsertId();
-            return $user_id;
-        } catch (PDOException $erro) {
-            if ($erro->errorInfo[1] == 1062) {
-                return false;
-            } else {
-                return false;
-            }
-        }
-    }
-
     public function login($data)
     {
         $query = $this->db->prepare("
-            SELECT password, user_id, name
+            SELECT password, id, name
             FROM users
-            WHERE email = ?
+            WHERE email = ? and status = 'active' and login = 'enable'
         ");
         $query->execute([$data["email"]]);
         $user = $query->fetch(PDO::FETCH_ASSOC);
@@ -47,5 +16,33 @@ class User extends Base
             return $user;
         }
         return [];
+    }
+
+    public function getUser($id)
+    {
+        $query = $this->db->prepare("
+            SELECT
+                id,
+                name,
+                email,
+      
+
+            FROM users
+            WHERE id = ?
+        ");
+        $query->execute([$id]);
+        return $query->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getRole($id)
+    {
+        $query = $this->db->prepare("
+            SELECT
+                role
+            FROM users
+            WHERE id = ?
+        ");
+        $query->execute([$id]);
+        return $query->fetch(PDO::FETCH_ASSOC);
     }
 }
