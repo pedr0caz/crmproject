@@ -3,6 +3,19 @@ require_once("base.model.php");
 
 class User extends Base
 {
+    public function newUser($data)
+    {
+        $query = $this->db->prepare("
+            INSERT INTO users (name, email, password)
+            VALUES (?, ?, ?, ?)
+        ");
+        $query->execute([
+            $data["name"],
+            $data["email"],
+            password_hash($data["password"], PASSWORD_DEFAULT)
+        ]);
+        return $this->db->lastInsertId();
+    }
     public function login($data)
     {
         $query = $this->db->prepare("
