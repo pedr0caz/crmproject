@@ -115,4 +115,143 @@ class Project extends Base
             $data["id"]
         ]);
     }
+
+    public function deleteProject($id)
+    {
+        $query = $this->db->prepare("
+            DELETE FROM projects
+            WHERE id = ?
+        ");
+        $query->execute([$id]);
+    }
+
+    public function getProjectActivity($id)
+    {
+        $query = $this->db->prepare("
+            SELECT
+                id as activity_id,
+                activity
+            FROM project_activity
+            WHERE project_id = ?
+
+        ");
+        $query->execute([$id]);
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function newProjectActivity($data)
+    {
+        $query = $this->db->prepare("
+            INSERT INTO project_activity (activity, project_id)
+            VALUES (?, ?)
+        ");
+        $query->execute([
+            $data["activity"],
+            $data["project_id"]
+        ]);
+        return $this->db->lastInsertId();
+    }
+
+    public function uploadProjectFile($data)
+    {
+        $query = $this->db->prepare("
+            INSERT INTO project_files (
+                user_id,
+                project_id,
+                filename,
+                hashname,
+                size,
+                description,
+                added_by,
+
+            )
+            VALUES (?, ?, ?)
+        ");
+        $query->execute([
+            $data["user_id"],
+            $data["project_id"],
+            $data["filename"],
+            $data["hashname"],
+            $data["size"],
+            $data["description"],
+            $data["added_by"]
+
+        ]);
+        return $this->db->lastInsertId();
+    }
+    public function getProjectFiles($id)
+    {
+        $query = $this->db->prepare("
+            SELECT
+                id as file_id,
+                user_id,
+                project_id,
+                filename,
+                hashname,
+                size,
+                description,
+                added_by,
+                added_on
+            FROM project_files
+            WHERE project_id = ?
+
+        ");
+        $query->execute([$id]);
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function getFileProject($id)
+    {
+        $query = $this->db->prepare("
+            SELECT
+                id as file_id,
+                user_id,
+                project_id,
+                filename,
+                hashname,
+                size,
+                description,
+                added_by,
+                added_on
+            FROM project_files
+            WHERE id = ?
+
+        ");
+        $query->execute([$id]);
+        return $query->fetch(PDO::FETCH_ASSOC);
+    }
+    public function getProjectNotes($id)
+    {
+        $query = $this->db->prepare("
+            SELECT
+                n.title,
+                n.type,
+                u.name,
+                u.email,
+                n.is_client_show,
+                n.details,
+                n.updated_at
+            FROM project_notes n
+            INNER JOIN users u ON n.user_id = u.id
+            WHERE n.project_id = ?
+        ");
+        $query->execute([$id]);
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function newProjectNote($data)
+    {
+        $query = $this->db->prepare("
+            INSERT INTO project_notes (title, type, user_id, is_client_show, details, project_id)
+            VALUES (?, ?, ?, ?, ?, ?)
+        ");
+        $query->execute([
+            $data["title"],
+            $data["type"],
+            $data["user_id"],
+            $data["is_client_show"],
+            $data["details"],
+            $data["project_id"]
+        ]);
+        return $this->db->lastInsertId();
+    }
 }
