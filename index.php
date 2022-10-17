@@ -9,12 +9,16 @@ define("ROOT", rtrim(str_replace("\\", "/", dirname($_SERVER["SCRIPT_NAME"])), "
 $url = explode("/", $_SERVER['REQUEST_URI']);
 
 $controller = $url[2] ?: "home";
-$id = $url[3] ?? "";
+$id = (array_key_exists(3, $url)) ? intval($url[3]) : null;
+$tabs = (array_key_exists(4, $url)) ? $url[4] : null;
+
 
 $controllers = [
     "home",
     "login",
-
+    "client",
+    "clientcreate",
+    "clientdetails",
     "logout",
 
 ];

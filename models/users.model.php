@@ -34,20 +34,24 @@ class User extends Base
     public function getUser($id)
     {
         $query = $this->db->prepare("
-            SELECT
-                id,
-                name,
-                email,
-      
+            SELECT 
+                u.id AS user_id,
+                u.name,
+                u.email,
+                r.role_id,
+                c.name AS role_name
+            
+            FROM users u
+            INNER JOIN role_user r ON u.id = r.user_id
+            INNER JOIN roles c ON r.role_id = c.id
+            WHERE u.id = ?
 
-            FROM users
-            WHERE id = ?
         ");
         $query->execute([$id]);
         return $query->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function getRole($id)
+/*     public function getRole($id)
     {
         $query = $this->db->prepare("
             SELECT
@@ -57,5 +61,5 @@ class User extends Base
         ");
         $query->execute([$id]);
         return $query->fetch(PDO::FETCH_ASSOC);
-    }
+    } */
 }

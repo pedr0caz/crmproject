@@ -19,12 +19,12 @@ class Client extends Base
                 c.website,
                 c.note,
                 s.category_name,
-                b.category_name AS business_category,
+                b.category_name AS business_category
         
             FROM client_details c
-            INNER JOIN users u ON c.client_id = u.id
-            INNER JOIN client_category s ON c.category_id = s.id
-            INNER JOIN client_sub_category b ON c.sub_category_id = b.id
+            INNER JOIN users u ON c.user_id = u.id
+            INNER JOIN client_categories s ON c.category_id = s.id
+            INNER JOIN client_sub_categories b ON c.sub_category_id = b.id
      
         ");
         $query->execute();
@@ -38,6 +38,7 @@ class Client extends Base
                 c.id AS client_id,
                 u.name,
                 u.email,
+                u.mobile,
                 c.company_name,
                 c.address,
                 c.postal_code,
@@ -47,12 +48,12 @@ class Client extends Base
                 c.website,
                 c.note,
                 s.category_name,
-                b.category_name AS business_category,
+                b.category_name AS business_category
         
             FROM client_details c
-            INNER JOIN users u ON c.client_id = u.id
-            INNER JOIN client_category s ON c.category_id = s.id
-            INNER JOIN client_sub_category b ON c.sub_category_id = b.id
+            INNER JOIN users u ON c.user_id = u.id
+            LEFT JOIN client_categories s ON c.category_id = s.id
+            LEFT JOIN client_sub_categories b ON c.sub_category_id = b.id
             WHERE c.id = ?
         ");
         $query->execute([$id]);

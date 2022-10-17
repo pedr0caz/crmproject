@@ -12,11 +12,17 @@ if (!isset($_SESSION["user_id"])) {
             require("models/users.model.php");
             $model = new User();
             $user = $model->login($_POST);
+           
             if (!empty($user)) {
+                $getUser = $model->getUser($user["id"]);
                 $_SESSION["user_id"] = $user["id"];
                 $_SESSION["user_name"] = $user["name"];
+                $_SESSION["user_role"] = $getUser["role_id"];
+
                 header("Location: " . ROOT . "/");
                 exit;
+            } else {
+                $error = "User or password incorrect";
             }
         }
         $error_message = "Email ou password estão errados";
