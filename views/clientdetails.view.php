@@ -125,7 +125,7 @@
                                 </h5>
                                 <div class="d-flex">
                                     <p class="mb-0 f-15 font-weight-bold text-blue text-primary d-grid"><span
-                                            id="">1</span>
+                                            id=""><?php print_r($client['project_count'])?></span>
                                     </p>
                                 </div>
                             </div>
@@ -184,25 +184,24 @@
                             </p>
                         </div>
                         <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
-                            <p class="mb-0 text-lightest f-14 w-30 text-capitalize">GST/VAT Number</p>
-                            <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">--</p>
-                        </div>
-                        <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
                             <p class="mb-0 text-lightest f-14 w-30 text-capitalize">Address</p>
                             <p class="mb-0 text-dark-grey f-14 w-70 text-wrap"><?=$client['address'] ?: '--'?>
                             </p>
                         </div>
                         <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
                             <p class="mb-0 text-lightest f-14 w-30 text-capitalize">State</p>
-                            <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">--</p>
+                            <p class="mb-0 text-dark-grey f-14 w-70 text-wrap"><?=$client['state'] ?: '--'?>
+                            </p>
                         </div>
                         <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
                             <p class="mb-0 text-lightest f-14 w-30 text-capitalize">City</p>
-                            <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">--</p>
+                            <p class="mb-0 text-dark-grey f-14 w-70 text-wrap"><?=$client['city'] ?: '--'?>
+                            </p>
                         </div>
                         <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
                             <p class="mb-0 text-lightest f-14 w-30 text-capitalize">Postal code</p>
-                            <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">--</p>
+                            <p class="mb-0 text-dark-grey f-14 w-70 text-wrap"><?=$client['postal_code'] ?: '--'?>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -278,6 +277,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php
+                                     if (empty($projects)) {
+                                         echo ' <tr id="row-1" role="row" class="odd">
+                                         <td>empty</td></tr>';
+                                     } else {
+                                         foreach ($projects as $project) { ?>
                                     <tr id="row-1" role="row" class="odd">
 
                                         <td class="sorting_1">1</td>
@@ -350,6 +355,8 @@
                                             Started
                                         </td>
                                     </tr>
+                                    <?php }
+                                         }?>
                                 </tbody>
                             </table>
 

@@ -13,8 +13,12 @@ if (!isset($_SESSION["user_id"])) {
 } else {
     if (isset($_SESSION["user_role"]) && $_SESSION["user_role"] == 1) {
         require("models/client.model.php");
+        require("models/project.model.php");
         $model = new Client();
+        $projectsModel = new Project();
         $client = $model->getClient($id);
+        $projects = $projectsModel->getProjectByClient($id);
+
         if (empty($client)) {
             http_response_code(404);
             $title = "Not found";

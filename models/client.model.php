@@ -23,8 +23,8 @@ class Client extends Base
         
             FROM client_details c
             INNER JOIN users u ON c.user_id = u.id
-            INNER JOIN client_categories s ON c.category_id = s.id
-            INNER JOIN client_sub_categories b ON c.sub_category_id = b.id
+            LEFT JOIN client_categories s ON c.category_id = s.id
+            LEFT JOIN client_sub_categories b ON c.sub_category_id = b.id
      
         ");
         $query->execute();
@@ -39,11 +39,13 @@ class Client extends Base
                 u.name,
                 u.email,
                 u.mobile,
+                u.gender,
                 c.company_name,
                 c.address,
                 c.postal_code,
                 c.state,
                 c.city,
+
                 c.office,
                 c.website,
                 c.note,
@@ -57,7 +59,19 @@ class Client extends Base
             WHERE c.id = ?
         ");
         $query->execute([$id]);
-        return $query->fetch(PDO::FETCH_ASSOC);
+        $clientinfo = $query->fetch(PDO::FETCH_ASSOC);
+
+        $query = $this->db->prepare("
+            SELECT COUNT(id)
+            FROM projects
+            WHERE client_id = ?
+        ");
+        $query->execute([$id]);
+        $projectclient = $query->fetchColumn();
+
+        $clientinfo['project_count'] = $projectclient;
+
+        return $clientinfo;
     }
 
     public function newClient($data)

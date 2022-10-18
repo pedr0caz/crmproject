@@ -10,7 +10,7 @@ $url = explode("/", $_SERVER['REQUEST_URI']);
 
 $controller = $url[2] ?: "home";
 $id = (array_key_exists(3, $url)) ? intval($url[3]) : null;
-$tabs = (array_key_exists(4, $url)) ? $url[4] : null;
+
 
 
 $controllers = [
@@ -19,6 +19,8 @@ $controllers = [
     "client",
     "clientcreate",
     "clientdetails",
+    "addproject",
+    "project",
     "logout",
 
 ];
