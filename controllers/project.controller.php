@@ -11,8 +11,8 @@ if (!isset($_SESSION["user_id"])) {
 
         $projectsModel = new Project();
         $projects = $projectsModel->getProjects();
-        $getTeam = $projectsModel->get
-        var_dump($projects);
+        
+       
         $title = "Projects";
         require("views/projects.view.php");
     } else {

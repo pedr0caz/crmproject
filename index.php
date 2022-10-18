@@ -21,6 +21,9 @@ $controllers = [
     "clientdetails",
     "addproject",
     "project",
+    "employee",
+    "addemployee",
+    "employeedetails",
     "logout",
 
 ];

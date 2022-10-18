@@ -513,6 +513,7 @@
     <link type=" text/css" rel="stylesheet" media="all"
         href="<?=ROOT?>/css/main.css">
 
+
     <style>
         :root {
             --fc-border-color: #E8EEF3;

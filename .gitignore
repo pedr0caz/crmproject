@@ -1,3 +1,4 @@
 .env
 .editorconfig
 .vscode
+uploads/*

@@ -4,11 +4,11 @@ if (!isset($_SESSION["user_id"])) {
     header("Location: " . ROOT . "/login");
     exit;
 } else {
-    require("models/users.model.php");
-    $model = new User();
-    $role = $model->getRole($_SESSION["user_id"]);
-    if (!empty($role) && $role["role"] == "admin") {
+    if (isset($_SESSION["user_role"]) && $_SESSION["user_role"] == 1) {
+        require("models/employee.model.php");
         $modelEmployee = new Employee();
+        $employees = $modelEmployee->getEmployees();
+        $roles = $modelEmployee->getRoles();
         $title = "employee list";
         require("views/employee.view.php");
     } else {

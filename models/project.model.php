@@ -125,6 +125,8 @@ class Project extends Base
             $data["client_id"],
             $data["team_id"]
         ]);
+
+      
         return $this->db->lastInsertId();
     }
 
