@@ -25849,8 +25849,15 @@ div.dataTables_wrapper div.dataTables_info {
     z-index: 0;
 }
 
-.dataTables_filter {
-    display: none;
+.dataTables_filter input {
+    margin: 10px;
+    height: 35px;
+    min-width: 100px;
+    border: 1px solid #aaa;
+    border-radius: 3px;
+    padding: 5px;
+    background-color: transparent;
+    padding: 4px;
 }
 
 .table thead th,

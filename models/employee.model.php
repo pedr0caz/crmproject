@@ -213,21 +213,49 @@ class Employee extends Base
     public function getProjectsOfEmployee($id)
     {
         $query = $this->db->prepare("
-        SELECT
+        SELECT 
         p.id AS project_id,
-        p.project_name,
-
-        p.team_id,
-        t.team_name
-    FROM projects p
-    INNER JOIN teams t ON p.team_id = t.id
-    WHERE p.team_id IN ( SELECT team_id FROM employee_teams WHERE user_id = ? );
+       p.project_name,
+       p.deadline,
+       p.team_id,
+       p.client_id,
+       p.status,
+       p.completion_percent,
+       u.name AS client_name,
+       t.team_name,
+       c.company_name
+   FROM projects p
+   INNER JOIN teams t ON p.team_id = t.id
+   INNER JOIN client_details c ON p.client_id = p.client_id
+   INNER JOIN users u ON c.user_id = u.id
+   WHERE p.team_id IN ( SELECT team_id FROM employee_teams WHERE user_id = ? );
         ");
         $query->execute([$id]);
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getMembersOfProject($id)
+    {
+        $query = $this->db->prepare("
+        SELECT
+         p.team_id,
+            t.team_name,
+            u.id AS user_id,
+            u.name,
+            u.email,
+        
+            u.image,
+            u.status
+        FROm projects p
+        INNER JOIN teams t ON p.team_id = t.id
+        INNER JOIN employee_teams et ON t.id = et.team_id
+        INNER JOIN users u ON et.user_id = u.id
+        WHERE p.id = ?
+        ");
+        $query->execute([$id]);
 
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
 
     public function getNumberOfTasks($id)
     {

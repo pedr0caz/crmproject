@@ -133,7 +133,9 @@
 
                     <div class="accordionItemContent pb-2">
                         <!-- COLLAPSE - INFORMATION -->
-                        <a class="f-14 text-lightest" href="employees" title="Employees">Employees</a>
+                        <a class="f-14 text-lightest"
+                            href="<?=ROOT?>/employee"
+                            title="Employees">Employees</a>
 
                     </div>
                 </li>
@@ -155,12 +157,16 @@
                     <div class="accordionItemContent pb-2">
 
                         <!-- COLLAPSE - INFORMATION -->
-                        <a class="f-14 text-lightest" href="projects" title="Projects">Projects</a>
+                        <a class="f-14 text-lightest"
+                            href="<?=ROOT?>/project"
+                            title="Projects">Projects</a>
 
                         <!-- COLLAPSE - INFORMATION -->
-                        <a class="f-14 text-lightest" href="tasks" title="Tasks">Tasks</a>
+                        <a class="f-14 text-lightest"
+                            href="<?=ROOT?>/tasks"
+                            title="Tasks">Tasks</a>
                         <!-- COLLAPSE - INFORMATION -->
-                        <a class="f-14 text-lightest" href="timelogs" title="Time Logs">Time Logs</a>
+
 
                     </div>
                 </li>

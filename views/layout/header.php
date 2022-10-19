@@ -2255,7 +2255,7 @@
             <!-- PAGE TITLE START -->
             <div class="page-title d-none d-lg-flex">
                 <div class="page-heading">
-                    <h2 class="mb-0 pr-3 text-dark f-18 font-weight-bold"><?=ucfirst($controller)?>
+                    <h2 class="mb-0 pr-3 text-dark f-18 font-weight-bold"><?=$title?>
 
                         <span class="text-lightest f-12 f-w-500 ml-2">
                             <a href="http://localhost/script/public" class="text-lightest">Home</a> •

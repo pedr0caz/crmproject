@@ -31,13 +31,13 @@
                             }?>" id="projects"><span>Projects</span></a>
                     </li>
                     <li>
-                        <a href="<?=ROOT?>/employeedetails/<?=$id?>tab=tasks"
+                        <a href="<?=ROOT?>/employeedetails/<?=$id?>?tab=tasks"
                             class="text-dark-grey text-capitalize border-right-grey p-sub-menu tasks <?php if(isset($_GET['tab']) && $_GET['tab'] == "tasks") {
                                 echo "active";
                             }?>" id="tasks"><span>Tasks</span></a>
                     </li>
                     <li>
-                        <a href=" <?=ROOT?>/employeedetails/<?=$id?>tab=documents"
+                        <a href=" <?=ROOT?>/employeedetails/<?=$id?>?tab=documents"
                             class="text-dark-grey text-capitalize border-right-grey p-sub-menu ajax-tab documents <?php if(isset($_GET['tab']) && $_GET['tab'] == "documents") {
                                 echo "active";
                             }?>" id="documents"><span>Documents</span></a>
@@ -228,37 +228,20 @@
         <?php  if(isset($_GET['tab']) && $_GET['tab'] == 'projects') { ?>
         <div class="d-flex flex-column w-tables rounded mt-3 bg-white">
 
-            <div id="projects-table_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+            <div id="projects-table_wrapper">
                 <div class="row">
                     <div class="col-sm-12">
-                        <table class="table table-hover border-0 w-100" id="projects-table" role="grid"
-                            aria-describedby="projects-table_info" style="width: 1587px;">
+                        <table class="table table-hover border-0 w-100" id="projects-table">
                             <thead>
-                                <tr role="row">
-
-                                    <th title="Id" class="sorting_desc" tabindex="0" aria-controls="projects-table"
-                                        rowspan="1" colspan="1" style="width: 55px;" aria-sort="descending"
-                                        aria-label="Id: activate to sort column ascending">Id</th>
-                                    <th title="Project Name" class="sorting" tabindex="0" aria-controls="projects-table"
-                                        rowspan="1" colspan="1" style="width: 189px;"
-                                        aria-label="Project Name: activate to sort column ascending">Project Name</th>
-                                    <th width="15%" title="Members" class="sorting" tabindex="0"
-                                        aria-controls="projects-table" rowspan="1" colspan="1" style="width: 202px;"
-                                        aria-label="Members: activate to sort column ascending">Members</th>
-                                    <th title="Deadline" class="sorting" tabindex="0" aria-controls="projects-table"
-                                        rowspan="1" colspan="1" style="width: 134px;"
-                                        aria-label="Deadline: activate to sort column ascending">Deadline</th>
-                                    <th width="15%" title="Client" class="sorting" tabindex="0"
-                                        aria-controls="projects-table" rowspan="1" colspan="1" style="width: 202px;"
-                                        aria-label="Client: activate to sort column ascending">Client</th>
-                                    <th title="Progress" class="sorting" tabindex="0" aria-controls="projects-table"
-                                        rowspan="1" colspan="1" style="width: 136px;"
-                                        aria-label="Progress: activate to sort column ascending">Progress</th>
-                                    <th width="16%" title="Status" class="sorting" tabindex="0"
-                                        aria-controls="projects-table" rowspan="1" colspan="1" style="width: 218px;"
-                                        aria-label="Status: activate to sort column ascending">Status</th>
-                                    <th title="Action" class="text-right pr-20 sorting_disabled" rowspan="1" colspan="1"
-                                        style="width: 98px;" aria-label="Action">Action</th>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Project Name</th>
+                                    <th>Members</th>
+                                    <th>Deadline</th>
+                                    <th>Client</th>
+                                    <th>Progress</th>
+                                    <th>Status</th>
+                                    <th>Action </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -268,77 +251,77 @@
                              <td>empty</td></tr>';
                          } else {
                              foreach ($projects as $project) { ?>
-                                <tr id="row-1" role="row" class="odd">
+                                <tr>
 
-                                    <td class="sorting_1"><?=$project['project_id']?>
+                                    <td><?=$project['project_id']?>
                                     </td>
                                     <td>
                                         <div class="media align-items-center">
                                             <div class="media-body">
                                                 <h5 class="mb-0 f-13 text-darkest-grey"><a
-                                                        href="<?=ROOT?>project/<?=$project['project_id']?>"><?=$project['project_name']?></a>
+                                                        href="<?=ROOT?>/project/<?=$project['project_id']?>"><?=$project['project_name']?></a>
                                                 </h5>
                                                 <p class="mb-0"></p>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
+
+
                                         <div class="position-relative">
+                                            <?php foreach($employeeModel->getMembersOfProject($project['project_id']) as $member):?>
                                             <div class="taskEmployeeImg rounded-circle " style="left:  0px"><a
-                                                    href="<?=ROOT?>//account/employees/4"><img
-                                                        data-toggle="tooltip" data-original-title="John"
-                                                        src="https://www.gravatar.com/avatar/b4dda2fb5d3ab52705af21229f9b4b93.png?s=200&amp;d=mp"></a>
+                                                    href="<?=ROOT?>/employees/<?=$member['user_id'];?>"><img
+                                                        title="<?=$member['name']?>"
+                                                        src="<?=$member['image'];?>"></a>
                                             </div>
-                                            <div class="taskEmployeeImg rounded-circle position-absolute"
-                                                style="left:  13px"><a
-                                                    href="<?=ROOT?>//account/employees/1"><img
-                                                        data-toggle="tooltip" data-original-title="Pedro"
-                                                        src="https://www.gravatar.com/avatar/7fcefe645acaa3363d8f10bdfba33c0d.png?s=200&amp;d=mp"></a>
-                                            </div>
-                                            <div class="taskEmployeeImg rounded-circle position-absolute"
-                                                style="left:  26px"><a
-                                                    href="<?=ROOT?>//account/employees/6"><img
-                                                        data-toggle="tooltip" data-original-title="Asdsad"
-                                                        src="https://www.gravatar.com/avatar/3ea58e77e21cabdfeabbfd844cbabbca.png?s=200&amp;d=mp"></a>
-                                            </div>
-                                            <div class="taskEmployeeImg rounded-circle position-absolute"
-                                                style="left:  39px"><a
-                                                    href="<?=ROOT?>//account/employees/7"><img
-                                                        data-toggle="tooltip" data-original-title="Dassad"
-                                                        src="https://www.gravatar.com/avatar/a456ed61bc3c5d05f3ad79d85069098a.png?s=200&amp;d=mp"></a>
-                                            </div>
+                                            <?php endforeach;?>
+
                                         </div>
                                     </td>
-                                    <td>11-10-2022</td>
+                                    <td><?=$project['deadline'];?>
+                                    </td>
                                     <td>
                                         <div class="media align-items-center mw-250">
-                                            <a href="<?=ROOT?>//account/clients/5"
+                                            <a href="<?=ROOT?>/client/<?=$project['client_id']?>"
                                                 class="position-relative">
                                                 <img src="https://www.gravatar.com/avatar/f7e016ba33bbc6009459c4f37ce1c0e4.png?s=200&amp;d=mp"
-                                                    class="mr-2 taskEmployeeImg rounded-circle" alt="Chines"
-                                                    title="Chines">
+                                                    class="mr-2 taskEmployeeImg rounded-circle"
+                                                    alt="<?=$project['client_name']?>"
+                                                    title="<?=$project['client_name']?>">
                                             </a>
                                             <div class="media-body">
                                                 <h5 class="mb-0 f-12"><a
-                                                        href="<?=ROOT?>//account/clients/5"
-                                                        class="text-darkest-grey">Chines</a>
+                                                        href="<?=ROOT?>/client/<?=$project['client_id']?>"
+                                                        class="text-darkest-grey"><?=$project['client_name']?></a>
                                                 </h5>
                                                 <p class="mb-0 f-12 text-dark-grey">
-                                                    Space X
+                                                    <?=$project['company_name']?>
                                                 </p>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="progress" style="height: 15px;">
-                                            <div class="progress-bar f-12 bg-danger" role="progressbar"
-                                                style="width: 0%;" aria-valuenow="0" aria-valuemin="0"
-                                                aria-valuemax="100">0%</div>
+                                            <div class="progress-bar f-12 
+                                            <?php if($project['completion_percent'] < 50) {
+                                                echo 'bg-danger';
+                                            } elseif($project['completion_percent'] > 50 && $project['completion_percent'] < 80) {
+                                                echo 'bg-warning';
+                                            } else {
+                                                echo 'bg-success';
+                                            }?>" role="progressbar"
+                                                style="width: <?=$project['completion_percent']?>%;"
+                                                aria-valuenow="<?=$project['completion_percent']?>"
+                                                aria-valuemin="0" aria-valuemax="100"><?=$project['completion_percent']?>%
+                                            </div>
                                         </div>
                                     </td>
                                     <td>
-                                        Not
-                                        Started
+                                        <?=$project['status']?>
+                                    </td>
+                                    <td>
+
                                     </td>
                                 </tr>
                                 <?php }

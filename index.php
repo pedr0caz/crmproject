@@ -9,9 +9,9 @@ define("ROOT", rtrim(str_replace("\\", "/", dirname($_SERVER["SCRIPT_NAME"])), "
 $url = explode("/", $_SERVER['REQUEST_URI']);
 
 $controller = $url[2] ?: "home";
-$id = (array_key_exists(3, $url)) ? intval($url[3]) : null;
+$id = (array_key_exists(3, $url)) ? $url[3] : null;
 
-
+$id = explode("?", $id)[0];
 
 $controllers = [
     "home",
@@ -25,6 +25,7 @@ $controllers = [
     "addemployee",
     "employeedetails",
     "logout",
+    "messages"
 
 ];
 

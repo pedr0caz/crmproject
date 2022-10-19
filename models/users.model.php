@@ -26,6 +26,8 @@ class User extends Base
         $query->execute([$data["email"]]);
         $user = $query->fetch(PDO::FETCH_ASSOC);
         if (!empty($user) && password_verify($data["password"], $user["password"])) {
+            $query = $this->db->prepare("INSERT user_activities(user_id, activity, created_at) VALUES(?, ?, ?)");
+            $query->execute([$user['id'], "Logged in", date("Y-m-d H:i:s")]);
             return $user;
         }
         return [];
@@ -33,20 +35,20 @@ class User extends Base
 
     public function getUser($id)
     {
-        $query = $this->db->prepare("INSERT user_activities(user_id, activity, created_at) VALUES(?, ?, ?)");
-        $query->execute([$id, "Logged in", date("Y-m-d H:i:s")]);
-
         $query = $this->db->prepare("
             SELECT 
                 u.id AS user_id,
                 u.name,
                 u.email,
+                u.image,
+                u.last_seen,
+                u.current_session,
                 r.role_id,
                 c.name AS role_name
             
             FROM users u
-            INNER JOIN role_user r ON u.id = r.user_id
-            INNER JOIN roles c ON r.role_id = c.id
+            LEFT JOIN role_user r ON u.id = r.user_id
+            LEFT JOIN roles c ON r.role_id = c.id
             WHERE u.id = ?
 
         ");
@@ -63,6 +65,44 @@ class User extends Base
             FROM countries
         ");
         $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function chatUsers($id)
+    {
+        $query = $this->db->prepare("
+            SELECT
+                u.id AS user_id,
+                u.name,
+                u.email,
+                u.image,
+                u.online,
+                u.current_session,
+                r.role_id,
+                c.name AS role_name
+            FROM users u
+            INNER JOIN role_user r ON u.id = r.user_id
+            INNER JOIN roles c ON r.role_id = c.id
+            WHERE u.id != ?
+        ");
+        $query->execute([$id]);
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function searchUser($name, $id)
+    {
+        $query = $this->db->prepare("
+            SELECT
+                id AS user_id,
+                name,
+                email,
+                image
+               
+              
+            FROM users
+            WHERE name LIKE concat('%', ?, '%') AND id != ?
+        ");
+        $query->execute([$name, $id]);
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 

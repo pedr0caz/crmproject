@@ -3,6 +3,7 @@
 if (empty($id) || !is_numeric($id)) {
     http_response_code(400);
     $title = "Bad Request";
+    die($id);
     require("views/error400.view.php");
     exit;
 }
@@ -28,9 +29,10 @@ if (!isset($_SESSION["user_id"])) {
         $getUserActivity = $employeeModel->getActivity($id);
         $projects = $employeeModel->getProjectsOfEmployee($id);
 
+          
     
 
-        $title = "Employee Details";
+        $title = "Employee Details" . " - " . $employee["name"];
    
         require("views/employeedetails.view.php");
     } else {

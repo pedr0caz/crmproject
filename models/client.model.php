@@ -8,6 +8,7 @@ class Client extends Base
         $query = $this->db->prepare("
             SELECT
                 c.id AS client_id,
+                c.user_id,
                 u.name,
                 u.email,
                 c.company_name,
@@ -36,6 +37,7 @@ class Client extends Base
         $query = $this->db->prepare("
             SELECT
                 c.id AS client_id,
+                c.user_id,
                 u.name,
                 u.email,
                 u.mobile,
