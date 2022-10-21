@@ -114,9 +114,9 @@ if (isset($_SESSION['user_id'])) {
                 class="fs-4 link-dark">&#8592;</a>
 
             <div class="d-flex align-items-center">
-                <img src="uploads/<?=$chatWith['image']?>"
-                    class="w-15 rounded-circle">
 
+                <img src="<?=$chatWith['image'] ? ROOT."/".$chatWith['image'] : 'https://www.gravatar.com/avatar/a456ed61bc3c5d05f3ad79d85069098a.png?s=200&d=mp'?>"
+                    style="width: 3%;" class="w-10 rounded-circle">
                 <h3 class="display-4 fs-sm m-2">
                     <?=$chatWith['name']?> <br>
                     <div class="d-flex
@@ -275,7 +275,7 @@ if (isset($_SESSION['user_id'])) {
 	    				          align-items-center p-2">
                             <div class="d-flex
 	    					            align-items-center">
-                                <img src="uploads/<?=$conversation['user']['image']?>"
+                                <img src="<?=$conversation['user']['image'] ? ROOT."/".$conversation['user']['image'] : 'https://www.gravatar.com/avatar/a456ed61bc3c5d05f3ad79d85069098a.png?s=200&d=mp'?>"
                                     class="w-10 rounded-circle">
                                 <h3 class="fs-xs m-2">
                                     <?=$conversation['user']['name']?><br>

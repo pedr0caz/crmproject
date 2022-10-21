@@ -222,6 +222,7 @@ class Employee extends Base
        p.status,
        p.completion_percent,
        u.name AS client_name,
+       u.image,
        t.team_name,
        c.company_name
    FROM projects p
@@ -275,7 +276,48 @@ class Employee extends Base
                 activity,
                 created_at
             FROM user_activities
-            WHERE user_id = ?
+            WHERE user_id = ? ORDER BY created_at DESC LIMIT 30
+        ");
+        $query->execute([$id]);
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function newFile($id, $name, $file)
+    {
+        $query = $this->db->prepare("
+        INSERT INTO employee_docs (user_id, name, filename, created_at)
+        VALUES (?, ?, ?, ?)
+        ");
+        $query->execute([
+            $id,
+            $name,
+            $file,
+            date("Y-m-d H:i:s")
+        ]);
+        $idfile = $this->db->lastInsertId();
+        if ($idfile) {
+            $query = $this->db->prepare("
+            INSERT INTO user_activities (user_id, activity, created_at)
+            VALUES (?, ?, ?)
+            ");
+            $query->execute([
+                $id,
+                "New file uploaded",
+                date("Y-m-d H:i:s")
+            ]);
+
+            $query = $this->db->prepare("
+             SELECT name, id, filename, created_at FROM employee_docs WHERE id = ?
+            ");
+            $query->execute([$idfile]);
+            return $query->fetch(PDO::FETCH_ASSOC);
+        }
+    }
+
+    public function getFiles($id)
+    {
+        $query = $this->db->prepare("
+        SELECT name, id, filename, created_at FROM employee_docs WHERE user_id = ?
         ");
         $query->execute([$id]);
         return $query->fetchAll(PDO::FETCH_ASSOC);

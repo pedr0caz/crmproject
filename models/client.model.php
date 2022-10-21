@@ -11,6 +11,9 @@ class Client extends Base
                 c.user_id,
                 u.name,
                 u.email,
+                u.image,
+                u.created_at,
+                u.status,
                 c.company_name,
                 c.address,
                 c.postal_code,
@@ -62,18 +65,19 @@ class Client extends Base
         ");
         $query->execute([$id]);
         $clientinfo = $query->fetch(PDO::FETCH_ASSOC);
-
-        $query = $this->db->prepare("
+        if ($clientinfo) {
+            $query = $this->db->prepare("
             SELECT COUNT(id)
             FROM projects
             WHERE client_id = ?
         ");
-        $query->execute([$id]);
-        $projectclient = $query->fetchColumn();
+            $query->execute([$id]);
+            $projectclient = $query->fetchColumn();
 
-        $clientinfo['project_count'] = $projectclient;
+            $clientinfo['project_count'] = $projectclient;
 
-        return $clientinfo;
+            return $clientinfo;
+        }
     }
 
     public function newClient($data)

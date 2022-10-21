@@ -14,14 +14,19 @@
                 if ($user['user_id'] == $_SESSION['user_id']) {
                     continue;
                 }
+                if ($user['image']) {
+                    $image = $user['image'];
+                } else {
+                    $image = 'https://www.gravatar.com/avatar/a456ed61bc3c5d05f3ad79d85069098a.png?s=200&d=mp';
+                }
                 echo '<li class="list-group-item">
                   <a href="'.ROOT.'/messages/'.$user['user_id'].'"
                      class="d-flexjustify-content-between align-items-center p-2">
                       <div class="d-flex
                                   align-items-center">
 
-                          <img src="uploads/'.$user['image'].'"
-                               class="w-10 rounded-circle">
+                          <img src="'.$image.'" style="width: 2%; height: 2%; border-radius: 2%;"
+                               class="w-5 rounded-circle">
 
                           <h3 class="fs-xs m-2">
                           '.$user['name'].'
@@ -33,7 +38,7 @@
         } elseif ($id === 'getMessages') {
             $chats= $chat->getChatAjax($_SESSION["user_id"], $_POST["id_2"]);
             if ($chats != null) {
-                echo '<p class="ltext border rounded p-2 mb-1">'.$chats['message'].'<small class="d-block">'.$chats['created_at'].'</small></p>';
+                return '<p class="ltext border rounded p-2 mb-1">'.$chats['message'].'<small class="d-block">'.$chat['created_at'].'</small></p>';
             }
         } elseif ($id === 'sendMessage') {
             $chat->insertMessage($_SESSION["user_id"], $_POST["to_id"], $_POST["message"]);

@@ -106,6 +106,25 @@ class User extends Base
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getNotices($id, $role)
+    {
+        $query = $this->db->prepare("
+            SELECT
+                id,
+                heading,
+                description,
+                created_at
+            FROM notices
+            WHERE department_id IN ( SELECT team_id FROM employee_teams WHERE user_id = ? ) OR toGroup = ?
+            ORDER BY created_at DESC
+            LIMIT 5
+        ");
+
+        $query->execute([$id, $role]);
+        $results = $query->fetchAll(PDO::FETCH_ASSOC);
+        return $results;
+    }
+
 /*     public function getRole($id)
     {
         $query = $this->db->prepare("
@@ -117,4 +136,39 @@ class User extends Base
         $query->execute([$id]);
         return $query->fetch(PDO::FETCH_ASSOC);
     } */
+
+    public function getDepartment($id)
+    {
+        $query = $this->db->prepare("
+            SELECT 
+                et.team_id,
+                t.team_name
+            FROM employee_teams et
+            INNER JOIN teams t ON et.team_id = t.id
+            WHERE et.user_id = ?
+        ");
+        $query->execute([$id]);
+        $departments = $query->fetchAll(PDO::FETCH_ASSOC);
+        return $departments;
+    }
+
+    public function getBirthdays()
+    {
+        $query = $this->db->prepare("
+            SELECT
+                u.name,
+                u.email,
+                u.image,
+                e.date_of_birth,
+                d.name AS designation
+            FROM users u
+            INNER JOIN employee_details e ON u.id = e.user_id
+            INNER JOIN designations d ON e.designation_id = d.id
+            WHERE MONTH(e.date_of_birth) = MONTH(CURDATE()) 
+            ORDER BY e.date_of_birth ASC
+
+        ");
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

@@ -21,11 +21,14 @@ $controllers = [
     "clientdetails",
     "addproject",
     "project",
+    "projectdetails",
     "employee",
     "addemployee",
+    "addtask",
     "employeedetails",
     "logout",
-    "messages"
+    "messages",
+    "noticesdetails"
 
 ];
 

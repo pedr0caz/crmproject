@@ -37,27 +37,33 @@ class Project extends Base
     public function getProject($id)
     {
         $query = $this->db->prepare("
-            SELECT
-                p.id AS project_id,
-                p.project_name,
-                p.project_summary,
-                p.project_admin,
-                p.status,
-                p.start_date,
-                p.deadline,
-                p.notes,
-                c.category_name,
-                u.name,
-                u.email,
-                u.id AS user_id,
-                t.team_name,
-                t.id AS team_id
-            
-            FROM projects p
-            INNER JOIN project_category c ON p.category_id = c.id
-            INNER JOIN users u ON p.client_id = u.id
-            INNER JOIN teams t ON p.team_id = t.id
-            WHERE p.id = ?
+        SELECT
+        p.id AS project_id,
+        p.project_name,
+        p.project_summary,
+        p.project_admin,
+        p.completion_percent,
+        p.client_id,
+        p.status,
+        p.start_date,
+        p.deadline,
+        p.notes,
+        c.category_name,
+        u.name,
+        u.email,
+        u.image,
+        cd.company_name,
+        u.id AS user_id,
+        t.team_name,
+        t.id AS team_id
+    
+    FROM projects p
+    INNER JOIN project_category c ON p.category_id = c.id
+    INNER JOIN client_details cd ON p.client_id = cd.id
+
+    INNER JOIN users u ON cd.user_id = u.id
+    INNER JOIN teams t ON p.team_id = t.id
+    WHERE p.id = ?;
         ");
         $query->execute([$id]);
         return $query->fetch(PDO::FETCH_ASSOC);
@@ -90,6 +96,40 @@ class Project extends Base
         ");
         $query->execute([$id]);
         return $query->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getProjectByClientID($id)
+    {
+        $query = $this->db->prepare("
+        SELECT
+        p.id AS project_id,
+        p.project_name,
+        p.project_summary,
+        p.project_admin,
+        p.completion_percent,
+        p.client_id,
+        p.status,
+        p.start_date,
+        p.deadline,
+        p.notes,
+        c.category_name,
+        u.name,
+        u.email,
+        u.image,
+        cd.company_name,
+        u.id AS user_id,
+        t.team_name,
+        t.id AS team_id
+    
+    FROM projects p
+    INNER JOIN project_category c ON p.category_id = c.id
+    INNER JOIN client_details cd ON p.client_id = cd.id
+    INNER JOIN users u ON cd.user_id = u.id
+    INNER JOIN teams t ON p.team_id = t.id
+    WHERE client_id = ?;
+        ");
+        $query->execute([$id]);
+        return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getProjectMembers($id)
@@ -176,7 +216,8 @@ class Project extends Base
         $query = $this->db->prepare("
             SELECT
                 id as activity_id,
-                activity
+                activity,
+                created_at
             FROM project_activity
             WHERE project_id = ?
 
@@ -324,6 +365,50 @@ class Project extends Base
         ");
 
         $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getProjectTasks($id)
+    {
+        $query = $this->db->prepare("
+        SELECT
+        t.id,
+        t.heading,
+        t.description,
+        t.due_date,
+        t.start_date,
+        t.project_id,
+        t.task_category_id,
+        t.priority,
+        t.status,
+        t.board_column_id,
+        t.column_priority,
+        t.completed_on,
+        t.created_by,
+        t.updated_at,
+        t.is_private,
+        t.added_by,
+        t.last_updated_by,
+        t.event_id,
+        tc.category_name,
+        bc.column_name,
+        bc.slug,
+        bc.label_color,
+        bc.priority,
+        u.name,
+        u.email,
+        u.image,
+        u.id as user_id
+    FROM tasks t
+    INNER JOIN task_category tc ON t.task_category_id = tc.id
+    INNER JOIN taskboard_columns bc ON t.board_column_id = bc.id
+    INNER JOIN users u ON t.created_by = u.id
+    WHERE t.project_id = ?;
+            
+                
+                
+        ");
+        $query->execute([$id]);
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 }
