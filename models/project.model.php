@@ -292,6 +292,7 @@ class Project extends Base
                 created_at
             FROM project_activity
             WHERE project_id = ?
+            ORDER BY created_at DESC
 
         ");
         $query->execute([$id]);

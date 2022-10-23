@@ -94,7 +94,7 @@
                                                     <div class="card-body border-0 p-0 ml-4 ml-xl-4 ml-lg-3 ml-md-3">
                                                         <h4
                                                             class="card-title f-15 font-weight-normal mb-0 text-capitalize">
-                                                            <a href="http://localhost/script/public/account/clients/5"
+                                                            <a href="<?=ROOT?>/clientdetails/<?=$project['client_id']?>"
                                                                 class="text-dark"><?=$project['name'];?></a>
                                                         </h4>
                                                         <p class="card-text f-14 text-lightest mb-0">
@@ -488,13 +488,7 @@
                     });
                 });
 
-                $('body').on('click', '#new-chat', function() {
-                    let clientId = $(this).data('client-id');
-                    const url = "http://localhost/script/public/account/messages/create?clientId=" +
-                        clientId;
-                    $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
-                    $.ajaxModal(MODAL_LG, url);
-                });
+
 
             });
         </script>
@@ -906,10 +900,8 @@
             $('.delete-row').click(function() {
 
                 var id = $(this).data('row-id');
-                var url = "http://localhost/script/public/account/projects/project-members/:id";
-                url = url.replace(':id', id);
-
-                var token = "LZ6fU0m5MIBCfOOszGkyBGammu6qukJgRmIviL8A";
+                var url =
+                    "<?=ROOT?>projectdetails/<?=$id;?>?action=delete_member";
 
                 Swal.fire({
                     title: "Are you sure?",

@@ -200,6 +200,15 @@ if (!isset($_SESSION["user_id"])) {
                 header('Content-Type: application/json; charset=utf-8');
                 echo json_encode(['status' => 'error', 'message' => 'Error deleting comment']);
             }
+        } elseif (isset($_GET['action']) && $_GET['action'] == "delete_task") {
+            $task = $taskModel->deleteTask($_POST['task_id']);
+            if ($task) {
+                header('Content-Type: application/json; charset=utf-8');
+                echo json_encode(['status' => 'success', 'message' => 'Task deleted successfully']);
+            } else {
+                header('Content-Type: application/json; charset=utf-8');
+                echo json_encode(['status' => 'error', 'message' => 'Error deleting task']);
+            }
         } else {
             require("views/taskdetails.view.php");
         }

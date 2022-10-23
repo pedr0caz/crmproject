@@ -10,8 +10,7 @@ require_once("layout/navbar.php");
     <div class="content-wrapper">
         <div id="task-detail-section">
 
-            <h3 class="heading-h1 mb-3"><?=$task['heading'];?>
-            </h3>
+
             <div class="row">
                 <div class="col-sm-9">
                     <div class="card bg-white border-0 b-shadow-4">
@@ -19,13 +18,9 @@ require_once("layout/navbar.php");
                             class="card-header bg-white  border-bottom-grey text-capitalize justify-content-between p-20">
                             <div class="row">
                                 <div class="col-lg-8 col-10">
-                                    <button type="button"
-                                        class="btn-primary rounded f-14 p-2 change-task-status mr-2 mb-2 mb-lg-0 mb-md-0"
-                                        data-status="completed">
 
-                                        Edit Task
-                                    </button>
-
+                                    <h3 class="heading-h1 mb-3"><?=$task['heading'];?>
+                                    </h3>
 
 
                                 </div>
@@ -51,13 +46,11 @@ require_once("layout/navbar.php");
 
 
                                             <a class="dropdown-item openRightModal"
-                                                href="http://localhost/script/public/account/tasks/2/edit">Edit Task</a>
+                                                href="<?=ROOT;?>/edittask/<?=$id?>">Edit
+                                                Task</a>
 
-                                            <hr class="my-1">
 
-                                            <a class="dropdown-item btn-copy" href="javascript:;"
-                                                data-clipboard-text="http://localhost/script/public/task/nr1T5ReEW7StpSjTiAwxS35qocRBfpSB">Copy
-                                                Task Link</a>
+
                                         </div>
                                     </div>
                                 </div>
@@ -69,8 +62,9 @@ require_once("layout/navbar.php");
                                 <p class="mb-0 text-lightest f-14 w-30 d-inline-block text-capitalize">Project</p>
                                 <p class="mb-0 text-dark-grey f-14 w-70">
 
-                                    <a href="http://localhost/script/public/account/projects/1" class="text-dark-grey">
-                                        <?=$task['project_name'];?></a>
+                                    <a href="<?=ROOT;?>/projectdetails/<?=$task['project_id']?>"
+                                        class="text-dark-grey">
+                                        <?=$task['project_name'] ? $task['project_name'] : '<span class="badge badge-info">No Project Assigned</span>'; ?></a>
                                 </p>
 
                             </div>
@@ -818,49 +812,7 @@ if($deadline > date('Y-m-d')) {
                     });
 
 
-                    $('body').on('click', '.delete-note', function() {
-                        var id = $(this).data('row-id');
-                        Swal.fire({
-                            title: "Are you sure?",
-                            text: "You will not be able to recover the deleted record!",
-                            icon: 'warning',
-                            showCancelButton: true,
-                            focusConfirm: false,
-                            confirmButtonText: "Yes, delete it!",
-                            cancelButtonText: "Cancel",
-                            customClass: {
-                                confirmButton: 'btn btn-primary mr-3',
-                                cancelButton: 'btn btn-secondary'
-                            },
-                            showClass: {
-                                popup: 'swal2-noanimation',
-                                backdrop: 'swal2-noanimation'
-                            },
-                            buttonsStyling: false
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                var url =
-                                    "http://localhost/script/public/account/tasks/task-note/:id";
-                                url = url.replace(':id', id);
 
-                                var token = "LZ6fU0m5MIBCfOOszGkyBGammu6qukJgRmIviL8A";
-
-                                $.easyAjax({
-                                    type: 'POST',
-                                    url: url,
-                                    data: {
-                                        '_token': token,
-                                        '_method': 'DELETE'
-                                    },
-                                    success: function(response) {
-                                        if (response.status == "success") {
-                                            $('#note-list').html(response.view);
-                                        }
-                                    }
-                                });
-                            }
-                        });
-                    });
 
                     $('#add-task-file').click(function() {
                         $(this).closest('.row').addClass('d-none');

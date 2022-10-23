@@ -363,7 +363,7 @@
                                                     aria-labelledby="dropdownMenuLink-1" tabindex="0"
                                                     x-placement="bottom-end"
                                                     style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-169px, 26px, 0px);">
-                                                    <a href="http://localhost/script/public/account/projects/1"
+                                                    <a href="<?=ROOT?>/projectdetails/<?=$project['project_id']?>"
                                                         class="dropdown-item"><svg
                                                             class="svg-inline--fa fa-eye fa-w-18 mr-2"
                                                             aria-hidden="true" focusable="false" data-prefix="fa"
@@ -376,7 +376,7 @@
                                                         </svg>
                                                         <!-- <i class="fa fa-eye mr-2"></i> Font Awesome fontawesome.com -->View</a><a
                                                         class="dropdown-item openRightModal"
-                                                        href="http://localhost/script/public/account/projects/1/edit">
+                                                        href="<?=ROOT;?>/editproject/<?=$project['project_id']?>">
                                                         <svg class="svg-inline--fa fa-edit fa-w-18 mr-2"
                                                             aria-hidden="true" focusable="false" data-prefix="fa"
                                                             data-icon="edit" role="img"
@@ -389,8 +389,7 @@
                                                         <!-- <i class="fa fa-edit mr-2"></i> Font Awesome fontawesome.com -->
                                                         Edit
                                                     </a>
-                                                    </a><a class="dropdown-item" target="_blank"
-                                                        href="http://localhost/script/public/task-board/DmnnWALTrJlZacdHh81zClIAPXp41uTE">
+                                                    </a><a class="dropdown-item" target="_blank" href="">
                                                         <svg class="svg-inline--fa fa-share-square fa-w-18 mr-2"
                                                             aria-hidden="true" focusable="false" data-prefix="fa"
                                                             data-icon="share-square" role="img"
@@ -439,9 +438,9 @@
                 <!-- Add Task Export Buttons Start -->
                 <div class="d-flex justify-content-between action-bar">
                     <div id="table-actions" class="align-items-center">
-                        <a href="http://localhost/script/public/account/tasks/create?default_assign=1"
+                        <a href="<?=ROOT;?>/addtask"
                             class="btn-primary rounded f-14 p-2 mr-3 openRightModal float-left"
-                            data-redirect-url="http://localhost/script/public/account/employees/1?tab=tasks">
+                            data-redirect-url="<?=ROOT;?>/addtask">
                             <svg class="svg-inline--fa fa-plus fa-w-14 mr-1" aria-hidden="true" focusable="false"
                                 data-prefix="fa" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 448 512" data-fa-i2svg="">
@@ -504,7 +503,7 @@
                                             </td>
                                             <td
                                                 data-search="<?=$getEmployeeTask['project_name']?>">
-                                                <a href="http://localhost/script/public/account/projects/1"
+                                                <a href="<?=ROOT?>/projectdetails/<?=$getEmployeeTask['project_id']?>"
                                                     class="text-darkest-grey"><?=$getEmployeeTask['project_name']?></a>
                                             </td>
                                             <td
@@ -576,7 +575,7 @@
                                                             aria-labelledby="dropdownMenuLink-1" tabindex="0"
                                                             x-placement="bottom-end"
                                                             style="position: absolute; transform: translate3d(-137px, 26px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                                            <a href="http://localhost/script/public/account/tasks/1"
+                                                            <a href="<?=ROOT?>/taskdetails/<?=$getEmployeeTask['task_id']?>"
                                                                 class="dropdown-item openRightModal"><svg
                                                                     class="svg-inline--fa fa-eye fa-w-18 mr-2"
                                                                     aria-hidden="true" focusable="false"
@@ -589,7 +588,7 @@
                                                                 </svg>
                                                                 <!-- <i class="fa fa-eye mr-2"></i> Font Awesome fontawesome.com -->View</a><a
                                                                 class="dropdown-item openRightModal"
-                                                                href="http://localhost/script/public/account/tasks/1/edit">
+                                                                href="<?=ROOT?>/edittask/<?=$getEmployeeTask['task_id']?>">
                                                                 <svg class="svg-inline--fa fa-edit fa-w-18 mr-2"
                                                                     aria-hidden="true" focusable="false"
                                                                     data-prefix="fa" data-icon="edit" role="img"
@@ -614,19 +613,6 @@
                                                                 </svg>
                                                                 <!-- <i class="fa fa-trash mr-2"></i> Font Awesome fontawesome.com -->
                                                                 Delete
-                                                            </a><a class="dropdown-item openRightModal"
-                                                                href="http://localhost/script/public/account/tasks/create?duplicate_task=1">
-                                                                <svg class="svg-inline--fa fa-clone fa-w-16"
-                                                                    aria-hidden="true" focusable="false"
-                                                                    data-prefix="fa" data-icon="clone" role="img"
-                                                                    xmlns="http://www.w3.org/2000/svg"
-                                                                    viewBox="0 0 512 512" data-fa-i2svg="">
-                                                                    <path fill="currentColor"
-                                                                        d="M464 0c26.51 0 48 21.49 48 48v288c0 26.51-21.49 48-48 48H176c-26.51 0-48-21.49-48-48V48c0-26.51 21.49-48 48-48h288M176 416c-44.112 0-80-35.888-80-80V128H48c-26.51 0-48 21.49-48 48v288c0 26.51 21.49 48 48 48h288c26.51 0 48-21.49 48-48v-48H176z">
-                                                                    </path>
-                                                                </svg>
-                                                                <!-- <i class="fa fa-clone"></i> Font Awesome fontawesome.com -->
-                                                                Duplicate
                                                             </a>
                                                         </div>
                                                     </div>

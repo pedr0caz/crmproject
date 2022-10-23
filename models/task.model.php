@@ -10,7 +10,7 @@ class Task extends Base
             INSERT INTO task_category (category_name)
             VALUES (?)
         ");
-        $query->execute([$data["category_name"]]);
+        $query->execute([$data]);
         return $this->db->lastInsertId();
     }
     
@@ -20,7 +20,36 @@ class Task extends Base
             DELETE FROM task_category
             WHERE id = ?
         ");
-        $query->execute([$id]);
+        $result = $query->execute([$id]);
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function getCategoriesTask()
+    {
+        $query = $this->db->prepare("
+            SELECT * FROM task_category
+        ");
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function editCategoryTask($id, $category_name)
+    {
+        $query = $this->db->prepare("
+            UPDATE task_category
+            SET category_name = ?
+            WHERE id = ?
+        ");
+        $result = $query->execute([ $category_name, $id]);
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
     }
     public function getProjectTasks($id)
     {
@@ -83,12 +112,55 @@ class Task extends Base
         INNER JOIN users u ON u.id = t.created_by
         INNER JOIN taskboard_columns tc ON tc.id = t.board_column_id
         INNER JOIN task_category tcat ON tcat.id = t.task_category_id
-        INNER JOIN projects p ON t.project_id = p.id
+        LEFT JOIN projects p ON t.project_id = p.id
         WHERE t.id = ?
 
         ");
         $query->execute([$id]);
         return $query->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getTasks()
+    {
+        $query = $this->db->prepare("
+        SELECT 
+        t.id AS task_id,
+        t.heading,
+        t.description,
+        t.due_date,
+        t.start_date,
+        t.board_column_id,
+        t.project_id,
+        p.project_name,
+        t.task_category_id,
+        t.priority AS task_priority,
+        t.status,
+   
+        t.created_by,
+        t.created_at,
+        t.updated_at,
+        
+        u.id AS user_id,
+        u.name AS user_name,
+        u.email AS user_email,
+        u.image AS user_image,
+        tc.id AS task_label_id,
+        tc.column_name,
+        tc.slug,
+        tc.label_color,
+        tc.priority,
+        tcat.id AS task_category_id,
+        tcat.category_name
+
+        FROM tasks t
+        INNER JOIN users u ON u.id = t.created_by
+        INNER JOIN taskboard_columns tc ON tc.id = t.board_column_id
+        INNER JOIN task_category tcat ON tcat.id = t.task_category_id
+        LEFT JOIN projects p ON t.project_id = p.id
+
+        ");
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getEmployeeAssignedToTask($id)
@@ -300,6 +372,149 @@ class Task extends Base
         ");
         $result = $query->execute([$id, $_SESSION["user_id"]]);
         if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function addTask($heading, $description, $due_date, $start_date, $project_id, $priority, $board_column_id, $added_by, $users_assigned, $task_cat_id)
+    {
+        $query = $this->db->prepare("
+            INSERT INTO tasks (heading, description, due_date, start_date, project_id, priority, board_column_id, added_by, task_category_id, created_at, created_by)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ");
+        $query->execute([$heading, $description, $due_date, $start_date, $project_id, $priority, $board_column_id, $added_by, $task_cat_id, date("Y-m-d H:i:s"), $added_by]);
+        $id = $this->db->lastInsertId();
+        if ($id) {
+            $query = $this->db->prepare("
+            INSERT INTO task_history (task_id,details, created_at, user_id)
+            VALUES (?, ?, ?, ?)
+            ");
+            $query->execute([
+                $id,
+                "Task created by " . $_SESSION["user_name"],
+                date("Y-m-d H:i:s"),
+                $added_by,
+            ]);
+
+            if ($project_id) {
+                $query = $this->db->prepare("
+                INSERT INTO project_activity (project_id,activity, created_at)
+                VALUES (?, ?, ?)
+                ");
+                $query->execute([
+                    $project_id,
+                    "Task Assigned to Project by " . $_SESSION["user_name"],
+                    date("Y-m-d H:i:s")
+                ]);
+            }
+            
+            foreach ($users_assigned as $user) {
+                $query = $this->db->prepare("
+                INSERT INTO task_users (task_id, user_id)
+                VALUES (?, ?)
+                ");
+                $query->execute([$id, $user]);
+            }
+            return $id;
+        } else {
+            return false;
+        }
+    }
+
+    public function editTask($id, $heading, $description, $due_date, $start_date, $project_id, $priority, $board_column_id, $added_by, $users_assigned, $task_cat_id)
+    {
+        $query = $this->db->prepare("
+            UPDATE tasks
+            SET heading = ?,
+                description = ?,
+                due_date = ?,
+                start_date = ?,
+                project_id = ?,
+                priority = ?,
+                board_column_id = ?,
+                added_by = ?,
+                task_category_id = ?
+            WHERE id = ?
+        ");
+        $result = $query->execute([$heading, $description, $due_date, $start_date, $project_id, $priority, $board_column_id, $added_by, $task_cat_id, $id]);
+        if ($result) {
+            $query = $this->db->prepare("
+            INSERT INTO task_history (task_id,details, created_at, user_id)
+            VALUES (?, ?, ?, ?)
+            ");
+            $query->execute([
+                $id,
+                "Task edited by " . $_SESSION["user_name"],
+                date("Y-m-d H:i:s"),
+                $added_by,
+            ]);
+            $query = $this->db->prepare("
+            DELETE FROM task_users
+            WHERE task_id = ?
+            ");
+            $query->execute([$id]);
+            foreach ($users_assigned as $user) {
+                $query = $this->db->prepare("
+                INSERT INTO task_users (task_id, user_id)
+                VALUES (?, ?)
+                ");
+                $query->execute([$id, $user]);
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function deleteTask($id)
+    {
+        $query = $this->db->prepare("
+            SELECT 
+                project_id
+            FROM tasks
+            WHERE id = ?
+
+        ");
+        $query->execute([$id]);
+        $project_id = $query->fetch(PDO::FETCH_ASSOC);
+        
+        if ($project_id) {
+            $query = $this->db->prepare("
+            INSERT INTO project_activity (project_id,activity, created_at)
+            VALUES (?, ?, ?)
+            ");
+            $query->execute([
+                $project_id["project_id"],
+                "Task deleted from Project by " . $_SESSION["user_name"],
+                date("Y-m-d H:i:s"),
+        
+            ]);
+        }
+
+        $query = $this->db->prepare("
+            DELETE FROM tasks
+            WHERE id = ?
+        ");
+        $result = $query->execute([$id]);
+
+        if ($result) {
+            $query = $this->db->prepare("
+            DELETE FROM task_users
+            WHERE task_id = ?
+            ");
+            $query->execute([$id]);
+            $query = $this->db->prepare("
+            DELETE FROM task_comments
+            WHERE task_id = ?
+            ");
+            $query->execute([$id]);
+            $query = $this->db->prepare("
+            DELETE FROM task_history
+            WHERE task_id = ?
+            ");
+            $query->execute([$id]);
             return true;
         } else {
             return false;

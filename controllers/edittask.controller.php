@@ -1,5 +1,13 @@
 <?php
 
+if (empty($id) || !is_numeric($id)) {
+    http_response_code(400);
+    $title = "Bad Request";
+    require("views/error400.view.php");
+    exit;
+}
+
+
 if (!isset($_SESSION["user_id"])) {
     header("Location: " . ROOT . "/login");
     exit;
@@ -9,13 +17,29 @@ if (!isset($_SESSION["user_id"])) {
         require("models/users.model.php");
         require("models/task.model.php");
         require("models/project.model.php");
+        $taskModel = new Task();
+        $task = $taskModel->getTask($id);
+        $taskEmployees = $taskModel->getEmployeeAssignedToTask($id);
+        $taskEmployeesIds = array();
+        foreach ($taskEmployees as $employee) {
+            $taskEmployeesIds[] = $employee["user_id"];
+        }
+        
+
         $projectsModel = new Project();
         $projects = $projectsModel->getProjects();
         $employeesModel = new Employee();
         $employees = $employeesModel->getEmployees();
-        $taskModel = new Task();
+        
         $taskLabels = $taskModel->getLabels();
         $taskCategories = $taskModel->getCategoriesTask();
+        
+        if (empty($task)) {
+            http_response_code(404);
+            $title = "Not found";
+            require("views/error404.view.php");
+            exit;
+        }
 
         if (isset($_GET['project_id']) && !empty($_GET['project_id'])) {
             $project_id = $_GET['project_id'];
@@ -78,18 +102,18 @@ if (!isset($_SESSION["user_id"])) {
                 $added_by = $_SESSION['user_id'];
                 $users_assigned = $_POST['user_id'];
 
-                $task = $taskModel->addTask($heading, $description, $due_date, $start_date, $project_id, $priority, $task_status, $added_by, $users_assigned, $task_cat_id);
+                $task = $taskModel->editTask($id, $heading, $description, $due_date, $start_date, $project_id, $priority, $task_status, $added_by, $users_assigned, $task_cat_id);
                 if ($task) {
                     header('Content-Type: application/json; charset=utf-8');
-                    echo json_encode(['status' => 'success', 'task_id' => $task, 'message' => 'Task added successfully']);
+                    echo json_encode(['status' => 'success', 'task_id' => $id, 'message' => 'Task edit successfully']);
                 }
             } else {
                 header('Content-Type: application/json; charset=utf-8');
                 echo json_encode(['status' => 'error']);
             }
         } else {
-            $title = "Add Task";
-            require("views/addtask.view.php");
+            $title = "Edit Task";
+            require("views/edittask.view.php");
         }
     } else {
         header("Location: " . ROOT . "");

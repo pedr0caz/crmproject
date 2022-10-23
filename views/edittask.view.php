@@ -10,7 +10,7 @@
                     data-np-autofill-type="other" data-np-watching="1">
                     <div class="add-client bg-white rounded">
                         <h4 class="mb-0 p-20 f-21 font-weight-normal text-capitalize border-bottom-grey">
-                            Task Info
+                            Edit Task Info
                         </h4>
                         <div class="row p-20">
                             <div class="col-3">
@@ -19,8 +19,10 @@
                                         <sup class="f-14 mr-1">*</sup>
                                     </label>
                                     <input type="text" class="form-control height-35 f-14"
-                                        placeholder="Enter a task title" value="" name="heading" id="heading"
-                                        autocomplete="off" data-np-invisible="1" data-np-checked="1">
+                                        placeholder="Enter a task title"
+                                        value="<?=$task['heading'];?>"
+                                        name="heading" id="heading" autocomplete="off" data-np-invisible="1"
+                                        data-np-checked="1">
                                 </div>
                             </div>
                             <div class="col-3">
@@ -36,11 +38,14 @@
                                                 id="task_category" data-live-search="true">
                                                 <?php foreach ($taskCategories as $category) : ?>
                                                 <option
-                                                    data-cats-id="<?=$category['id'];?>"
-                                                    value="<?php echo $category['id']; ?>">
-                                                    <?php echo $category['category_name']; ?>
-                                                </option>
-                                                <?php endforeach; ?>
+                                                    value="<?=$category['id'];?>"
+                                                    <?php if ($category['id'] == $task['task_id']) : ?>
+                                                    selected
+                                                    <?php endif; ?>
+                                                    >
+                                                    <?=$category['category_name'];?>
+                                                    <?php endforeach; ?>
+
 
                                             </select>
                                         </div>
@@ -61,8 +66,9 @@
                                         <sup class="f-14 mr-1">*</sup>
                                     </label>
                                     <input type="date" class="form-control  date-picker height-35 f-14"
-                                        placeholder="Select Date" name="start_date" id="task_start_date"
-                                        autocomplete="off" data-np-checked="1">
+                                        placeholder="Select Date"
+                                        value="<?=$task['start_date'];?>"
+                                        name="start_date" id="task_start_date" autocomplete="off" data-np-checked="1">
                                 </div>
                             </div>
                             <div class="col-3">
@@ -72,8 +78,9 @@
                                         <sup class="f-14 mr-1">*</sup>
                                     </label>
                                     <input type="date" class="form-control  date-picker height-35 f-14"
-                                        placeholder="Select Date" name="due_date" id="due_date" autocomplete="off"
-                                        data-np-checked="1">
+                                        placeholder="Select Date"
+                                        value="<?=$task['due_date'];?>"
+                                        name="due_date" id="due_date" autocomplete="off" data-np-checked="1">
                                 </div>
                             </div>
                             <div class="col-3">
@@ -87,10 +94,14 @@
                                                 <option value="">--</option>
                                                 <?php foreach ($projects as $project) : ?>
                                                 <option
-                                                    value="<?php echo $project["project_id"]; ?>">
-                                                    <?php echo $project["project_name"]; ?>
-                                                </option>
-                                                <?php endforeach; ?>
+                                                    value="<?=$project['project_id'];?>"
+                                                    <?php if ($project['project_id'] == $task['project_id']) : ?>
+                                                    selected
+                                                    <?php endif; ?>
+                                                    >
+                                                    <?=$project['project_name'];?>
+                                                    <?php endforeach; ?>
+
                                             </select>
                                         </div>
                                     </div>
@@ -129,13 +140,13 @@
                                         <?php foreach($taskLabels as $taskLabel): ?>
                                         <option
                                             data-content="<i class='bi bi-circle-fill  mr-2'  style='color:<?=$taskLabel['label_color']?>'></i>  <?=$taskLabel['column_name']?>"
-                                            value="<?=$taskLabel['id']?>"
-                                            <?php if($taskLabel['id'] == $task['board_column_id']) {
-                                                echo 'selected';
-                                            } ?>>
+                                            value="<?php echo $taskLabel["id"]; ?>"
+                                            <?php if ($taskLabel['id'] == $task['board_column_id']) : ?>
+                                            selected
+                                            <?php endif; ?>
+                                            >
                                             <?=$taskLabel['column_name']?>
-                                        </option>
-                                        <?php endforeach; ?>
+                                            <?php endforeach; ?>
                                     </select>
                                 </div>
                             </div>
@@ -149,13 +160,22 @@
                                         id="priority">
                                         <option
                                             data-content="<i class='bi bi-circle-fill  mr-2'  style='color:#f1c40f'></i>  Low"
-                                            value="1">Low</option>
+                                            value="1" <?php if($task['priority'] == 'Low') {
+                                                echo 'selected';
+                                            } ?>>Low
+                                        </option>
                                         <option
                                             data-content="<i class='bi bi-circle-fill  mr-2'  style='color:#e67e22'></i>  Medium"
-                                            value="2">Medium</option>
+                                            value="2" <?php if($task['priority'] == 'Medium') {
+                                                echo 'selected';
+                                            } ?>>Medium
+                                        </option>
                                         <option
                                             data-content="<i class='bi bi-circle-fill  mr-2'  style='color:#e74c3c'></i>  High"
-                                            value="3">High</option>
+                                            value="3" <?php if($task['priority'] == 'High') {
+                                                echo 'selected';
+                                            } ?>>High
+                                        </option>
                                     </select>
                                 </div>
                             </div>
@@ -183,9 +203,9 @@
                                     </path>
                                 </svg>
                                 <!-- <i class="fa fa-check mr-1"></i> Font Awesome fontawesome.com -->
-                                Save
+                                Edit
                             </button>
-                            <a href="http://localhost/script/public/account/tasks"
+                            <a href="<?=ROOT;?>/taskdetails/<?=$id;?>"
                                 class="btn-cancel rounded f-14 p-2 border-0">
                                 Cancel
                             </a>
@@ -196,13 +216,17 @@
         </div>
         <script>
             $(document).ready(function() {
+                var
+                    selectedEmployees = <?php echo json_encode($taskEmployeesIds); ?> ;
+                $('#selectAssignee').selectpicker('val', selectedEmployees);
+
                 $('#project_id').on('change', function() {
                     var project_id = parseInt($(this).val());
 
                     if (Number.isInteger(project_id)) {
-                        console.log(" run")
+
                         $.ajax({
-                            url: '<?=ROOT;?>/addtask/0?project_id=' +
+                            url: '<?=ROOT;?>/edittask/<?=$id;?>?project_id=' +
                                 project_id,
                             type: 'POST',
                             success: function(data) {
@@ -210,19 +234,22 @@
                                 $.each(data, function(key, value) {
                                     var user = $('<option />').attr('value',
                                         value.user_id).text(value.name);
-                                    $('select[id="selectAssignee"]').append(user);
+                                    $('select[id="selectAssignee"]').append(
+                                        user);
                                 });
-                                $('select[id="selectAssignee"]').selectpicker("destroy");
-                                $('select[id="selectAssignee"]').selectpicker("refresh");
+                                $('select[id="selectAssignee"]').selectpicker(
+                                    "destroy");
+                                $('select[id="selectAssignee"]').selectpicker(
+                                    "refresh");
 
 
                             }
                         });
                     } else {
                         $('select[id="selectAssignee"]').empty();
-                        console.log("nu run")
+
                         $.ajax({
-                            url: '<?=ROOT;?>/addtask/0?noproject',
+                            url: '<?=ROOT;?>/edittask/<?=$id;?>?noproject',
                             type: 'POST',
                             success: function(data) {
                                 $('select[id="selectAssignee"]').empty();
@@ -230,10 +257,13 @@
                                     var user = $('<option />').html(
                                         "<img src='' />" + value.name).val(
                                         value.id);
-                                    $('select[id="selectAssignee"]').append(user);
+                                    $('select[id="selectAssignee"]').append(
+                                        user);
                                 });
-                                $('select[id="selectAssignee"]').selectpicker("destroy");
-                                $('select[id="selectAssignee"]').selectpicker("refresh");
+                                $('select[id="selectAssignee"]').selectpicker(
+                                    "destroy");
+                                $('select[id="selectAssignee"]').selectpicker(
+                                    "refresh");
 
 
                             }
@@ -245,6 +275,9 @@
                 ClassicEditor
                     .create(document.querySelector('#editor')).then((newEditor) => {
                         editor = newEditor;
+                        editor.setData(
+                            '<?=$task['description'];?>'
+                        );
                     })
                     .catch(error => {
                         console.error(error);
@@ -262,7 +295,7 @@
                     let description = editor.getData();
                     formData.append('description', description);
                     $.ajax({
-                        url: '<?=ROOT;?>/addtask/0?submit',
+                        url: '<?=ROOT;?>/edittask/<?=$id;?>?submit',
                         type: 'POST',
                         data: formData,
                         processData: false,
@@ -417,7 +450,7 @@ require_once("layout/footer.php");
                                 if (result.isConfirmed) {
                                     $.ajax({
                                         type: 'POST',
-                                        url: '<?=ROOT;?>/addtask/0?taskCategory=delete',
+                                        url: '<?=ROOT;?>/edittask/<?=$id;?>?taskCategory=delete',
                                         data: {
                                             'catId': catId
 
@@ -444,7 +477,7 @@ require_once("layout/footer.php");
 
                         $('#save-category').click(function() {
                             $.ajax({
-                                url: '<?=ROOT;?>/addtask/0?taskCategory=add',
+                                url: '<?=ROOT;?>/edittask/<?=$id;?>?taskCategory=add',
                                 container: '#createTaskCategory',
                                 type: "POST",
                                 disableButton: true,
@@ -499,7 +532,7 @@ require_once("layout/footer.php");
                                 let value = $(this).html();
 
                                 $.ajax({
-                                    url: '<?=ROOT;?>/addtask/0?taskCategory=edit',
+                                    url: '<?=ROOT;?>/edittask/<?=$id;?>?taskCategory=edit',
                                     container: '#row-' + id,
                                     type: "POST",
                                     data: {

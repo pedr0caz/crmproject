@@ -29,7 +29,7 @@
 
 
 
-                <a href="http://localhost/script/public/account/projects/import"
+                <a href="<?=ROOT;?>/project/import"
                     class="btn-secondary rounded f-14 p-2 mr-3 float-left mb-2 mb-lg-0 mb-md-0">
                     <svg class="svg-inline--fa fa-file-upload fa-w-12 mr-1" aria-hidden="true" focusable="false"
                         data-prefix="fa" data-icon="file-upload" role="img" xmlns="http://www.w3.org/2000/svg"
@@ -186,7 +186,7 @@
                                                     aria-labelledby="dropdownMenuLink-1" tabindex="0"
                                                     x-placement="bottom-end"
                                                     style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-169px, 26px, 0px);">
-                                                    <a href="http://localhost/script/public/account/projects/1"
+                                                    <a href="<?=ROOT?>/projectdetails/<?=$project['project_id']?>"
                                                         class="dropdown-item"><svg
                                                             class="svg-inline--fa fa-eye fa-w-18 mr-2"
                                                             aria-hidden="true" focusable="false" data-prefix="fa"
@@ -199,7 +199,7 @@
                                                         </svg>
                                                         <!-- <i class="fa fa-eye mr-2"></i> Font Awesome fontawesome.com -->View</a><a
                                                         class="dropdown-item openRightModal"
-                                                        href="http://localhost/script/public/account/projects/1/edit">
+                                                        href="<?=ROOT;?>/editproject/<?=$project['project_id']?>">
                                                         <svg class="svg-inline--fa fa-edit fa-w-18 mr-2"
                                                             aria-hidden="true" focusable="false" data-prefix="fa"
                                                             data-icon="edit" role="img"
@@ -212,8 +212,7 @@
                                                         <!-- <i class="fa fa-edit mr-2"></i> Font Awesome fontawesome.com -->
                                                         Edit
                                                     </a>
-                                                    </a><a class="dropdown-item" target="_blank"
-                                                        href="http://localhost/script/public/task-board/DmnnWALTrJlZacdHh81zClIAPXp41uTE">
+                                                    </a><a class="dropdown-item" target="_blank" href="">
                                                         <svg class="svg-inline--fa fa-share-square fa-w-18 mr-2"
                                                             aria-hidden="true" focusable="false" data-prefix="fa"
                                                             data-icon="share-square" role="img"

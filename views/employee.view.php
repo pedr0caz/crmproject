@@ -7,7 +7,7 @@
         <!-- Add Task Export Buttons Start -->
         <div class="d-flex justify-content-between action-bar">
             <div id="table-actions" class="d-block d-lg-flex align-items-center">
-                <a href="http://localhost/script/public/account/employees/create"
+                <a href="<?=ROOT;?>/addemployee"
                     class="btn-primary rounded f-14 p-2 mr-3 openRightModal">
                     <svg class="svg-inline--fa fa-plus fa-w-14 mr-1" aria-hidden="true" focusable="false"
                         data-prefix="fa" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg"
@@ -52,7 +52,7 @@
                     <!-- <i class="fa fa-plus mr-1"></i> Font Awesome fontawesome.com -->
                     Add Department
                 </button>
-                <a href="http://localhost/script/public/account/employees/import"
+                <a href="<?=ROOT;?>/employeeimport"
                     class="btn-secondary rounded f-14 p-2 mr-3 openRightModal mb-2 mb-lg-0">
                     <svg class="svg-inline--fa fa-file-upload fa-w-12 mr-1" aria-hidden="true" focusable="false"
                         data-prefix="fa" data-icon="file-upload" role="img" xmlns="http://www.w3.org/2000/svg"
@@ -112,8 +112,12 @@
                                 <td><?=$employee['email'];?>
                                 </td>
                                 <td>
-                                    <select class="form-control">
-                                        <?php foreach ($roles as $role):?>
+                                    <select class="form-control selectpicker">
+                                        <?php foreach ($roles as $role):
+                                            if($role['id'] == 3) {
+                                                continue;
+                                            }
+                                            ?>
                                         <option
                                             value="<?=$role['id'];?>"
                                             <?php if($role['id'] == $employee['role_id']) {
@@ -142,7 +146,7 @@
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-right"
                                                 aria-labelledby="dropdownMenuLink-6" tabindex="0"><a
-                                                    href="http://localhost/script/public/account/employees/6"
+                                                    href="<?=ROOT?>/employeedetails/<?=$employee['user_id'];?>"
                                                     class="dropdown-item"><svg
                                                         class="svg-inline--fa fa-eye fa-w-18 mr-2" aria-hidden="true"
                                                         focusable="false" data-prefix="fa" data-icon="eye" role="img"
@@ -154,7 +158,7 @@
                                                     </svg>
                                                     <!-- <i class="fa fa-eye mr-2"></i> Font Awesome fontawesome.com -->View</a><a
                                                     class="dropdown-item openRightModal"
-                                                    href="http://localhost/script/public/account/employees/6/edit">
+                                                    href="<?=ROOT?>/editemployee/<?=$employee['user_id'];?>">
                                                     <svg class="svg-inline--fa fa-edit fa-w-18 mr-2" aria-hidden="true"
                                                         focusable="false" data-prefix="fa" data-icon="edit" role="img"
                                                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"
