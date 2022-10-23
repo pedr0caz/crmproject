@@ -1,6 +1,6 @@
 <?php require_once("layout/header.php"); ?>
 <?php require_once("layout/navbar.php"); ?>
-<script src="https://cdn.ckeditor.com/ckeditor5/35.2.1/classic/ckeditor.js"></script>
+
 <section class="main-container bg-additional-grey" id="fullscreen">
     <div class="preloader-container justify-content-center align-items-center" style="display: none;">
         <div class="spinner-border" role="status" aria-hidden="true"></div>

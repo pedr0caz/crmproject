@@ -7,27 +7,32 @@ class Project extends Base
     public function getProjects()
     {
         $query = $this->db->prepare("
-            SELECT
-                p.id AS project_id,
-                p.project_name,
-                p.project_summary,
-                p.project_admin,
-                p.status,
-                p.start_date,
-                p.deadline,
-                p.notes,
-                c.category_name,
-                u.name,
-                u.email,
-                u.id AS user_id,
-                t.team_name,
-                t.id AS team_id
+        SELECT
+        p.id AS project_id,
+        p.project_name,
+        p.project_summary,
+        p.project_admin,
+        p.completion_percent,
+        p.client_id,
+        p.status,
+        p.start_date,
+        p.deadline,
+        p.notes,
+        c.category_name,
+        u.name,
+        u.email,
+        u.image,
+        cd.company_name,
+        u.id AS user_id,
+        t.team_name,
+        t.id AS team_id
+    
+    FROM projects p
+    INNER JOIN project_category c ON p.category_id = c.id
+    INNER JOIN client_details cd ON p.client_id = cd.id
 
-
-            FROM projects p
-            LEFT JOIN project_category c ON p.category_id = c.id
-            LEFT JOIN users u ON p.client_id = u.id
-            LEFT JOIN teams t ON p.team_id = t.id
+    INNER JOIN users u ON cd.user_id = u.id
+    INNER JOIN teams t ON p.team_id = t.id
             
         ");
         $query->execute();
@@ -68,6 +73,73 @@ class Project extends Base
         $query->execute([$id]);
         return $query->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function getTaskColumns()
+    {
+        $query = $this->db->prepare("
+        SELECT * FROM taskboard_columns
+        ");
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getTaskStatus($id)
+    {
+        $query = $this->db->prepare("
+        SELECT COUNT(t.board_column_id) AS status_count, 
+      		
+        tb.column_name,
+        tb.slug,
+        tb.label_color
+        FROM tasks t
+        INNER JOIN taskboard_columns tb ON t.board_column_id = tb.id
+        WHERE t.project_id = ?
+        GROUP BY tb.column_name
+        ORDER BY tb.priority;
+        ");
+        $query->execute([$id]);
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getProjectProgress($id)
+    {
+        $query = $this->db->prepare("
+         SELECT COUNT(t.board_column_id) AS status_count,
+            tb.column_name,
+            tb.slug,
+            tb.label_color
+            FROM tasks t
+            INNER JOIN taskboard_columns tb ON t.board_column_id = tb.id
+            WHERE t.project_id = ?
+            GROUP BY tb.column_name
+
+        ");
+        $query->execute([$id]);
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        $total = 0;
+        $completed = 0;
+        foreach ($result as $row) {
+            $total += $row["status_count"];
+            if ($row["slug"] == "completed") {
+                $completed = $row["status_count"];
+            }
+        }
+        if ($total == 0) {
+            $query= $this->db->prepare("UPDATE projects SET completion_percent = 0 WHERE id = ?");
+            $query->execute([$id]);
+
+            return 0;
+        } else {
+            $value = round(($completed / $total) * 100);
+            $query= $this->db->prepare("UPDATE projects SET completion_percent = $value WHERE id = ?");
+            $query->execute([$id]);
+            return $value;
+        }
+    }
+    
+      
+
 
     public function getProjectByClient($id)
     {
@@ -266,46 +338,49 @@ class Project extends Base
         ]);
         return $this->db->lastInsertId();
     }
-    public function getProjectFiles($id)
+    public function getFiles($id)
     {
         $query = $this->db->prepare("
-            SELECT
-                id as file_id,
-                user_id,
-                project_id,
-                filename,
-                hashname,
-                size,
-                description,
-                added_by,
-                added_on
-            FROM project_files
-            WHERE project_id = ?
-
+        SELECT name, id, filename, created_at FROM project_files WHERE project_id = ?
         ");
         $query->execute([$id]);
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
-    public function getFileProject($id)
+
+    public function newFile($id, $userid, $name, $file)
     {
         $query = $this->db->prepare("
-            SELECT
-                id as file_id,
-                user_id,
-                project_id,
-                filename,
-                hashname,
-                size,
-                description,
-                added_by,
-                added_on
-            FROM project_files
-            WHERE id = ?
-
+        INSERT INTO project_files (user_id, project_id, name, filename, created_at)
+        VALUES (?, ?, ?, ?, ?)
         ");
-        $query->execute([$id]);
-        return $query->fetch(PDO::FETCH_ASSOC);
+        $query->execute([
+            $userid,
+            $id,
+            
+            $name,
+            $file,
+            date("Y-m-d H:i:s")
+        ]);
+        $idfile = $this->db->lastInsertId();
+        if ($idfile) {
+            $query = $this->db->prepare("
+            INSERT INTO project_activity (project_id, activity, created_at)
+            VALUES (?, ?, ?)
+            ");
+            $query->execute([
+                $id,
+                "New file uploaded by " . $_SESSION["user_name"],
+                date("Y-m-d H:i:s")
+            ]);
+
+            $query = $this->db->prepare("
+             SELECT name, id, filename, created_at FROM project_files WHERE id = ?
+            ");
+            $query->execute([$idfile]);
+            return $query->fetch(PDO::FETCH_ASSOC);
+        }
     }
+
     public function getProjectNotes($id)
     {
         $query = $this->db->prepare("
@@ -410,5 +485,14 @@ class Project extends Base
         ");
         $query->execute([$id]);
         return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function deleteFile($id)
+    {
+        $query = $this->db->prepare("
+        DELETE FROM project_files WHERE id = ?
+        ");
+        $query->execute([$id]);
+        return $query->rowCount();
     }
 }

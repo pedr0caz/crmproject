@@ -17,6 +17,8 @@ if (!isset($_SESSION["user_id"])) {
                 $getUser = $model->getUser($user["id"]);
                 $_SESSION["user_id"] = $user["id"];
                 $_SESSION["user_name"] = $user["name"];
+                $_SESSION["user_email"] = $user["email"];
+                $_SESSION["user_image"] = $user["image"];
                 $_SESSION["user_role"] = $getUser["role_id"];
 
                 header("Location: " . ROOT . "/");

@@ -322,4 +322,59 @@ class Employee extends Base
         $query->execute([$id]);
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getEmployeeTasks($id)
+    {
+        $query = $this->db->prepare("
+        SELECT 
+        tu.task_id,
+        t.heading,
+        t.description,
+        t.due_date,
+        t.added_by,
+        t.board_column_id,
+        p.id AS project_id,
+        p.project_name,
+        u.id AS user_id,
+        u.name AS employee_name,
+        ut.id AS asigned_id,
+        ut.name as asigned_by_name
+
+    FROM task_users tu
+    INNER JOIN tasks t ON tu.task_id = t.id
+    INNER JOIN users u ON tu.user_id = u.id
+    INNER JOIN users ut ON t.added_by = ut.id
+    INNER JOIN projects p ON t.project_id = p.id
+
+    WHERE tu.user_id = ?;
+
+        ");
+        $query->execute([$id]);
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function getTaskEmployees($id)
+    {
+        $query = $this->db->prepare("
+        SELECT 
+      
+        u.id AS user_id,
+        u.name AS employee_name,
+        u.image AS employee_image,
+        ut.id AS asigned_id,
+        ut.name as asigned_by_name,
+        ut.image as asigned_by_image
+
+
+    FROM task_users tu
+    INNER JOIN tasks t ON tu.task_id = t.id
+    INNER JOIN users u ON tu.user_id = u.id
+    INNER JOIN users ut ON t.added_by = ut.id
+    INNER JOIN projects p ON t.project_id = p.id
+
+    WHERE tu.task_id = ?;
+
+        ");
+        $query->execute([$id]);
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

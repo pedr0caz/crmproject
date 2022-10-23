@@ -15,7 +15,9 @@ if (!isset($_SESSION["user_id"])) {
 } else {
     if (isset($_SESSION["user_role"]) && $_SESSION["user_role"] == 1) {
         require("models/employee.model.php");
+        require("models/task.model.php");
         $employeeModel = new Employee();
+        $taskModel = new Task();
         $employee = $employeeModel->getEmployee($id);
         if (empty($employee)) {
             http_response_code(404);
@@ -29,7 +31,8 @@ if (!isset($_SESSION["user_id"])) {
         $getUserActivity = $employeeModel->getActivity($id);
         $projects = $employeeModel->getProjectsOfEmployee($id);
         $employeeFiles = $employeeModel->getFiles($id);
-          
+        $getEmployeeTasks = $employeeModel->getEmployeeTasks($id);
+        $taskLabels = $taskModel->getLabels();
     
 
         $title = "Employee Details" . " - " . $employee["name"];
