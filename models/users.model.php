@@ -156,6 +156,7 @@ class User extends Base
     {
         $query = $this->db->prepare("
             SELECT
+                u.id,
                 u.name,
                 u.email,
                 u.image,

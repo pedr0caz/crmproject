@@ -9,7 +9,7 @@ if (!isset($_SESSION["user_id"])) {
         $modelEmployee = new Employee();
         $employees = $modelEmployee->getEmployees();
         $roles = $modelEmployee->getRoles();
-        $title = "employee list";
+        $title = "Employee List";
         require("views/employee.view.php");
     } else {
         header("Location: " . ROOT . "");

@@ -61,6 +61,8 @@ if (isset($_SESSION['user_id'])) {
     .chat-box {
         overflow-y: auto;
         overflow-x: hidden;
+
+        min-height: 50vh;
         max-height: 50vh;
     }
 

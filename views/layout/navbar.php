@@ -61,7 +61,7 @@
                     </div>
                 </a>
                 <a class="dropdown-item d-flex justify-content-between align-items-center f-15 text-dark"
-                    href="http://localhost/script/public/logout" onclick="event.preventDefault();
+                    href="" onclick="event.preventDefault();
                 document.getElementById('logout-form').submit();">
                     Logout <i class="side-icon bi bi-power"></i>
                 </a>
@@ -171,7 +171,7 @@
 
                         <!-- COLLAPSE - INFORMATION -->
                         <a class="f-14 text-lightest"
-                            href="<?=ROOT?>/tasks"
+                            href="<?=ROOT?>/task"
                             title="Tasks">Tasks</a>
                         <!-- COLLAPSE - INFORMATION -->
 

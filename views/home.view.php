@@ -15,7 +15,8 @@
         <div class="d-lg-flex d-md-flex d-block py-4">
             <!-- WELOCOME NAME START -->
             <div class="">
-                <h4 class=" mb-0 f-21 text-capitalize font-weight-bold">Welcome Pedro</h4>
+                <h4 class=" mb-0 f-21 text-capitalize font-weight-bold">Welcome <?=$_SESSION['user_name'];?>
+                </h4>
             </div>
             <!-- WELOCOME NAME END -->
 
@@ -24,12 +25,9 @@
                 class="ml-auto d-flex clock-in-out mb-3 mb-lg-0 mb-md-0 m mt-4 mt-lg-0 mt-md-0 justify-content-between">
                 <p
                     class="mb-0 text-lg-right text-md-right f-18 font-weight-bold text-dark-grey d-grid align-items-center">
-                    <input type="hidden" id="current-latitude" name="current_latitude" autocomplete="off"
-                        data-np-invisible="1" data-np-checked="1">
-                    <input type="hidden" id="current-longitude" name="current_longitude" autocomplete="off"
-                        data-np-invisible="1" data-np-checked="1">
+                    <?=date('H:i a')?><span
+                        class="f-10 font-weight-normal"><?=date("l")?></span>
 
-                    10:24 pm<span class="f-10 font-weight-normal">Wednesday</span>
 
                 </p>
 
@@ -52,15 +50,14 @@
                             <div class="card-horizontal align-items-center">
                                 <div class="card-img">
                                     <img class=""
-                                        src=" https://www.gravatar.com/avatar/7fcefe645acaa3363d8f10bdfba33c0d.png?s=200&amp;d=mp"
+                                        src="<?=$_SESSION['user_image'] ? $_SESSION['user_image'] : 'https://www.gravatar.com/avatar/a456ed61bc3c5d05f3ad79d85069098a.png?s=200&d=mp';?>"
                                         alt="Card image">
                                 </div>
                                 <div class="card-body border-0 pl-0">
                                     <h4 class="card-title f-18 f-w-500 mb-0">Pedro</h4>
                                     <p class="f-14 font-weight-normal text-dark-grey mb-2">
                                         --</p>
-                                    <p class="card-text f-12 text-lightest"> Employee Id :
-                                        EMP-1</p>
+
                                 </div>
                             </div>
 
@@ -70,9 +67,8 @@
                                         <label class="f-12 text-dark-grey mb-12 text-capitalize" for="usr">
                                             Open Tasks </label>
                                         <p class="mb-0 f-18 f-w-500">
-                                            <a href="http://localhost/script/public/account/tasks?assignee=me"
-                                                class="text-dark">
-                                                0
+                                            <a href="" class="text-dark">
+                                                <?=count($tasks);?>
                                             </a>
                                         </p>
                                     </span>
@@ -80,18 +76,11 @@
                                         <label class="f-12 text-dark-grey mb-12 text-capitalize" for="usr">
                                             Projects </label>
                                         <p class="mb-0 f-18 f-w-500">
-                                            <a href="http://localhost/script/public/account/projects?assignee=me&amp;status=all"
-                                                class="text-dark">1</a>
+                                            <a href="" class="text-dark">1</a>
                                         </p>
                                     </span>
                                     <span>
-                                        <label class="f-12 text-dark-grey mb-12 text-capitalize" for="usr">
-                                            Hours Logged </label>
-                                        <p class="mb-0 f-18 f-w-500">
-                                            <a href="http://localhost/script/public/account/timelogs?assignee=me&amp;start=19-10-2022&amp;end=19-10-2022"
-                                                class="text-dark">0
-                                            </a>
-                                        </p>
+
                                     </span>
 
                                 </div>
@@ -125,12 +114,15 @@
                                                 </style>
 
                                                 <div class="media align-items-center mw-250">
-                                                    <a href="" class="position-relative ">
-                                                        <img src="" class="mr-2 taskEmployeeImg rounded-circle">
+                                                    <a href="<?=ROOT;?>/employeedetails/<?=$birthday['id'];?>"
+                                                        class="position-relative ">
+                                                        <img src="<?=$birthday['image'] ? $birthday['image'] : 'https://www.gravatar.com/avatar/a456ed61bc3c5d05f3ad79d85069098a.png?s=200&d=mp';?>"
+                                                            class="mr-2 taskEmployeeImg rounded-circle">
                                                     </a>
                                                     <div class="media-body">
                                                         <h5 class="mb-0 f-12">
-                                                            <a href="" class="text-darkest-grey "><?=$birthday['name'];?></a>
+                                                            <a href="<?=ROOT;?>/employeedetails/<?=$birthday['id'];?>"
+                                                                class="text-darkest-grey "><?=$birthday['name'];?></a>
                                                         </h5>
                                                         <p class="mb-0 f-12 text-dark-grey">
                                                             <?=$birthday['designation'];?>
@@ -253,15 +245,13 @@
                             <div class="d-block text-capitalize">
                                 <h5 class="f-15 f-w-500 mb-20 text-darkest-grey"> Projects </h5>
                                 <div class="d-flex">
-                                    <a
-                                        href="http://localhost/script/public/account/projects?assignee=me&amp;status=in progress">
+                                    <a href="">
                                         <p class="mb-0 f-21 font-weight-bold text-blue d-grid mr-5">
                                             1<span class="f-12 font-weight-normal text-lightest">In Progress</span>
                                         </p>
                                     </a>
 
-                                    <a
-                                        href="http://localhost/script/public/account/projects?assignee=me&amp;status=overdue">
+                                    <a href="">
                                         <p class="mb-0 f-21 font-weight-bold text-red d-grid">
                                             0<span class="f-12 font-weight-normal text-lightest">Overdue</span>
                                         </p>
@@ -306,6 +296,47 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php if($tasks) {?>
+                                            <?php foreach($tasks as $task):?>
+                                            <tr>
+                                                <td class="pl-20">
+                                                    #<?=$task['id']?>
+                                                </td>
+                                                <td>
+                                                    <div class="media align-items-center">
+                                                        <div class="media-body">
+                                                            <h5 class="f-12 mb-1 text-darkest-grey"><a
+                                                                    href="<?=ROOT?>/taskdetails/<?=$task['id']?>"
+                                                                    class="openRightModal"><?=$task['heading'];?></a>
+                                                            </h5>
+                                                            <p class="mb-0">
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="pr-20">
+                                                    <?php if($task['board_column_slug'] == 'inprogress') {?>
+                                                    <span class="badge badge-pill badge-primary">In Progress</span>
+
+                                                    <?php } elseif($task['board_column_slug'] == 'completed') {?>
+                                                    <span class="badge badge-pill badge-success">Completed</span>
+                                                    <?php } elseif($task['board_column_slug'] == 'incomplete') {?>
+                                                    <span class="badge badge-pill badge-warning">incomplete</span>
+                                                    <?php } ?>
+                                                </td>
+                                                <td class="pr-20" align="right">
+                                                    <?php if($task['due_date']) {
+                                                        $diff = date_diff(date_create('now'), date_create($task['due_date']));
+                                                        if($diff->format('%R%a') < 0) {
+                                                            echo '<span class="badge badge-pill badge-danger">Overdue</span>';
+                                                        } else {
+                                                            echo '<span class="badge badge-pill badge-primary">'.$diff->format('%a days left').'</span>';
+                                                        }
+                                                    }?>
+                                                </td>
+                                            </tr>
+                                            <?php endforeach;?>
+                                            <?php } else { ?>
                                             <tr>
                                                 <td colspan="4" class="shadow-none">
                                                     <div
@@ -353,6 +384,7 @@
                                                     </div>
                                                 </td>
                                             </tr>
+                                            <?php } ?>
                                         </tbody>
                                     </table>
                                 </div>

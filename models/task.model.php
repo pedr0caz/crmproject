@@ -520,4 +520,51 @@ class Task extends Base
             return false;
         }
     }
+
+    public function getOwnTasks($id)
+    {
+        $query = $this->db->prepare("
+        SELECT  
+        tasks.id,
+        tasks.heading,
+        tasks.description,
+        tasks.due_date,
+        tasks.start_date,
+        tasks.project_id,
+        tasks.priority,
+        tasks.board_column_id,
+        tasks.added_by,
+        tasks.task_category_id,
+        tasks.created_at,
+        tasks.created_by,
+        tasks.updated_at,
+    
+        task_category.category_name as task_category_name,
+
+        task_category.id as task_category_id,
+     
+
+
+
+        taskboard_columns.column_name as board_column_name,
+        taskboard_columns.slug as board_column_slug,
+        taskboard_columns.label_color as board_column_color,
+        taskboard_columns.id as board_column_id
+       
+ 
+    FROM tasks
+    LEFT JOIN task_category ON tasks.task_category_id =  task_category.id
+
+    LEFT JOIN taskboard_columns ON tasks.board_column_id =  taskboard_columns.id
+
+    WHERE tasks.id IN (
+        SELECT task_id
+        FROM task_users
+        WHERE user_id = ?
+    ) AND tasks.board_column_id IN ( 1, 3 )
+    ORDER BY tasks.id DESC;
+        ");
+        $query->execute([$id]);
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
