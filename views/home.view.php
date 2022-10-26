@@ -15,7 +15,8 @@
         <div class="d-lg-flex d-md-flex d-block py-4">
             <!-- WELOCOME NAME START -->
             <div class="">
-                <h4 class=" mb-0 f-21 text-capitalize font-weight-bold">Welcome <?=$_SESSION['user_name'];?>
+                <h4 class=" mb-0 f-21 text-capitalize font-weight-bold">Welcome
+                    <?=$_SESSION['user_name'];?>
                 </h4>
             </div>
             <!-- WELOCOME NAME END -->
@@ -131,16 +132,7 @@
                                                 </div>
                                             </td>
                                             <td class="pr-20"><span class="badge badge-secondary p-2">
-                                                    <svg class="svg-inline--fa fa-birthday-cake fa-w-14"
-                                                        aria-hidden="true" focusable="false" data-prefix="fa"
-                                                        data-icon="birthday-cake" role="img"
-                                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
-                                                        data-fa-i2svg="">
-                                                        <path fill="currentColor"
-                                                            d="M448 384c-28.02 0-31.26-32-74.5-32-43.43 0-46.825 32-74.75 32-27.695 0-31.454-32-74.75-32-42.842 0-47.218 32-74.5 32-28.148 0-31.202-32-74.75-32-43.547 0-46.653 32-74.75 32v-80c0-26.5 21.5-48 48-48h16V112h64v144h64V112h64v144h64V112h64v144h16c26.5 0 48 21.5 48 48v80zm0 128H0v-96c43.356 0 46.767-32 74.75-32 27.951 0 31.253 32 74.75 32 42.843 0 47.217-32 74.5-32 28.148 0 31.201 32 74.75 32 43.357 0 46.767-32 74.75-32 27.488 0 31.252 32 74.5 32v96zM96 96c-17.75 0-32-14.25-32-32 0-31 32-23 32-64 12 0 32 29.5 32 56s-14.25 40-32 40zm128 0c-17.75 0-32-14.25-32-32 0-31 32-23 32-64 12 0 32 29.5 32 56s-14.25 40-32 40zm128 0c-17.75 0-32-14.25-32-32 0-31 32-23 32-64 12 0 32 29.5 32 56s-14.25 40-32 40z">
-                                                        </path>
-                                                    </svg>
-                                                    <!-- <i class="fa fa-birthday-cake"></i> Font Awesome fontawesome.com -->
+                                                    <i class="bi bi-lightbulb"></i>
                                                     <?=date('d', strtotime($birthday['date_of_birth']))?>
                                                     <?=date('M', strtotime($birthday['date_of_birth']))?></span>
                                             </td>
@@ -174,14 +166,21 @@
                             <!-- NOTICE DETAIL START -->
                             <div class="b-shadow-4 cal-info scroll ps" data-menu-vertical="1" data-menu-scroll="1"
                                 data-menu-dropdown-timeout="500" id="empDashNotice" style="overflow: hidden;">
+                                <?php if(empty($notices)) : ?>
+                                <div class="p-20">
+                                    <p class="mb-0 f-14 f-w-500">No Notice Found</p>
+                                </div>
+                                <?php endif; ?>
                                 <?php foreach($notices as $notice):
                                         
                                     ?>
                                 <div class="card border-0 b-shadow-4 p-20 rounded-0">
                                     <div class="card-horizontal">
                                         <div class="card-header m-0 p-0 bg-white rounded">
-                                            <span class="f-12 p-1 "> <?=date('M', strtotime($notice['created_at']))?></span>
-                                            <span class="f-13 f-w-500 rounded-bottom"><?=date('d', strtotime($notice['created_at']))?></span>
+                                            <span class="f-12 p-1 ">
+                                                <?=date('M', strtotime($notice['created_at']))?></span>
+                                            <span
+                                                class="f-13 f-w-500 rounded-bottom"><?=date('d', strtotime($notice['created_at']))?></span>
                                         </div>
 
                                         <div class="card-body border-0 p-0 ml-3">
@@ -228,14 +227,9 @@
                                 </div>
                             </div>
                             <div class="d-block">
-                                <svg class="svg-inline--fa fa-list fa-w-16 text-lightest f-27" aria-hidden="true"
-                                    focusable="false" data-prefix="fa" data-icon="list" role="img"
-                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
-                                    <path fill="currentColor"
-                                        d="M80 368H16a16 16 0 0 0-16 16v64a16 16 0 0 0 16 16h64a16 16 0 0 0 16-16v-64a16 16 0 0 0-16-16zm0-320H16A16 16 0 0 0 0 64v64a16 16 0 0 0 16 16h64a16 16 0 0 0 16-16V64a16 16 0 0 0-16-16zm0 160H16a16 16 0 0 0-16 16v64a16 16 0 0 0 16 16h64a16 16 0 0 0 16-16v-64a16 16 0 0 0-16-16zm416 176H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-320H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0 160H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z">
-                                    </path>
-                                </svg>
-                                <!-- <i class="fa fa-list text-lightest f-27"></i> Font Awesome fontawesome.com -->
+
+                                <i class="bi bi-list text-lightest f-27"></i>
+
                             </div>
                         </div>
                     </div>
@@ -259,14 +253,7 @@
                                 </div>
                             </div>
                             <div class="d-block">
-                                <svg class="svg-inline--fa fa-layer-group fa-w-16 text-lightest f-27" aria-hidden="true"
-                                    focusable="false" data-prefix="fa" data-icon="layer-group" role="img"
-                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
-                                    <path fill="currentColor"
-                                        d="M12.41 148.02l232.94 105.67c6.8 3.09 14.49 3.09 21.29 0l232.94-105.67c16.55-7.51 16.55-32.52 0-40.03L266.65 2.31a25.607 25.607 0 0 0-21.29 0L12.41 107.98c-16.55 7.51-16.55 32.53 0 40.04zm487.18 88.28l-58.09-26.33-161.64 73.27c-7.56 3.43-15.59 5.17-23.86 5.17s-16.29-1.74-23.86-5.17L70.51 209.97l-58.1 26.33c-16.55 7.5-16.55 32.5 0 40l232.94 105.59c6.8 3.08 14.49 3.08 21.29 0L499.59 276.3c16.55-7.5 16.55-32.5 0-40zm0 127.8l-57.87-26.23-161.86 73.37c-7.56 3.43-15.59 5.17-23.86 5.17s-16.29-1.74-23.86-5.17L70.29 337.87 12.41 364.1c-16.55 7.5-16.55 32.5 0 40l232.94 105.59c6.8 3.08 14.49 3.08 21.29 0L499.59 404.1c16.55-7.5 16.55-32.5 0-40z">
-                                    </path>
-                                </svg>
-                                <!-- <i class="fa fa-layer-group text-lightest f-27"></i> Font Awesome fontawesome.com -->
+                                <i class="bi bi-stack text-lightest f-27"></i>
                             </div>
                         </div>
                     </div>
@@ -341,43 +328,7 @@
                                                 <td colspan="4" class="shadow-none">
                                                     <div
                                                         class="align-items-center d-flex flex-column text-lightest p-20 w-100">
-                                                        <svg class="svg-inline--fa fa-task fa-w-16 f-21 w-100"
-                                                            aria-hidden="true" focusable="false" data-prefix="fa"
-                                                            data-icon="task" role="img"
-                                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
-                                                            data-fa-i2svg="">
-                                                            <g>
-                                                                <path fill="currentColor"
-                                                                    d="M156.5,447.7l-12.6,29.5c-18.7-9.5-35.9-21.2-51.5-34.9l22.7-22.7C127.6,430.5,141.5,440,156.5,447.7z M40.6,272H8.5 c1.4,21.2,5.4,41.7,11.7,61.1L50,321.2C45.1,305.5,41.8,289,40.6,272z M40.6,240c1.4-18.8,5.2-37,11.1-54.1l-29.5-12.6 C14.7,194.3,10,216.7,8.5,240H40.6z M64.3,156.5c7.8-14.9,17.2-28.8,28.1-41.5L69.7,92.3c-13.7,15.6-25.5,32.8-34.9,51.5 L64.3,156.5z M397,419.6c-13.9,12-29.4,22.3-46.1,30.4l11.9,29.8c20.7-9.9,39.8-22.6,56.9-37.6L397,419.6z M115,92.4 c13.9-12,29.4-22.3,46.1-30.4l-11.9-29.8c-20.7,9.9-39.8,22.6-56.8,37.6L115,92.4z M447.7,355.5c-7.8,14.9-17.2,28.8-28.1,41.5 l22.7,22.7c13.7-15.6,25.5-32.9,34.9-51.5L447.7,355.5z M471.4,272c-1.4,18.8-5.2,37-11.1,54.1l29.5,12.6 c7.5-21.1,12.2-43.5,13.6-66.8H471.4z M321.2,462c-15.7,5-32.2,8.2-49.2,9.4v32.1c21.2-1.4,41.7-5.4,61.1-11.7L321.2,462z M240,471.4c-18.8-1.4-37-5.2-54.1-11.1l-12.6,29.5c21.1,7.5,43.5,12.2,66.8,13.6V471.4z M462,190.8c5,15.7,8.2,32.2,9.4,49.2h32.1 c-1.4-21.2-5.4-41.7-11.7-61.1L462,190.8z M92.4,397c-12-13.9-22.3-29.4-30.4-46.1l-29.8,11.9c9.9,20.7,22.6,39.8,37.6,56.9 L92.4,397z M272,40.6c18.8,1.4,36.9,5.2,54.1,11.1l12.6-29.5C317.7,14.7,295.3,10,272,8.5V40.6z M190.8,50 c15.7-5,32.2-8.2,49.2-9.4V8.5c-21.2,1.4-41.7,5.4-61.1,11.7L190.8,50z M442.3,92.3L419.6,115c12,13.9,22.3,29.4,30.5,46.1 l29.8-11.9C470,128.5,457.3,109.4,442.3,92.3z M397,92.4l22.7-22.7c-15.6-13.7-32.8-25.5-51.5-34.9l-12.6,29.5 C370.4,72.1,384.4,81.5,397,92.4z">
-                                                                </path>
-                                                                <circle fill="currentColor" cx="256" cy="364" r="28">
-                                                                    <animate attributeType="XML"
-                                                                        repeatCount="indefinite" dur="2s"
-                                                                        attributeName="r" values="28;14;28;28;14;28;">
-                                                                    </animate>
-                                                                    <animate attributeType="XML"
-                                                                        repeatCount="indefinite" dur="2s"
-                                                                        attributeName="opacity" values="1;0;1;1;0;1;">
-                                                                    </animate>
-                                                                </circle>
-                                                                <path fill="currentColor" opacity="1"
-                                                                    d="M263.7,312h-16c-6.6,0-12-5.4-12-12c0-71,77.4-63.9,77.4-107.8c0-20-17.8-40.2-57.4-40.2c-29.1,0-44.3,9.6-59.2,28.7 c-3.9,5-11.1,6-16.2,2.4l-13.1-9.2c-5.6-3.9-6.9-11.8-2.6-17.2c21.2-27.2,46.4-44.7,91.2-44.7c52.3,0,97.4,29.8,97.4,80.2 c0,67.6-77.4,63.5-77.4,107.8C275.7,306.6,270.3,312,263.7,312z">
-                                                                    <animate attributeType="XML"
-                                                                        repeatCount="indefinite" dur="2s"
-                                                                        attributeName="opacity" values="1;0;0;0;0;1;">
-                                                                    </animate>
-                                                                </path>
-                                                                <path fill="currentColor" opacity="0"
-                                                                    d="M232.5,134.5l7,168c0.3,6.4,5.6,11.5,12,11.5h9c6.4,0,11.7-5.1,12-11.5l7-168c0.3-6.8-5.2-12.5-12-12.5h-23 C237.7,122,232.2,127.7,232.5,134.5z">
-                                                                    <animate attributeType="XML"
-                                                                        repeatCount="indefinite" dur="2s"
-                                                                        attributeName="opacity" values="0;0;1;1;0;0;">
-                                                                    </animate>
-                                                                </path>
-                                                            </g>
-                                                        </svg>
-                                                        <!-- <i class="fa fa-task f-21 w-100"></i> Font Awesome fontawesome.com -->
-
+                                                        <i class="bi bi-exclamation-circle f-50"></i>
                                                         <div class="f-15 mt-4">
                                                             - No record found. -
                                                         </div>
@@ -407,3 +358,4 @@
 
 </section>
 <?php require_once("layout/footer.php");
+?>

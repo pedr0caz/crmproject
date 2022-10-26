@@ -44,6 +44,8 @@ class Client extends Base
                 u.name,
                 u.email,
                 u.mobile,
+                u.image,
+                u.last_login,
                 u.gender,
                 c.company_name,
                 c.address,
@@ -80,25 +82,116 @@ class Client extends Base
         }
     }
 
-    public function newClient($data)
+    public function newClient($data, $file)
     {
         $query = $this->db->prepare("
-            INSERT INTO client_details (client_id, company_name, address, postal_code, state, city, office, website, note, category_id, sub_category_id)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ");
-        $query->execute([
-            $data["client_id"],
-            $data["company_name"],
-            $data["address"],
-            $data["postal_code"],
-            $data["state"],
-            $data["city"],
-            $data["office"],
-            $data["website"],
-            $data["note"],
-            $data["category_id"],
-            $data["sub_category_id"]
+            INSERT INTO users (name, email, password, mobile, gender, login, image, country_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        $result = $query->execute([
+            $data['name'],
+            $data['email'],
+            password_hash($data['password'], PASSWORD_DEFAULT),
+            $data['mobile'],
+            $data['gender'],
+            $data['login'],
+            $file,
+            $data['country_id']
         ]);
-        return $this->db->lastInsertId();
+        if ($result) {
+            $user_id = $this->db->lastInsertId();
+            $query = $this->db->prepare("
+                INSERT INTO client_details (user_id, company_name, address, postal_code, state, city, office, website, note, category_id, added_by, gst_number)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $result = $query->execute([
+                $user_id,
+                $data['company_name'],
+                $data['address'],
+                $data['postal_code'],
+                $data['state'],
+                $data['city'],
+                $data['office'],
+                $data['website'],
+                $data['note'],
+                $data['category_id'],
+                $_SESSION['user_id'],
+                $data['gst_number']
+
+            ]);
+            if ($result) {
+                return [
+                    'status' => true,
+                    'message' => 'Client added successfully',
+                    'id' => $this->db->lastInsertId()
+                ];
+            }
+        } else {
+            return [
+                'status' => false,
+                'message' => 'Client already exists'
+            ];
+        }
+    }
+
+    public function newCategory($name)
+    {
+        $query = $this->db->prepare("
+            INSERT INTO client_categories (category_name)
+            VALUES (?)
+        ");
+        $result = $query->execute([$name]);
+        if ($result) {
+            return $this->db->lastInsertId();
+        } else {
+            return false;
+        }
+    }
+
+    public function editCategory($id, $name)
+    {
+        $query = $this->db->prepare("
+            UPDATE client_categories
+            SET category_name = ?
+            WHERE id = ?
+        ");
+        $result = $query->execute([$name, $id]);
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function deleteCategory($id)
+    {
+        $query = $this->db->prepare("
+            DELETE FROM client_categories
+            WHERE id = ?
+        ");
+        $result = $query->execute([$id]);
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function getCategories()
+    {
+        $query = $this->db->prepare("
+            SELECT id, category_name AS name
+            FROM client_categories
+        ");
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getCountries()
+    {
+        $query = $this->db->prepare("
+            SELECT id, name, nicename
+            FROM countries
+        ");
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 }

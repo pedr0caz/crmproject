@@ -19,7 +19,8 @@ require_once("layout/navbar.php");
                             <div class="row">
                                 <div class="col-lg-8 col-10">
 
-                                    <h3 class="heading-h1 mb-3"><?=$task['heading'];?>
+                                    <h3 class="heading-h1 mb-3">
+                                        <?=$task['heading'];?>
                                     </h3>
 
 
@@ -30,14 +31,7 @@ require_once("layout/navbar.php");
                                             class="btn btn-lg f-14 px-2 py-1 text-dark-grey text-capitalize rounded  dropdown-toggle"
                                             type="button" data-toggle="dropdown" aria-haspopup="true"
                                             aria-expanded="false">
-                                            <svg class="svg-inline--fa fa-ellipsis-h fa-w-16" aria-hidden="true"
-                                                focusable="false" data-prefix="fa" data-icon="ellipsis-h" role="img"
-                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
-                                                data-fa-i2svg="">
-                                                <path fill="currentColor"
-                                                    d="M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z">
-                                                </path>
-                                            </svg><!-- <i class="fa fa-ellipsis-h"></i> Font Awesome fontawesome.com -->
+                                            <i class="bi bi-three-dots-vertical"></i>
                                         </button>
 
                                         <div class="dropdown-menu dropdown-menu-right border-grey rounded b-shadow-4 p-0"
@@ -76,31 +70,13 @@ require_once("layout/navbar.php");
                                     <!-- <i class="fa fa-circle mr-1 text-red f-10"></i> Font Awesome fontawesome.com -->
                                     <?php
                                     if ($task['task_priority'] == "low") {
-                                        echo '<svg class="svg-inline--fa fa-circle fa-w-16 mr-2 text-green f-10" aria-hidden="true"
-                                        focusable="false" data-prefix="fa" data-icon="circle" role="img"
-                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
-                                        <path fill="currentColor"
-                                            d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z">
-                                        </path>
-                                    </svg>';
+                                        echo '<i class="bi bi-circle-fill mr-1 text-green f-10"></i>';
                                         echo 'Low';
                                     } elseif ($task['task_priority'] == "medium") {
-                                        echo '<svg class="svg-inline--fa fa-circle fa-w-16 mr-2 text-yellow  f-10" aria-hidden="true"
-                                        focusable="false" data-prefix="fa" data-icon="circle" role="img"
-                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
-                                        <path fill="currentColor"
-                                            d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z">
-                                        </path>
-                                    </svg>';
+                                        echo '<i class="bi bi-circle-fill mr-1 text-yellow f-10"></i>';
                                         echo 'Medium';
                                     } elseif ($task['task_priority'] == "high") {
-                                        echo '<svg class="svg-inline--fa fa-circle fa-w-16 mr-2 text-red f-10" aria-hidden="true"
-                                        focusable="false" data-prefix="fa" data-icon="circle" role="img"
-                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
-                                        <path fill="currentColor"
-                                            d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z">
-                                        </path>
-                                    </svg>';
+                                        echo '<i class="bi bi-circle-fill mr-1 text-red f-10"></i>';
                                         echo 'High';
                                     }
 ?>
@@ -158,7 +134,8 @@ require_once("layout/navbar.php");
 
                             <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
                                 <p class="mb-0 text-lightest f-14 w-30 text-capitalize">Task category</p>
-                                <div class="mb-0 text-dark-grey f-14 w-70 text-wrap ql-editor p-0"><?=$task['category_name']?>
+                                <div class="mb-0 text-dark-grey f-14 w-70 text-wrap ql-editor p-0">
+                                    <?=$task['category_name']?>
                                 </div>
                             </div>
                             <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
@@ -258,20 +235,7 @@ require_once("layout/navbar.php");
                                                                     data-label="true" for="employee_file">Upload File
                                                                     <sup class="f-14 mr-1">*</sup>
 
-                                                                    <svg class="svg-inline--fa fa-question-circle fa-w-16"
-                                                                        data-toggle="popover" data-placement="top"
-                                                                        data-content="only .txt, .pdf, .doc, .xls, .xlsx, .docx, .rtf, .png, .jpg, .jpeg formats are allowed."
-                                                                        data-html="true" data-trigger="hover"
-                                                                        aria-hidden="true" focusable="false"
-                                                                        data-prefix="fa" data-icon="question-circle"
-                                                                        role="img" xmlns="http://www.w3.org/2000/svg"
-                                                                        viewBox="0 0 512 512" data-fa-i2svg=""
-                                                                        data-original-title="" title="">
-                                                                        <path fill="currentColor"
-                                                                            d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z">
-                                                                        </path>
-                                                                    </svg>
-                                                                    <!-- <i class="fa fa-question-circle" data-toggle="popover" data-placement="top" data-content="only .txt, .pdf, .doc, .xls, .xlsx, .docx, .rtf, .png, .jpg, .jpeg formats are allowed." data-html="true" data-trigger="hover"></i> Font Awesome fontawesome.com -->
+                                                                    <i class="bi bi-question-circle-fill"></i>
                                                                 </label>
 
                                                                 <input type="file" id="input-file-now"
@@ -290,16 +254,7 @@ require_once("layout/navbar.php");
                                                                 <button type="button"
                                                                     class="btn-primary rounded f-14 p-2"
                                                                     id="submit-document">
-                                                                    <svg class="svg-inline--fa fa-check fa-w-16 mr-1"
-                                                                        aria-hidden="true" focusable="false"
-                                                                        data-prefix="fa" data-icon="check" role="img"
-                                                                        xmlns="http://www.w3.org/2000/svg"
-                                                                        viewBox="0 0 512 512" data-fa-i2svg="">
-                                                                        <path fill="currentColor"
-                                                                            d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z">
-                                                                        </path>
-                                                                    </svg>
-                                                                    <!-- <i class="fa fa-check mr-1"></i> Font Awesome fontawesome.com -->
+                                                                    <i class="bi bi-check mr-2"></i>
                                                                     Submit
                                                                 </button>
 
@@ -332,13 +287,13 @@ require_once("layout/navbar.php");
                                                                     $fileE = explode('.', $file['filename']);
                                                         $extension = ltrim($fileE[count($fileE) - 1]);
                                                         if($extension == 'pdf') {
-                                                            $img = '<svg class="svg-inline--fa fa-file-pdf fa-w-12 text-lightest" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="file-pdf" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" data-fa-i2svg=""><path fill="currentColor" d="M181.9 256.1c-5-16-4.9-46.9-2-46.9 8.4 0 7.6 36.9 2 46.9zm-1.7 47.2c-7.7 20.2-17.3 43.3-28.4 62.7 18.3-7 39-17.2 62.9-21.9-12.7-9.6-24.9-23.4-34.5-40.8zM86.1 428.1c0 .8 13.2-5.4 34.9-40.2-6.7 6.3-29.1 24.5-34.9 40.2zM248 160h136v328c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V24C0 10.7 10.7 0 24 0h200v136c0 13.2 10.8 24 24 24zm-8 171.8c-20-12.2-33.3-29-42.7-53.8 4.5-18.5 11.6-46.6 6.2-64.2-4.7-29.4-42.4-26.5-47.8-6.8-5 18.3-.4 44.1 8.1 77-11.6 27.6-28.7 64.6-40.8 85.8-.1 0-.1.1-.2.1-27.1 13.9-73.6 44.5-54.5 68 5.6 6.9 16 10 21.5 10 17.9 0 35.7-18 61.1-61.8 25.8-8.5 54.1-19.1 79-23.2 21.7 11.8 47.1 19.5 64 19.5 29.2 0 31.2-32 19.7-43.4-13.9-13.6-54.3-9.7-73.6-7.2zM377 105L279 7c-4.5-4.5-10.6-7-17-7h-6v128h128v-6.1c0-6.3-2.5-12.4-7-16.9zm-74.1 255.3c4.1-2.7-2.5-11.9-42.8-9 37.1 15.8 42.8 9 42.8 9z"></path></svg>';
+                                                            $img = ' <i class="bi bi-file-pdf mr-2 text-lightest" style="font-size: 16px;"></i>';
                                                         } elseif($extension == 'docx') {
-                                                            $img = '<svg class="svg-inline--fa fa-file-word fa-w-12 text-lightest" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="file-word" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" data-fa-i2svg=""><path fill="currentColor" d="M377.9 105l-98-98c-4.5-4.5-10.6-7-17-7h-6v128h128v-6.1c0-6.4-2.5-12.5-7-17zm-74.1 255.3c4.1-2.7-2.5-11.9-42.8-9 37.1 15.8 42.8 9 42.8 9zM248 160h136v328c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V24C0 10.7 10.7 0 24 0h200v136c0 13.2 10.8 24 24 24zm-8 171.8c-20-12.2-33.3-29-42.7-53.8 4.5-18.5 11.6-46.6 6.2-64.2-4.7-29.4-42.4-26.5-47.8-6.8-5 18.3-.4 44.1 8.1 77-11.6 27.6-28.7 64.6-40.8 85.8-.1 0-.1.1-.2.1-27.1 13.9-73.6 44.5-54.5 68 5.6 6.9 16 10 21.5 10 17.9 0 35.7-18 61.1-61.8 25.8-8.5 54.1-19.1 79-23.2 21.7 11.8 47.1 19.5 64 19.5 29.2 0 31.2-32 19.7-43.4-13.9-13.6-54.3-9.7-73.6-7.2z"></path></svg>';
+                                                            $img = ' <i class="bi bi-filetype-docx mr-2 text-lightest" style="font-size: 16px;"></i>';
                                                         } elseif($extension == 'jpg' || $extension == 'jpeg' || $extension == 'png' || $extension == 'gif') {
                                                             $img = '<img src="'.ROOT.'/'.$file["filename"].'">';
                                                         } else {
-                                                            $img = '<svg class="svg-inline--fa fa-file-pdf fa-w-12 text-lightest" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="file-pdf" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" data-fa-i2svg=""><path fill="currentColor" d="M181.9 256.1c-5-16-4.9-46.9-2-46.9 8.4 0 7.6 36.9 2 46.9zm-1.7 47.2c-7.7 20.2-17.3 43.3-28.4 62.7 18.3-7 39-17.2 62.9-21.9-12.7-9.6-24.9-23.4-34.5-40.8zM86.1 428.1c0 .8 13.2-5.4 34.9-40.2-6.7 6.3-29.1 24.5-34.9 40.2zM248 160h136v328c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V24C0 10.7 10.7 0 24 0h200v136c0 13.2 10.8 24 24 24zm-8 171.8c-20-12.2-33.3-29-42.7-53.8 4.5-18.5 11.6-46.6 6.2-64.2-4.7-29.4-42.4-26.5-47.8-6.8-5 18.3-.4 44.1 8.1 77-11.6 27.6-28.7 64.6-40.8 85.8-.1 0-.1.1-.2.1-27.1 13.9-73.6 44.5-54.5 68 5.6 6.9 16 10 21.5 10 17.9 0 35.7-18 61.1-61.8 25.8-8.5 54.1-19.1 79-23.2 21.7 11.8 47.1 19.5 64 19.5 29.2 0 31.2-32 19.7-43.4-13.9-13.6-54.3-9.7-73.6-7.2zM377 105L279 7c-4.5-4.5-10.6-7-17-7h-6v128h128v-6.1c0-6.3-2.5-12.4-7-16.9zm-74.1 255.3c4.1-2.7-2.5-11.9-42.8-9 37.1 15.8 42.8 9 42.8 9z"></path></svg>';
+                                                            $img = ' <i class="bi bi-file-earmark mr-2 text-lightest" style="font-size: 16px;"></i>';
                                                         }
                                                         ?>
                                                                 <?=$img?>
@@ -347,24 +302,15 @@ require_once("layout/navbar.php");
                                                                 <div class="d-flex flex-grow-1">
                                                                     <h4 class="card-title f-12 text-dark-grey mr-3 text-truncate"
                                                                         data-toggle="tooltip"
-                                                                        data-original-title="asdsad"><?=$file['name']?>
+                                                                        data-original-title="asdsad">
+                                                                        <?=$file['name']?>
                                                                     </h4>
                                                                     <div class="dropdown ml-auto file-action">
                                                                         <button
                                                                             class="btn btn-lg f-14 p-0 text-lightest text-capitalize rounded  dropdown-toggle"
                                                                             type="button" data-toggle="dropdown"
                                                                             aria-haspopup="true" aria-expanded="false">
-                                                                            <svg class="svg-inline--fa fa-ellipsis-h fa-w-16"
-                                                                                aria-hidden="true" focusable="false"
-                                                                                data-prefix="fa" data-icon="ellipsis-h"
-                                                                                role="img"
-                                                                                xmlns="http://www.w3.org/2000/svg"
-                                                                                viewBox="0 0 512 512" data-fa-i2svg="">
-                                                                                <path fill="currentColor"
-                                                                                    d="M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z">
-                                                                                </path>
-                                                                            </svg>
-                                                                            <!-- <i class="fa fa-ellipsis-h"></i> Font Awesome fontawesome.com -->
+                                                                            <i class="bi bi-three-dots-vertical"></i>
                                                                         </button>
 
                                                                         <div class="dropdown-menu dropdown-menu-right border-grey rounded b-shadow-4 p-0"
@@ -430,16 +376,7 @@ require_once("layout/navbar.php");
                                                     </a>
                                                     <button type="button" class="btn-primary rounded f-14 p-2"
                                                         id="submit-comment">
-                                                        <svg class="svg-inline--fa fa-location-arrow fa-w-16 mr-1"
-                                                            aria-hidden="true" focusable="false" data-prefix="fa"
-                                                            data-icon="location-arrow" role="img"
-                                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
-                                                            data-fa-i2svg="">
-                                                            <path fill="currentColor"
-                                                                d="M444.52 3.52L28.74 195.42c-47.97 22.39-31.98 92.75 19.19 92.75h175.91v175.91c0 51.17 70.36 67.17 92.75 19.19l191.9-415.78c15.99-38.39-25.59-79.97-63.97-63.97z">
-                                                            </path>
-                                                        </svg>
-                                                        <!-- <i class="fa fa-location-arrow mr-1"></i> Font Awesome fontawesome.com -->
+                                                        <i class="bi bi-check mr-2"></i>Save
                                                         Submit
                                                     </button>
 
@@ -459,7 +396,8 @@ require_once("layout/navbar.php");
                                                     </div>
                                                     <div class="card-body border-0 pl-0 py-1">
                                                         <div class="d-flex flex-grow-1">
-                                                            <h4 class="card-title f-15 f-w-500 text-dark mr-3"><?=$comment['user_name']?>
+                                                            <h4 class="card-title f-15 f-w-500 text-dark mr-3">
+                                                                <?=$comment['user_name']?>
 
                                                             </h4>
                                                             <p class="card-date f-11 text-lightest mb-0">
@@ -484,16 +422,7 @@ require_once("layout/navbar.php");
                                                                     class="btn btn-lg f-14 p-0 text-lightest text-capitalize rounded  dropdown-toggle"
                                                                     type="button" data-toggle="dropdown"
                                                                     aria-haspopup="true" aria-expanded="false">
-                                                                    <svg class="svg-inline--fa fa-ellipsis-h fa-w-16"
-                                                                        aria-hidden="true" focusable="false"
-                                                                        data-prefix="fa" data-icon="ellipsis-h"
-                                                                        role="img" xmlns="http://www.w3.org/2000/svg"
-                                                                        viewBox="0 0 512 512" data-fa-i2svg="">
-                                                                        <path fill="currentColor"
-                                                                            d="M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z">
-                                                                        </path>
-                                                                    </svg>
-                                                                    <!-- <i class="fa fa-ellipsis-h"></i> Font Awesome fontawesome.com -->
+                                                                    <i class="bi bi-three-dots-vertical"></i>
                                                                 </button>
 
                                                                 <div class="dropdown-menu dropdown-menu-right border-grey rounded b-shadow-4 p-0"
@@ -946,3 +875,4 @@ if($deadline > date('Y-m-d')) {
 
 <?php
 require_once("layout/footer.php");
+?>

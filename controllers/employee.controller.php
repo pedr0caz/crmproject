@@ -9,6 +9,8 @@ if (!isset($_SESSION["user_id"])) {
         $modelEmployee = new Employee();
         $employees = $modelEmployee->getEmployees();
         $roles = $modelEmployee->getRoles();
+        $designations = $modelEmployee->getDesignations();
+        $departments = $modelEmployee->getDepartments();
         $title = "Employee List";
         require("views/employee.view.php");
     } else {

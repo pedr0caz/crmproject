@@ -24,14 +24,7 @@
                                             class="btn btn-lg f-14 px-2 py-1 text-dark-grey text-capitalize rounded  dropdown-toggle"
                                             type="button" data-toggle="dropdown" aria-haspopup="true"
                                             aria-expanded="false">
-                                            <svg class="svg-inline--fa fa-ellipsis-h fa-w-16" aria-hidden="true"
-                                                focusable="false" data-prefix="fa" data-icon="ellipsis-h" role="img"
-                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
-                                                data-fa-i2svg="">
-                                                <path fill="currentColor"
-                                                    d="M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z">
-                                                </path>
-                                            </svg><!-- <i class="fa fa-ellipsis-h"></i> Font Awesome fontawesome.com -->
+                                            <i class="bi bi-three-dots-vertical"></i>
                                         </button>
 
                                         <div class="dropdown-menu dropdown-menu-right border-grey rounded b-shadow-4 p-0"
@@ -87,3 +80,4 @@
 
 </section>
 <?php require_once("layout/footer.php");
+?>

@@ -1,6 +1,12 @@
 <?php
 
 
+if (empty($id) || !is_numeric($id)) {
+    http_response_code(400);
+    $title = "Bad Request";
+    require("views/error400.view.php");
+    exit;
+}
 
 if (!isset($_SESSION["user_id"])) {
     header("Location: " . ROOT . "/login");
@@ -10,13 +16,22 @@ if (!isset($_SESSION["user_id"])) {
         require("models/project.model.php");
         require("models/client.model.php");
         $projectsModel = new Project();
+        $getProject = $projectsModel->getProject($id);
+        $teams = json_decode($getProject['teams_id'], true);
+        if (empty($getProject)) {
+            http_response_code(404);
+            $title = "Not found";
+            require("views/error404.view.php");
+            exit;
+        }
+
         $client = new Client();
         $projectCategory = $projectsModel->getProjectCategory();
         $clients = $client->getClients();
        
         $departments = $projectsModel->getDepartments();
         
-        if (isset($id) && $id != null && $id == "save" && $_SERVER["REQUEST_METHOD"] == "POST") {
+        if (isset($id) && $id != null && $_SERVER["REQUEST_METHOD"] == "POST" && isset($_GET['submit'])) {
             if (isset($_POST["project_name"]) && mb_strlen($_POST["project_name"]) > 0 &&
                 isset($_POST["category_id"]) && is_numeric($_POST["category_id"]) &&
                 isset($_POST["client_id"]) && is_numeric($_POST["client_id"]) &&
@@ -24,11 +39,11 @@ if (!isset($_SESSION["user_id"])) {
                 isset($_POST["deadline"]) && mb_strlen($_POST["deadline"]) > 0 &&
                 isset($_POST["team_id"]) &&
                 isset($_POST["project_description"]) && mb_strlen($_POST["project_description"]) > 0) {
-                $project = $projectsModel->newProject($_POST);
+                $project = $projectsModel->editProject($id, $_POST);
              
                 if ($project["status"]) {
                     header('Content-Type: application/json; charset=utf-8');
-                    echo json_encode(['status' => 'success', 'message' => 'Project added successfully', 'id' => $project["id"]]);
+                    echo json_encode(['status' => 'success', 'message' => 'Project changed successfully', 'id' => $project["id"]]);
                 } else {
                     header('Content-Type: application/json; charset=utf-8');
                     echo json_encode(['status' => 'error', 'message' => $project["message"]]);
@@ -68,8 +83,8 @@ if (!isset($_SESSION["user_id"])) {
                 }
             }
         } else {
-            $title = "Add Project";
-            require("views/addproject.view.php");
+            $title = "Edit Project";
+            require("views/editproject.view.php");
         }
     } else {
         header("Location: " . ROOT . "");

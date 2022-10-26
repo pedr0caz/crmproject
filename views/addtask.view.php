@@ -175,14 +175,7 @@
                         <div class="w-100 border-top-grey d-block d-lg-flex d-md-flex justify-content-start px-4 py-3">
                             <button type="button" name="submit" class="btn-primary rounded f-14 p-2 mr-3"
                                 id="save-task-form">
-                                <svg class="svg-inline--fa fa-check fa-w-16 mr-1" aria-hidden="true" focusable="false"
-                                    data-prefix="fa" data-icon="check" role="img" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 512 512" data-fa-i2svg="">
-                                    <path fill="currentColor"
-                                        d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z">
-                                    </path>
-                                </svg>
-                                <!-- <i class="fa fa-check mr-1"></i> Font Awesome fontawesome.com -->
+                                <i class="bi bi-save mr-2"></i>Save
                                 Save
                             </button>
                             <a href="http://localhost/script/public/account/tasks"
@@ -330,18 +323,13 @@ require_once("layout/footer.php");
                                 <td><?=$category['id']?>
                                 </td>
                                 <td data-row-id="<?=$category['id'];?>"
-                                    contenteditable="true"><?=$category['category_name']?>
+                                    contenteditable="true">
+                                    <?=$category['category_name']?>
                                 </td>
                                 <td class="text-right">
                                     <button type="button" class="btn-secondary rounded f-14 p-2 delete-category"
                                         data-cat-id="<?=$category['id']?>">
-                                        <svg class="svg-inline--fa fa-trash fa-w-14 mr-1" aria-hidden="true"
-                                            focusable="false" data-prefix="fa" data-icon="trash" role="img"
-                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="">
-                                            <path fill="currentColor"
-                                                d="M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z">
-                                            </path>
-                                        </svg><!-- <i class="fa fa-trash mr-1"></i> Font Awesome fontawesome.com -->
+                                        <i class="bi bi-trash-fill mr-1"></i>
                                         Delete
                                     </button>
                                 </td>
@@ -378,13 +366,7 @@ require_once("layout/footer.php");
                         Close
                     </a>
                     <button type="button" class="btn-primary rounded f-14 p-2" id="save-category">
-                        <svg class="svg-inline--fa fa-check fa-w-16 mr-1" aria-hidden="true" focusable="false"
-                            data-prefix="fa" data-icon="check" role="img" xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 512 512" data-fa-i2svg="">
-                            <path fill="currentColor"
-                                d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z">
-                            </path>
-                        </svg><!-- <i class="fa fa-check mr-1"></i> Font Awesome fontawesome.com -->
+                        <i class="bi bi-save mr-1"></i>
                         Save
                     </button>
 
@@ -393,7 +375,8 @@ require_once("layout/footer.php");
 
                 <script>
                     $(document).ready(function() {
-                        $('.delete-category').click(function() {
+                        $('body').on('click', '.delete-category', function(event) {
+                            event.preventDefault();
 
                             var catId = $(this).data('cat-id');
                             Swal.fire({
@@ -442,7 +425,9 @@ require_once("layout/footer.php");
 
                         });
 
-                        $('#save-category').click(function() {
+
+                        $('body').on('click', '#save-category', function(event) {
+                            event.preventDefault();
                             $.ajax({
                                 url: '<?=ROOT;?>/addtask/0?taskCategory=add',
                                 container: '#createTaskCategory',
@@ -471,13 +456,7 @@ require_once("layout/footer.php");
                                 <td class="text-right">
                                     <button type="button" class="btn-secondary rounded f-14 p-2 delete-category"
                                         data-cat-id="` + response.catId + `">
-                                        <svg class="svg-inline--fa fa-trash fa-w-14 mr-1" aria-hidden="true"
-                                            focusable="false" data-prefix="fa" data-icon="trash" role="img"
-                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="">
-                                            <path fill="currentColor"
-                                                d="M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z">
-                                            </path>
-                                        </svg><!-- <i class="fa fa-trash mr-1"></i> Font Awesome fontawesome.com -->
+                                        <i class="bi bi-trash-fill mr-1"></i>
                                         Delete
                                     </button>
                                 </td>
@@ -490,13 +469,23 @@ require_once("layout/footer.php");
                             })
                         });
 
+                        $('body').on('focus', '[contenteditable=true]', function() {
+
+                            $(this).data("initialText", $(this).html());
+                            let rowId = $(this).data('row-id');
+
+                        });
+
                         $('[contenteditable=true]').focus(function() {
                             $(this).data("initialText", $(this).html());
                             let rowId = $(this).data('row-id');
-                        }).blur(function() {
-                            if ($(this).data("initialText") !== $(this).html()) {
-                                let id = $(this).data('row-id');
-                                let value = $(this).html();
+                        });
+
+                        $('body').on('blur', '[contenteditable=true]', function() {
+                            let id = $(this).data('row-id');
+                            let initialText = $(this).data('initialText');
+                            let value = $(this).html();
+                            if (initialText != value) {
 
                                 $.ajax({
                                     url: '<?=ROOT;?>/addtask/0?taskCategory=edit',

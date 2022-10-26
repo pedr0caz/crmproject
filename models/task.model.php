@@ -54,12 +54,41 @@ class Task extends Base
     public function getProjectTasks($id)
     {
         $query = $this->db->prepare("
-            SELECT
-               t.id AS task_id,
-               t.heading,
-                t.description,
-                t.due_date,
-                t.start_date,
+        SELECT 
+        t.id AS task_id,
+        t.heading,
+        t.description,
+        t.due_date,
+        t.start_date,
+        t.board_column_id,
+        t.project_id,
+        p.project_name,
+        t.task_category_id,
+        t.priority AS task_priority,
+        t.status,
+   
+        t.created_by,
+        t.created_at,
+        t.updated_at,
+        
+        u.id AS user_id,
+        u.name AS user_name,
+        u.email AS user_email,
+        u.image AS user_image,
+        tc.id AS task_label_id,
+        tc.column_name,
+        tc.slug,
+        tc.label_color,
+        tc.priority,
+        tcat.id AS task_category_id,
+        tcat.category_name
+
+        FROM tasks t
+        INNER JOIN users u ON u.id = t.created_by
+        INNER JOIN taskboard_columns tc ON tc.id = t.board_column_id
+        INNER JOIN task_category tcat ON tcat.id = t.task_category_id
+        LEFT JOIN projects p ON t.project_id = p.id
+        WHERE t.project_id = ?;
                 
         ");
         $query->execute([$id]);
@@ -71,6 +100,7 @@ class Task extends Base
         $query = $this->db->prepare("
             SELECT *
             FROM taskboard_columns
+            ORDER by priority ASC
         ");
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -566,5 +596,20 @@ class Task extends Base
         ");
         $query->execute([$id]);
         return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getLabelCount($id)
+    {
+        $query = $this->db->prepare("
+        SELECT 
+            COUNT(*) as count
+        FROM tasks
+        WHERE board_column_id = :id
+        ");
+        $query->bindParam(':id', $id);
+        $query->execute();
+        $result = $query->fetchColumn();
+  
+        return intval($result);
     }
 }

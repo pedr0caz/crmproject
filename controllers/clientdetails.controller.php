@@ -27,7 +27,7 @@ if (!isset($_SESSION["user_id"])) {
             require("views/error404.view.php");
             exit;
         }
-        $title = $client["name"];
+        $title = "Client Details &bull; ".$client["name"];
         require("views/clientdetails.view.php");
     } else {
         header("Location: " . ROOT . "");

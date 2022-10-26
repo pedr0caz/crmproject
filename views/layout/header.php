@@ -8,432 +8,6 @@
             overflow: visible
         }
 
-        .svg-inline--fa {
-            display: inline-block;
-            font-size: inherit;
-            height: 1em;
-            overflow: visible;
-            vertical-align: -.125em
-        }
-
-        .svg-inline--fa.fa-lg {
-            vertical-align: -.225em
-        }
-
-        .svg-inline--fa.fa-w-1 {
-            width: .0625em
-        }
-
-        .svg-inline--fa.fa-w-2 {
-            width: .125em
-        }
-
-        .svg-inline--fa.fa-w-3 {
-            width: .1875em
-        }
-
-        .svg-inline--fa.fa-w-4 {
-            width: .25em
-        }
-
-        .svg-inline--fa.fa-w-5 {
-            width: .3125em
-        }
-
-        .svg-inline--fa.fa-w-6 {
-            width: .375em
-        }
-
-        .svg-inline--fa.fa-w-7 {
-            width: .4375em
-        }
-
-        .svg-inline--fa.fa-w-8 {
-            width: .5em
-        }
-
-        .svg-inline--fa.fa-w-9 {
-            width: .5625em
-        }
-
-        .svg-inline--fa.fa-w-10 {
-            width: .625em
-        }
-
-        .svg-inline--fa.fa-w-11 {
-            width: .6875em
-        }
-
-        .svg-inline--fa.fa-w-12 {
-            width: .75em
-        }
-
-        .svg-inline--fa.fa-w-13 {
-            width: .8125em
-        }
-
-        .svg-inline--fa.fa-w-14 {
-            width: .875em
-        }
-
-        .svg-inline--fa.fa-w-15 {
-            width: .9375em
-        }
-
-        .svg-inline--fa.fa-w-16 {
-            width: 1em
-        }
-
-        .svg-inline--fa.fa-w-17 {
-            width: 1.0625em
-        }
-
-        .svg-inline--fa.fa-w-18 {
-            width: 1.125em
-        }
-
-        .svg-inline--fa.fa-w-19 {
-            width: 1.1875em
-        }
-
-        .svg-inline--fa.fa-w-20 {
-            width: 1.25em
-        }
-
-        .svg-inline--fa.fa-pull-left {
-            margin-right: .3em;
-            width: auto
-        }
-
-        .svg-inline--fa.fa-pull-right {
-            margin-left: .3em;
-            width: auto
-        }
-
-        .svg-inline--fa.fa-border {
-            height: 1.5em
-        }
-
-        .svg-inline--fa.fa-li {
-            width: 2em
-        }
-
-        .svg-inline--fa.fa-fw {
-            width: 1.25em
-        }
-
-        .fa-layers svg.svg-inline--fa {
-            bottom: 0;
-            left: 0;
-            margin: auto;
-            position: absolute;
-            right: 0;
-            top: 0
-        }
-
-        .fa-layers {
-            display: inline-block;
-            height: 1em;
-            position: relative;
-            text-align: center;
-            vertical-align: -.125em;
-            width: 1em
-        }
-
-        .fa-layers svg.svg-inline--fa {
-            -webkit-transform-origin: center center;
-            transform-origin: center center
-        }
-
-        .fa-layers-counter,
-        .fa-layers-text {
-            display: inline-block;
-            position: absolute;
-            text-align: center
-        }
-
-        .fa-layers-text {
-            left: 50%;
-            top: 50%;
-            -webkit-transform: translate(-50%, -50%);
-            transform: translate(-50%, -50%);
-            -webkit-transform-origin: center center;
-            transform-origin: center center
-        }
-
-        .fa-layers-counter {
-            background-color: #ff253a;
-            border-radius: 1em;
-            -webkit-box-sizing: border-box;
-            box-sizing: border-box;
-            color: #fff;
-            height: 1.5em;
-            line-height: 1;
-            max-width: 5em;
-            min-width: 1.5em;
-            overflow: hidden;
-            padding: .25em;
-            right: 0;
-            text-overflow: ellipsis;
-            top: 0;
-            -webkit-transform: scale(.25);
-            transform: scale(.25);
-            -webkit-transform-origin: top right;
-            transform-origin: top right
-        }
-
-        .fa-layers-bottom-right {
-            bottom: 0;
-            right: 0;
-            top: auto;
-            -webkit-transform: scale(.25);
-            transform: scale(.25);
-            -webkit-transform-origin: bottom right;
-            transform-origin: bottom right
-        }
-
-        .fa-layers-bottom-left {
-            bottom: 0;
-            left: 0;
-            right: auto;
-            top: auto;
-            -webkit-transform: scale(.25);
-            transform: scale(.25);
-            -webkit-transform-origin: bottom left;
-            transform-origin: bottom left
-        }
-
-        .fa-layers-top-right {
-            right: 0;
-            top: 0;
-            -webkit-transform: scale(.25);
-            transform: scale(.25);
-            -webkit-transform-origin: top right;
-            transform-origin: top right
-        }
-
-        .fa-layers-top-left {
-            left: 0;
-            right: auto;
-            top: 0;
-            -webkit-transform: scale(.25);
-            transform: scale(.25);
-            -webkit-transform-origin: top left;
-            transform-origin: top left
-        }
-
-        .fa-lg {
-            font-size: 1.3333333333em;
-            line-height: .75em;
-            vertical-align: -.0667em
-        }
-
-        .fa-xs {
-            font-size: .75em
-        }
-
-        .fa-sm {
-            font-size: .875em
-        }
-
-        .fa-1x {
-            font-size: 1em
-        }
-
-        .fa-2x {
-            font-size: 2em
-        }
-
-        .fa-3x {
-            font-size: 3em
-        }
-
-        .fa-4x {
-            font-size: 4em
-        }
-
-        .fa-5x {
-            font-size: 5em
-        }
-
-        .fa-6x {
-            font-size: 6em
-        }
-
-        .fa-7x {
-            font-size: 7em
-        }
-
-        .fa-8x {
-            font-size: 8em
-        }
-
-        .fa-9x {
-            font-size: 9em
-        }
-
-        .fa-10x {
-            font-size: 10em
-        }
-
-        .fa-fw {
-            text-align: center;
-            width: 1.25em
-        }
-
-        .fa-ul {
-            list-style-type: none;
-            margin-left: 2.5em;
-            padding-left: 0
-        }
-
-        .fa-ul>li {
-            position: relative
-        }
-
-        .fa-li {
-            left: -2em;
-            position: absolute;
-            text-align: center;
-            width: 2em;
-            line-height: inherit
-        }
-
-        .fa-border {
-            border: solid .08em #eee;
-            border-radius: .1em;
-            padding: .2em .25em .15em
-        }
-
-        .fa-pull-left {
-            float: left
-        }
-
-        .fa-pull-right {
-            float: right
-        }
-
-        .fa.fa-pull-left,
-        .fab.fa-pull-left,
-        .fal.fa-pull-left,
-        .far.fa-pull-left,
-        .fas.fa-pull-left {
-            margin-right: .3em
-        }
-
-        .fa.fa-pull-right,
-        .fab.fa-pull-right,
-        .fal.fa-pull-right,
-        .far.fa-pull-right,
-        .fas.fa-pull-right {
-            margin-left: .3em
-        }
-
-        .fa-spin {
-            -webkit-animation: fa-spin 2s infinite linear;
-            animation: fa-spin 2s infinite linear
-        }
-
-        .fa-pulse {
-            -webkit-animation: fa-spin 1s infinite steps(8);
-            animation: fa-spin 1s infinite steps(8)
-        }
-
-        @-webkit-keyframes fa-spin {
-            0% {
-                -webkit-transform: rotate(0);
-                transform: rotate(0)
-            }
-
-            100% {
-                -webkit-transform: rotate(360deg);
-                transform: rotate(360deg)
-            }
-        }
-
-        @keyframes fa-spin {
-            0% {
-                -webkit-transform: rotate(0);
-                transform: rotate(0)
-            }
-
-            100% {
-                -webkit-transform: rotate(360deg);
-                transform: rotate(360deg)
-            }
-        }
-
-        .fa-rotate-90 {
-            -webkit-transform: rotate(90deg);
-            transform: rotate(90deg)
-        }
-
-        .fa-rotate-180 {
-            -webkit-transform: rotate(180deg);
-            transform: rotate(180deg)
-        }
-
-        .fa-rotate-270 {
-            -webkit-transform: rotate(270deg);
-            transform: rotate(270deg)
-        }
-
-        .fa-flip-horizontal {
-            -webkit-transform: scale(-1, 1);
-            transform: scale(-1, 1)
-        }
-
-        .fa-flip-vertical {
-            -webkit-transform: scale(1, -1);
-            transform: scale(1, -1)
-        }
-
-        .fa-flip-both,
-        .fa-flip-horizontal.fa-flip-vertical {
-            -webkit-transform: scale(-1, -1);
-            transform: scale(-1, -1)
-        }
-
-        :root .fa-flip-both,
-        :root .fa-flip-horizontal,
-        :root .fa-flip-vertical,
-        :root .fa-rotate-180,
-        :root .fa-rotate-270,
-        :root .fa-rotate-90 {
-            -webkit-filter: none;
-            filter: none
-        }
-
-        .fa-stack {
-            display: inline-block;
-            height: 2em;
-            position: relative;
-            width: 2.5em
-        }
-
-        .fa-stack-1x,
-        .fa-stack-2x {
-            bottom: 0;
-            left: 0;
-            margin: auto;
-            position: absolute;
-            right: 0;
-            top: 0
-        }
-
-        .svg-inline--fa.fa-stack-1x {
-            height: 1em;
-            width: 1.25em
-        }
-
-        .svg-inline--fa.fa-stack-2x {
-            height: 2em;
-            width: 2.5em
-        }
-
-        .fa-inverse {
-            color: #fff
-        }
 
         .sr-only {
             border: 0;
@@ -2257,7 +1831,8 @@
             <!-- PAGE TITLE START -->
             <div class="page-title d-none d-lg-flex">
                 <div class="page-heading">
-                    <h2 class="mb-0 pr-3 text-dark f-18 font-weight-bold"><?=$title?>
+                    <h2 class="mb-0 pr-3 text-dark f-18 font-weight-bold">
+                        <?=$title?>
 
                         <span class="text-lightest f-12 f-w-500 ml-2">
                             <a href="" class="text-lightest">Home</a> •
@@ -2298,55 +1873,25 @@
                     <div class="add_box dropdown">
                         <a class="d-block dropdown-toggle header-icon-box" type="link" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
-                            <svg class="svg-inline--fa fa-plus-circle fa-w-16 f-16 text-dark-grey" aria-hidden="true"
-                                focusable="false" data-prefix="fa" data-icon="plus-circle" role="img"
-                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
-                                <path fill="currentColor"
-                                    d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm144 276c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92h-92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z">
-                                </path>
-                            </svg>
+                            <i class="bi bi-plus-circle f-w-500 mr-2 f-20 text-dark-grey"></i>
                             <!-- <i class="fa fa-plus-circle f-16 text-dark-grey"></i> Font Awesome fontawesome.com -->
                         </a>
                         <!-- DROPDOWN - INFORMATION -->
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink" tabindex="0">
                             <a class="dropdown-item f-14 text-dark openRightModal" href="">
-                                <svg class="svg-inline--fa fa-plus fa-w-14 f-w-500 mr-2 f-11" aria-hidden="true"
-                                    focusable="false" data-prefix="fa" data-icon="plus" role="img"
-                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="">
-                                    <path fill="currentColor"
-                                        d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z">
-                                    </path>
-                                </svg><!-- <i class="fa fa-plus f-w-500 mr-2 f-11"></i> Font Awesome fontawesome.com -->
+                                <i class="bi bi-plus-lg f-w-500 mr-2 f-11"></i>
                                 Add Project </a>
 
                             <a class="dropdown-item f-14 text-dark openRightModal" href="">
-                                <svg class="svg-inline--fa fa-plus fa-w-14 f-w-500 mr-2 f-11" aria-hidden="true"
-                                    focusable="false" data-prefix="fa" data-icon="plus" role="img"
-                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="">
-                                    <path fill="currentColor"
-                                        d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z">
-                                    </path>
-                                </svg><!-- <i class="fa fa-plus f-w-500 mr-2 f-11"></i> Font Awesome fontawesome.com -->
+                                <i class="bi bi-plus-lg f-w-500 mr-2 f-11"></i>
                                 Add Task </a>
 
                             <a class="dropdown-item f-14 text-dark openRightModal" href="">
-                                <svg class="svg-inline--fa fa-plus fa-w-14 f-w-500 mr-2 f-11" aria-hidden="true"
-                                    focusable="false" data-prefix="fa" data-icon="plus" role="img"
-                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="">
-                                    <path fill="currentColor"
-                                        d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z">
-                                    </path>
-                                </svg><!-- <i class="fa fa-plus f-w-500 mr-2 f-11"></i> Font Awesome fontawesome.com -->
+                                <i class="bi bi-plus-lg f-w-500 mr-2 f-11"></i>
                                 Add Client </a>
 
                             <a class="dropdown-item f-14 text-dark openRightModal" href="e">
-                                <svg class="svg-inline--fa fa-plus fa-w-14 f-w-500 mr-2 f-11" aria-hidden="true"
-                                    focusable="false" data-prefix="fa" data-icon="plus" role="img"
-                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="">
-                                    <path fill="currentColor"
-                                        d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z">
-                                    </path>
-                                </svg><!-- <i class="fa fa-plus f-w-500 mr-2 f-11"></i> Font Awesome fontawesome.com -->
+                                <i class="bi bi-plus-lg f-w-500 mr-2 f-11"></i>
                                 Add Employee </a>
 
 
@@ -2360,13 +1905,7 @@
                     <div class="notification_box dropdown">
                         <a class="d-block dropdown-toggle header-icon-box show-user-notifications" type="link"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <svg class="svg-inline--fa fa-bell fa-w-14 f-16 text-dark-grey" aria-hidden="true"
-                                focusable="false" data-prefix="fa" data-icon="bell" role="img"
-                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="">
-                                <path fill="currentColor"
-                                    d="M224 512c35.32 0 63.97-28.65 63.97-64H160.03c0 35.35 28.65 64 63.97 64zm215.39-149.71c-19.32-20.76-55.47-51.99-55.47-154.29 0-77.7-54.48-139.9-127.94-155.16V32c0-17.67-14.32-32-31.98-32s-31.98 14.33-31.98 32v20.84C118.56 68.1 64.08 130.3 64.08 208c0 102.3-36.15 133.53-55.47 154.29-6 6.45-8.66 14.16-8.61 21.71.11 16.4 12.98 32 32.1 32h383.8c19.12 0 32-15.6 32.1-32 .05-7.55-2.61-15.27-8.61-21.71z">
-                                </path>
-                            </svg><!-- <i class="fa fa-bell f-16 text-dark-grey"></i> Font Awesome fontawesome.com -->
+                            <i class="bi bi-bell-fill text-dark-grey f-20"></i>
                         </a>
                         <!-- DROPDOWN - INFORMATION -->
                         <div class="dropdown-menu dropdown-menu-right notification-dropdown border-0 shadow-lg py-0 bg-additional-grey"
@@ -2390,13 +1929,7 @@
                     <div class="logout_box">
                         <a class="d-block header-icon-box" href="javascript:;" onclick="event.preventDefault();
                     document.getElementById('logout-form').submit();">
-                            <svg class="svg-inline--fa fa-power-off fa-w-16 f-16 text-dark-grey" aria-hidden="true"
-                                focusable="false" data-prefix="fa" data-icon="power-off" role="img"
-                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
-                                <path fill="currentColor"
-                                    d="M400 54.1c63 45 104 118.6 104 201.9 0 136.8-110.8 247.7-247.5 248C120 504.3 8.2 393 8 256.4 7.9 173.1 48.9 99.3 111.8 54.2c11.7-8.3 28-4.8 35 7.7L162.6 90c5.9 10.5 3.1 23.8-6.6 31-41.5 30.8-68 79.6-68 134.9-.1 92.3 74.5 168.1 168 168.1 91.6 0 168.6-74.2 168-169.1-.3-51.8-24.7-101.8-68.1-134-9.7-7.2-12.4-20.5-6.5-30.9l15.8-28.1c7-12.4 23.2-16.1 34.8-7.8zM296 264V24c0-13.3-10.7-24-24-24h-32c-13.3 0-24 10.7-24 24v240c0 13.3 10.7 24 24 24h32c13.3 0 24-10.7 24-24z">
-                                </path>
-                            </svg>
+                            <i class="bi bi-power f-w-500 text-dark-grey f-20"></i>
                             <!-- <i class="fa fa-power-off f-16 text-dark-grey"></i> Font Awesome fontawesome.com -->
                         </a>
                     </div>

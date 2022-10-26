@@ -28,11 +28,11 @@ class Project extends Base
         t.id AS team_id
     
     FROM projects p
-    INNER JOIN project_category c ON p.category_id = c.id
-    INNER JOIN client_details cd ON p.client_id = cd.id
+    LEFT JOIN project_category c ON p.category_id = c.id
+    LEFT JOIN client_details cd ON p.client_id = cd.id
 
-    INNER JOIN users u ON cd.user_id = u.id
-    INNER JOIN teams t ON p.team_id = t.id
+    LEFT JOIN users u ON cd.user_id = u.id
+    LEFT JOIN teams t ON p.team_id = t.id
             
         ");
         $query->execute();
@@ -53,21 +53,21 @@ class Project extends Base
         p.start_date,
         p.deadline,
         p.notes,
+        p.category_id,
         c.category_name,
         u.name,
         u.email,
         u.image,
         cd.company_name,
         u.id AS user_id,
-        t.team_name,
-        t.id AS team_id
+        CONCAT('[', GROUP_CONCAT(pt.team_id SEPARATOR ','), ']') as teams_id
     
     FROM projects p
-    INNER JOIN project_category c ON p.category_id = c.id
-    INNER JOIN client_details cd ON p.client_id = cd.id
-
-    INNER JOIN users u ON cd.user_id = u.id
-    INNER JOIN teams t ON p.team_id = t.id
+    LEFT JOIN project_category c ON p.category_id = c.id
+    LEFT JOIN client_details cd ON p.client_id = cd.id
+    LEFT JOIN project_teams pt ON p.id = pt.project_id
+    LEFT JOIN users u ON cd.user_id = u.id
+    LEFT JOIN teams t ON pt.id = t.id
     WHERE p.id = ?;
         ");
         $query->execute([$id]);
@@ -161,9 +161,9 @@ class Project extends Base
                 t.id AS team_id
             
             FROM projects p
-            INNER JOIN project_category c ON p.category_id = c.id
-            INNER JOIN users u ON p.client_id = u.id
-            INNER JOIN teams t ON p.team_id = t.id
+            LEFT JOIN project_category c ON p.category_id = c.id
+            LEFT JOIN users u ON p.client_id = u.id
+            LEFT JOIN teams t ON p.team_id = t.id
             WHERE client_id = ?
         ");
         $query->execute([$id]);
@@ -191,55 +191,167 @@ class Project extends Base
         cd.company_name,
         u.id AS user_id,
         t.team_name,
-        t.id AS team_id
+        t.id AS team_id,
+        cd.id AS client_id,
+
+        uc.name AS client_name
     
     FROM projects p
-    INNER JOIN project_category c ON p.category_id = c.id
-    INNER JOIN client_details cd ON p.client_id = cd.id
-    INNER JOIN users u ON cd.user_id = u.id
-    INNER JOIN teams t ON p.team_id = t.id
+    LEFT JOIN project_category c ON p.category_id = c.id
+    LEFT JOIN client_details cd ON p.client_id = cd.id
+    LEFT JOIN users u ON cd.user_id = u.id
+    LEFT JOIN teams t ON p.team_id = t.id
+    LEFT JOIN users uc ON cd.user_id = uc.id
+
+    
     WHERE client_id = ?;
         ");
         $query->execute([$id]);
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getProjectMembers($id)
+    public function getProjectTeamMembers($id)
     {
         $query = $this->db->prepare("
-            SELECT
-                pm.user_id,
-                u.name,
-                u.image,
-            FROM project_members pm
-            INNER JOIN users u ON pm.user_id = u.id
-            WHERE project_id = ?
+        SELECT
+        pt.team_id,
+        et.user_id,
+        u.id AS user_id,
+        u.name,
+        u.email,
+        u.image,
+        d.name as employee_designation,
+        ed.designation_id,
+        t.team_name
+        
+    FROM employee_teams et   
+    LEFT JOIN users u ON et.user_id = u.id
+    LEFT JOIN employee_details ed ON et.user_id = ed.user_id
+    LEFT JOIN designations d ON ed.designation_id = d.id
+    LEFT JOIN project_teams pt ON et.team_id = pt.team_id
+    LEFT JOIN teams t ON et.team_id = t.id
+    WHERE pt.project_id = ?
+
         ");
         $query->execute([$id]);
-        return $query->fetch(PDO::FETCH_ASSOC);
+        return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function newProject($data)
     {
         $query = $this->db->prepare("
-            INSERT INTO projects (project_name, project_summary, project_admin, status, start_date, deadline, notes, category_id, client_id, team_id)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO projects (project_name, project_summary, start_date, deadline, notes, category_id, client_id, team_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ");
         $query->execute([
             $data["project_name"],
-            $data["project_summary"],
-            $data["project_admin"],
-            $data["status"],
+            $data["project_description"],
+
             $data["start_date"],
             $data["deadline"],
             $data["notes"],
             $data["category_id"],
             $data["client_id"],
-            $data["team_id"]
+            $data["team_id"][0]
         ]);
+        
+        $project_id = $this->db->lastInsertId();
+        if ($project_id) {
+            foreach ($data["team_id"] as $team_id) {
+                $query = $this->db->prepare("
+                    INSERT INTO project_teams (project_id, team_id)
+                    VALUES (?, ?)
+                ");
+                $query->execute([
+                    $project_id,
+                    $team_id
+                ]);
+            }
 
-      
-        return $this->db->lastInsertId();
+            $query = $this->db->prepare("
+            INSERT INTO project_activity (project_id, activity) 
+            VALUES (?, ?)
+            ");
+            $query->execute([
+                $project_id,
+                "Project Created"
+            ]);
+
+            return [
+                "status" => true,
+                "message" => "Project created successfully",
+                "id" => $project_id
+            ];
+        } else {
+            return [
+                "status" => false,
+                "message" => "Project creation failed"
+            ];
+        }
+    }
+
+    public function editProject($id, $data)
+    {
+        $query = $this->db->prepare("
+            UPDATE projects SET
+            project_name = ?,
+            project_summary = ?,
+            start_date = ?,
+            deadline = ?,
+            notes = ?,
+            category_id = ?,
+            client_id = ?,
+            team_id = ?
+            WHERE id = ?
+        ");
+        $query->execute([
+            $data["project_name"],
+            $data["project_description"],
+            $data["start_date"],
+            $data["deadline"],
+            $data["notes"],
+            $data["category_id"],
+            $data["client_id"],
+            $data["team_id"][0],
+            $id
+        ]);
+        $project_id = $id;
+        if ($project_id) {
+            $query = $this->db->prepare("
+                DELETE FROM project_teams WHERE project_id = ?
+            ");
+            $query->execute([$project_id]);
+            foreach ($data["team_id"] as $team_id) {
+                $query = $this->db->prepare("
+                    INSERT INTO project_teams (project_id, team_id)
+                    VALUES (?, ?)
+                ");
+                $query->execute([
+                    $project_id,
+                    $team_id
+                ]);
+            }
+
+            $query = $this->db->prepare("
+            INSERT INTO project_activity (project_id, activity) 
+            VALUES (?, ?)
+            ");
+            $query->execute([
+                $project_id,
+                "Project Details Updated"
+            ]);
+
+            return [
+                "status" => true,
+                "message" => "Project updated successfully",
+                "id" => $project_id
+            ];
+        } else {
+            return [
+                "status" => false,
+                "message" => "Project update failed"
+            ];
+        }
     }
 
     public function updateProject($data)
@@ -495,5 +607,55 @@ class Project extends Base
         ");
         $query->execute([$id]);
         return $query->rowCount();
+    }
+
+    public function newCategory($name)
+    {
+        $query = $this->db->prepare("
+        INSERT INTO project_category (category_name)
+        VALUES (?)
+        ");
+        $query->execute([$name]);
+        return $this->db->lastInsertId();
+    }
+
+    public function editCategory($id, $name)
+    {
+        $query = $this->db->prepare("
+        UPDATE project_category SET category_name = ? WHERE id = ?
+        ");
+        $query->execute([$name, $id]);
+        return $query->rowCount();
+    }
+    public function deleteCategory($id)
+    {
+        $query = $this->db->prepare("
+            DELETE FROM project_category WHERE id = ?
+        ");
+        $query->execute([$id]);
+        return $query->rowCount();
+    }
+
+    public function changeProjectStatus($name, $id)
+    {
+        $query = $this->db->prepare("
+        UPDATE projects SET status = ? WHERE id = ?
+        ");
+        $result = $query->execute([$name, $id]);
+        if ($result) {
+            $query = $this->db->prepare("
+            INSERT INTO project_activity (project_id, activity, created_at)
+            VALUES (?, ?, ?)
+            ");
+            $query->execute([
+                $id,
+                "Project status changed to " . ucwords($name),
+                date("Y-m-d H:i:s")
+            ]);
+            return [
+                "status" => true,
+                "message" => "Project status changed successfully"
+            ];
+        }
     }
 }

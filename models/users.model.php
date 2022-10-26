@@ -100,7 +100,7 @@ class User extends Base
                
               
             FROM users
-            WHERE name LIKE concat('%', ?, '%') AND id != ?
+            WHERE name LIKE concat('%', ?, '%') AND id != ? AND status = 'active' AND login = 'enable'
         ");
         $query->execute([$name, $id]);
         return $query->fetchAll(PDO::FETCH_ASSOC);

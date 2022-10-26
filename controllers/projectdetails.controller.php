@@ -14,6 +14,9 @@ if (!isset($_SESSION["user_id"])) {
 } else {
     if (isset($_SESSION["user_role"]) && $_SESSION["user_role"] == 1) {
         require("models/project.model.php");
+        require("models/task.model.php");
+        require("models/employee.model.php");
+        require("models/discussion.model.php");
 
         $projectsModel = new Project();
         $project = $projectsModel->getProject($id);
@@ -29,8 +32,17 @@ if (!isset($_SESSION["user_id"])) {
         $taskStatus = $projectsModel->getTaskStatus($id);
         $getProjectProgress = $projectsModel->getProjectProgress($id);
         $getProjectFiles = $projectsModel->getFiles($id);
-       
-        $title = "Projects";
+        $getProjectMembers = $projectsModel->getProjectTeamMembers($id);
+  
+        $task = new Task();
+        $tasks = $task->getProjectTasks($id);
+        $taskLabels = $task->getLabels();
+        $employeeModel = new Employee();
+        $chatModel = new Discussion();
+        $chats = $chatModel->getChat($id);
+        $getChatCount = $chatModel->getChatCount($id);
+
+        $title = "Project - " . $project["project_name"];
 
         if (isset($_GET['action']) && $_GET["action"] == "uploadfile") {
             if (!isset($_FILES["file"])) {
@@ -86,10 +98,7 @@ if (!isset($_SESSION["user_id"])) {
                             <h4 class="card-title f-12 text-dark-grey mr-3 text-truncate" data-toggle="tooltip" >'.$data['name'].'</h4>
                             <div class="dropdown ml-auto file-action">
                                 <button class="btn btn-lg f-14 p-0 text-lightest text-capitalize rounded  dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <svg class="svg-inline--fa fa-ellipsis-h fa-w-16" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="ellipsis-h" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
-                                        <path fill="currentColor" d="M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z">
-                                        </path>
-                                    </svg>
+                                    <i class="bi bi-three-dots-vertical"></i>
                                     <!-- <i class="fa fa-ellipsis-h"></i> Font Awesome fontawesome.com -->
                                 </button>
 
@@ -122,6 +131,38 @@ if (!isset($_SESSION["user_id"])) {
             } else {
                 header('Content-Type: application/json; charset=utf-8');
                 echo json_encode(['status' => 'error', 'message' => 'Error deleting file']);
+            }
+        } elseif (isset($_GET['msg']) && $_GET["msg"] == "add") {
+            if (isset($_POST['message']) && mb_strlen($_POST['message'] > 0)) {
+                $newChat =  $chatModel->newChat($_POST['message'], $id, $_SESSION['user_id']);
+                if ($newChat) {
+                    header('Content-Type: application/json; charset=utf-8');
+                    echo json_encode(['status' => 'success', 'message' => 'Message sent successfully', 'data' => $newChat]);
+                } else {
+                    header('Content-Type: application/json; charset=utf-8');
+                    echo json_encode(['status' => 'error', 'message' => 'Error sending message']);
+                }
+            }
+        } elseif (isset($_GET['msg']) && $_GET["msg"] == "fetch") {
+            if (isset($_POST['lastid']) && mb_strlen($_POST['lastid'] > 0 && is_numeric($_POST['lastid']))) {
+                $fetchChat =  $chatModel->getChatAjax($id, $_POST['lastid']);
+            
+                if ($fetchChat) {
+                    header('Content-Type: application/json; charset=utf-8');
+                    echo json_encode(['status' => 'success', 'message' => 'Message sent successfully', 'data' => $fetchChat]);
+                }
+            }
+        } elseif (isset($_GET['action']) && $_GET["action"] == "change_status") {
+            if (isset($_POST['status']) && mb_strlen($_POST['status'] > 0)) {
+                $status =  $projectsModel->changeProjectStatus($_POST['status'], $id);
+             
+                if ($status['status']) {
+                    header('Content-Type: application/json; charset=utf-8');
+                    echo json_encode(['status' => 'success', 'message' => 'Project status changed successfully']);
+                } else {
+                    header('Content-Type: application/json; charset=utf-8');
+                    echo json_encode(['status' => 'error', 'message' => 'Error changing project status']);
+                }
             }
         } else {
             require("views/projectdetails.view.php");

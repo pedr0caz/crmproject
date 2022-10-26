@@ -1,8 +1,6 @@
 <?php
 
-    
 
-    
     if (!isset($_SESSION["user_id"])) {
         header("Location: " . ROOT . "/login");
         exit;
@@ -12,7 +10,7 @@
             $modelClient = new Client();
             
             $clients = $modelClient->getClients($id);
-            $title = "client list";
+            $title = "Client List";
             require("views/clients.view.php");
         } else {
             header("Location: " . ROOT . "");

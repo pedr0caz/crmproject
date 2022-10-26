@@ -104,16 +104,104 @@ class Employee extends Base
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function editDesignation($id, $name)
+    {
+        $query = $this->db->prepare("
+            UPDATE designations
+            SET name = ?
+            WHERE id = ?
+        ");
+        $result = $query->execute([$name, $id]);
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function newDesignation($name)
+    {
+        $query = $this->db->prepare("
+            INSERT INTO designations (name)
+            VALUES (?)
+        ");
+        $result = $query->execute([$name]);
+        if ($result) {
+            $result = $this->db->lastInsertId();
+            return $result;
+        } else {
+            return false;
+        }
+    }
+
+    public function deleteDesignation($id)
+    {
+        $query = $this->db->prepare("
+            DELETE FROM designations
+            WHERE id = ?
+        ");
+        $result = $query->execute([$id]);
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function getDepartments()
     {
         $query = $this->db->prepare("
             SELECT
                 id,
-                team_name
+                team_name AS name
             FROM teams
         ");
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function editDepartment($id, $name)
+    {
+        $query = $this->db->prepare("
+            UPDATE teams
+            SET team_name = ?
+            WHERE id = ?
+        ");
+        $result = $query->execute([$name, $id]);
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function deleteDepartment($id)
+    {
+        $query = $this->db->prepare("
+            DELETE FROM teams
+            WHERE id = ?
+        ");
+        $result = $query->execute([$id]);
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function newDepartment($name)
+    {
+        $query = $this->db->prepare("
+            INSERT INTO teams (team_name)
+            VALUES (?)
+        ");
+        $result = $query->execute([$name]);
+        if ($result) {
+            $result = $this->db->lastInsertId();
+            return $result;
+        } else {
+            return false;
+        }
     }
 
     public function newEmployee($data, $image_file)
@@ -123,7 +211,7 @@ class Employee extends Base
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ");
         $data["password"] = password_hash($data["password"], PASSWORD_DEFAULT);
-        $query->execute([
+        $result = $query->execute([
             $data["name"],
             $data["email"],
             $data["password"],
@@ -135,7 +223,8 @@ class Employee extends Base
         ]);
 
         $id = $this->db->lastInsertId();
-        if ($id) {
+        
+        if ($result) {
             $query = $this->db->prepare("
                 INSERT INTO employee_details (user_id, address, department_id, designation_id, date_of_birth) 
                 VALUES (?, ?, ?, ?, ?)
@@ -143,7 +232,7 @@ class Employee extends Base
             $query->execute([
                 $id,
                 $data["address"],
-                $data["department_id"],
+                $data["department_id"][0],
                 $data["designation_id"],
                 $data["date_of_birth"]
 
@@ -159,16 +248,26 @@ class Employee extends Base
                     $id,
                     2
                 ]);
-
-                $query = $this->db->prepare("
-                INSERT INTO employee_teams (team_id, user_id)
-                VALUES (?, ?)
-                ");
-                $query->execute([
-                    $data["department_id"],
-                    $id
-                ]);
+                foreach ($data["department_id"] as $department_id) {
+                    $query = $this->db->prepare("
+                    INSERT INTO employee_teams (user_id, team_id)
+                    VALUES (?, ?)
+                    ");
+                    $query->execute([
+                        $id,
+                        $department_id
+                    ]);
+                }
+                return [
+                    "status" => true,
+                    "message" => "Email already exists or user already exists"
+                ];
             }
+        } else {
+            return [
+                "status" => false,
+                "message" => "Email already exists or user already exists"
+            ];
         }
     }
 
@@ -203,7 +302,7 @@ class Employee extends Base
     {
         $query = $this->db->prepare("
         SELECT COUNT(id) AS project_count
-        FROM projects
+        FROM project_teams
         WHERE team_id IN ( SELECT team_id FROM employee_teams WHERE user_id = ? );
         ");
         $query->execute([$id]);
@@ -213,23 +312,29 @@ class Employee extends Base
     public function getProjectsOfEmployee($id)
     {
         $query = $this->db->prepare("
+        
         SELECT 
         p.id AS project_id,
-       p.project_name,
-       p.deadline,
-       p.team_id,
-       p.client_id,
-       p.status,
-       p.completion_percent,
-       u.name AS client_name,
-       u.image,
-       t.team_name,
-       c.company_name
-   FROM projects p
-   INNER JOIN teams t ON p.team_id = t.id
-   INNER JOIN client_details c ON p.client_id = p.client_id
-   INNER JOIN users u ON c.user_id = u.id
-   WHERE p.team_id IN ( SELECT team_id FROM employee_teams WHERE user_id = ? );
+        p.project_name,
+        p.deadline,
+        p.client_id,
+        p.status,
+        p.completion_percent,
+        u.name as client_name,
+        u.image,
+        pt.team_id,
+        t.team_name,
+        c.company_name
+    FROM projects p
+    LEFT JOIN project_teams pt ON p.id = pt.project_id
+    LEFT JOIN teams t ON pt.team_id = t.id
+    LEFT JOIN client_details c ON p.client_id = c.id
+    LEFT JOIN users u ON c.user_id = u.id
+
+    WHERE pt.team_id IN ( SELECT team_id FROM employee_teams WHERE user_id = ? );
+
+        
+       
         ");
         $query->execute([$id]);
         return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -239,7 +344,7 @@ class Employee extends Base
     {
         $query = $this->db->prepare("
         SELECT
-         p.team_id,
+            pt.team_id,
             t.team_name,
             u.id AS user_id,
             u.name,
@@ -247,11 +352,11 @@ class Employee extends Base
         
             u.image,
             u.status
-        FROm projects p
-        INNER JOIN teams t ON p.team_id = t.id
+        FROM project_teams pt
+        LEFT JOIN teams t ON pt.team_id = t.id
         INNER JOIN employee_teams et ON t.id = et.team_id
-        INNER JOIN users u ON et.user_id = u.id
-        WHERE p.id = ?
+        LEFT JOIN users u ON et.user_id = u.id
+        WHERE pt.project_id = ?
         ");
         $query->execute([$id]);
 
