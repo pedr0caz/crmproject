@@ -425,8 +425,9 @@
         .create(document.querySelector('#editor')).then(editor => {
             project_description = editor;
             project_description.setData(
-                '<?=$getProject['project_summary'];?>'
+                `<?=$getProject['project_summary'];?>`
             );
+
 
         })
         .catch(error => {
@@ -436,7 +437,7 @@
         .create(document.querySelector('#editor2')).then(editor => {
             notes = editor;
             notes.setData(
-                '<?=$getProject['notes'];?>'
+                `<?=$getProject['notes'];?>`
             );
 
         })

@@ -17,7 +17,7 @@ require_once('layout/navbar.php');
             <div id="table-actions" class="flex-grow-1 align-items-center">
                 <a href="<?=ROOT?>/addtask"
                     class="btn-primary rounded f-14 p-2 mr-3 openRightModal float-left">
-                    <i class="bi bi-plus"></i> Add Task
+                    <i class="bi bi-plus"></i>
                     Add Task
                 </a>
                 <button type="button" class="btn-secondary rounded f-14 p-2 mr-3 float-left" id="filter-my-task">

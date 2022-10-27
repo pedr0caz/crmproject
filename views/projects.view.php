@@ -17,17 +17,10 @@
             <div id="table-actions" class="flex-grow-1 align-items-center mb-2 mb-lg-0 mb-md-0">
                 <a href="<?=ROOT?>/addproject"
                     class="btn-primary rounded f-14 p-2 mr-3 openRightModal float-left mb-2 mb-lg-0 mb-md-0">
-                    <i class="bi bi-plus-circle"></i> Add Project
+                    <i class="bi bi-plus-circle"></i>
                     Add Project
                 </a>
 
-
-
-                <a href="<?=ROOT;?>/project/import"
-                    class="btn-secondary rounded f-14 p-2 mr-3 float-left mb-2 mb-lg-0 mb-md-0">
-                    <i class="bi bi-upload"></i> Import
-                    Import
-                </a>
 
 
             </div>

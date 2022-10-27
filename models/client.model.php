@@ -194,4 +194,67 @@ class Client extends Base
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function importClient($data)
+    {
+        $stringspassword = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcefghijklmnopqrstuvwxyz%!@#$%';
+        $entries = 0;
+        $sucessfullEntries = 0;
+        for ($i = 0; $i < count($data['name']); $i++) {
+            try {
+                $query = $this->db->prepare("
+                INSERT INTO users (name, email, password)
+                VALUES (?, ?, ?)
+            ");
+        
+                $password = substr(str_shuffle($stringspassword), 0, 8);
+                $result = $query->execute([
+                    $data["name"][$i],
+                    $data['email'][$i],
+                    isset($data['password'][$i]) ? $data['password'][$i] : password_hash($password, PASSWORD_DEFAULT)
+                ]);
+
+                if ($result) {
+                    $user_id = $this->db->lastInsertId();
+                    $query = $this->db->prepare("
+                    INSERT INTO client_details (user_id, company_name, address, postal_code, state, city, office, website, note, category_id, added_by)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ");
+                    $result = $query->execute([
+                        $user_id,
+                        isset($data['company_name'][$i]) ? $data['company_name'][$i] : null,
+                        isset($data['address'][$i]) ? $data['address'][$i] : null,
+                        isset($data['postal_code'][$i])  ? $data['postal_code'][$i] : null,
+                        isset($data['state'][$i]) ? $data['state'][$i] : null,
+                        isset($data['city'][$i]) ? $data['city'][$i] : null,
+                        isset($data['office'][$i]) ? $data['office'][$i] : null,
+                        isset($data['website'][$i]) ? $data['website'][$i] : null,
+                        isset($data['note'][$i]) ? $data['note'][$i] : null,
+                        1,
+                        $_SESSION['user_id']
+                    ]);
+                    if ($result) {
+                        $sucessfullEntries++;
+                    }
+                } else {
+                    $entries++;
+                    continue;
+                }
+            } catch (PDOException $e) {
+                continue;
+            }
+        }
+
+        if ($entries == 0) {
+            return [
+                'status' => true,
+                'message' => 'All entries added successfully'
+            ];
+        } else {
+            return [
+                'status' => true,
+                'message' => $sucessfullEntries . ' entries added successfully and ' . $entries . ' entries already exists'
+            ];
+        }
+    }
 }

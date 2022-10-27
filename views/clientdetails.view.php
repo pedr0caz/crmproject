@@ -23,24 +23,7 @@
                 }?>"><span>Notes</span></a>
         </div>
     </div>
-    <!-- FILTER END -->
-    <!-- PROJECT HEADER END -->
-    <!-- PAGE TITLE START -->
-    <div class="page-title d-block d-lg-none">
-        <div class="page-heading">
-            <h2 class="mb-0 pr-3 text-dark f-18 font-weight-bold">
-                <?=$client['name']?>
-                <span class="text-lightest f-12 f-w-500 ml-2">
-                    <a href="<?=ROOT?>/"
-                        class="text-lightest">Home</a> •
-                    <a href="<?=ROOT?>/clientdetails"
-                        class="text-lightest">Client Details</a> •
-                    <?=$client['name']?>
-                </span>
-            </h2>
-        </div>
-    </div>
-    <!-- PAGE TITLE END -->
+
     <div class="content-wrapper border-top-0 client-detail-wrapper">
         <?php if (!isset($_GET['tab'])) { ?>
         <!-- ROW START -->
@@ -55,14 +38,14 @@
                             <div class="card-horizontal align-items-center">
                                 <div class="card-img">
                                     <img class=""
-                                        src="<?=$client['image'] ? $client['image'] : 'https://www.gravatar.com/avatar/f7e016ba33bbc6009459c4f37ce1c0e4.png?s=200&amp;d=mp';?>"
+                                        src="<?=$client['image'] ? ROOT.'/'.$client['image'] : 'https://www.gravatar.com/avatar/f7e016ba33bbc6009459c4f37ce1c0e4.png?s=200&amp;d=mp';?>"
                                         alt="">
                                 </div>
                                 <div class="card-body border-0 pl-0">
                                     <div class="row">
                                         <div class="col-10">
                                             <h4 class="card-title f-15 f-w-500 text-darkest-grey mb-0">
-                                                Chines
+                                                <?=$client['name']?>
                                             </h4>
                                         </div>
                                         <div class="col-2 text-right">
