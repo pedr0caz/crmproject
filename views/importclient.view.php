@@ -1,20 +1,6 @@
 <?php require_once("layout/header.php"); ?>
 <?php require_once("layout/navbar.php"); ?>
 <section class="main-container bg-additional-grey" id="fullscreen">
-
-	<!-- PAGE TITLE START -->
-	<div class="page-title d-block d-lg-none">
-		<div class="page-heading">
-			<h2 class="mb-0 pr-3 text-dark f-18 font-weight-bold">Import Client
-				<span class="text-lightest f-12 f-w-500 ml-2">
-					<a href="http://localhost/script/public" class="text-lightest">Home</a> •
-					<a href="/account/clients" class="text-lightest">Clients</a> •
-					Import Client
-				</span>
-			</h2>
-		</div>
-	</div>
-	<!-- PAGE TITLE END -->
 	<div class="content-wrapper">
 		<div class="row" id="import_table">
 			<div class="col-sm-12">
@@ -53,8 +39,7 @@
 								Upload and Move to Next Step
 							</button>
 
-							<a href="http://localhost/script/public/account/clients"
-								class="btn-cancel rounded f-14 p-2 border-0">
+							<a href="" class="btn-cancel rounded f-14 p-2 border-0">
 								Back
 							</a>
 						</div>
