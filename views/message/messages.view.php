@@ -74,22 +74,18 @@ if (isset($_SESSION['user_id'])) {
         color: #fff;
     }
 
-    /* width */
     *::-webkit-scrollbar {
         width: 3px;
     }
 
-    /* Track */
     *::-webkit-scrollbar-track {
         background: #f1f1f1;
     }
 
-    /* Handle */
     *::-webkit-scrollbar-thumb {
         background: #aaa;
     }
 
-    /* Handle on hover */
     *::-webkit-scrollbar-thumb:hover {
         background: #3289c8;
     }

@@ -18263,8 +18263,8 @@ h6 a {
 
 @font-face {
     font-family: "dropify";
-    src: url("../fonts/dropify.eot");
-    src: url("../fonts/dropify.eot#iefix") format("embedded-opentype"), url("../fonts/dropify.woff") format("woff"), url("../fonts/dropify.ttf") format("truetype"), url("../fonts/dropify.svg#dropify") format("svg");
+    src: url("fonts/dropify.eot");
+    src: url("fonts/dropify.eot#iefix") format("embedded-opentype"), url("fonts/dropify.woff") format("woff"), url("fonts/dropify.ttf") format("truetype"), url("fonts/dropify.svg#dropify") format("svg");
     font-weight: normal;
     font-style: normal;
 }
@@ -23092,7 +23092,7 @@ select.selectpicker {
 
 @font-face {
     font-family: "Helvetica Neue";
-    src: url("../fonts/HelveticaNeue.woff2") format("woff2"), url("../fonts/HelveticaNeue.woff") format("woff");
+    src: url("fonts/HelveticaNeue.woff2") format("woff2"), url("fonts/HelveticaNeue.woff") format("woff");
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -23100,7 +23100,7 @@ select.selectpicker {
 
 @font-face {
     font-family: "Helvetica Neue";
-    src: url("../fonts/HelveticaNeue-Medium.woff2") format("woff2"), url("../fonts/HelveticaNeue-Medium.woff") format("woff");
+    src: url("fonts/HelveticaNeue-Medium.woff2") format("woff2"), url("fonts/HelveticaNeue-Medium.woff") format("woff");
     font-weight: 500;
     font-style: normal;
     font-display: swap;
@@ -23108,7 +23108,7 @@ select.selectpicker {
 
 @font-face {
     font-family: "Helvetica Neue";
-    src: url("../fonts/HelveticaNeue-Bold.woff2") format("woff2"), url("../fonts/HelveticaNeue-Bold.woff") format("woff");
+    src: url("fonts/HelveticaNeue-Bold.woff2") format("woff2"), url("fonts/HelveticaNeue-Bold.woff") format("woff");
     font-weight: Bold;
     font-style: normal;
     font-display: swap;
