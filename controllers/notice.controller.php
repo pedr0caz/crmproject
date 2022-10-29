@@ -1,0 +1,104 @@
+<?php
+
+if (!isset($_SESSION["user_id"])) {
+    header("Location: " . ROOT . "/login");
+    exit;
+} else {
+    if (isset($_SESSION["user_role"])) {
+        require_once("models/notices.model.php");
+        require_once("models/employee.model.php");
+        $noticeModel = new Notices();
+        $employeeModel = new Employee();
+
+        if (isset($_SESSION["user_role"]) && isset($id) && $id == null) {
+            if ($_SESSION["user_role"] == 1) {
+                $notices = $noticeModel->getNoticesAdmin();
+            } else {
+                $notices = $noticeModel->getNotices($_SESSION["user_role"], $_SESSION["user_id"]);
+            }
+            
+            $title = "Notices";
+            require_once("views/notice.view.php");
+        } elseif ($_SESSION["user_role"] == "1" && isset($id) && $id == "create") {
+            $teams = $employeeModel->getDepartments();
+            $title = "Create Notice";
+            require_once("views/addnotice.view.php");
+        } elseif ($_SESSION["user_role"] == "1" && isset($id) && $id == "save") {
+            if (isset($_POST["to"]) && isset($_POST["heading"]) && !empty($_POST["heading"]) && mb_strlen($_POST["heading"]) >= 3) {
+                $_POST['to'] = $_POST['to'] == "employee" ? 2 : 3;
+                $result = $noticeModel->newNotice($_POST, $_SESSION["user_id"]);
+
+                if ($result) {
+                    header('Content-Type: application/json; charset=utf-8');
+
+                    echo json_encode(['status' => 'success', 'message' => 'Notice added successfully', 'id' => $result]);
+                } else {
+                    header('Content-Type: application/json; charset=utf-8');
+                    echo json_encode(['status' => 'error', 'message' => 'Error adding notice']);
+                }
+            } else {
+                header('Content-Type: application/json; charset=utf-8');
+                echo json_encode(['status' => 'error', 'message' => 'Fill all required fields']);
+            }
+        } elseif ($_SESSION["user_role"] == "1" && isset($id) && is_numeric($id) && isset($_GET['edit'])) {
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                if (isset($_POST["to"]) && isset($_POST["heading"]) && !empty($_POST["heading"]) && mb_strlen($_POST["heading"]) >= 3) {
+                    $_POST['to'] = $_POST['to'] == "employee" ? 2 : 3;
+                    $result = $noticeModel->editNotice($_POST, $id);
+                 
+                    if ($result) {
+                        header('Content-Type: application/json; charset=utf-8');
+                        
+                        echo json_encode(['status' => 'success', 'message' => 'Notice edited successfully']);
+                    } else {
+                        header('Content-Type: application/json; charset=utf-8');
+                        echo json_encode(['status' => 'error', 'message' => 'Error adding notice']);
+                    }
+                }
+            } else {
+                $notice = $noticeModel->getNoticeAdmin($id);
+                $teams = $employeeModel->getDepartments();
+                $title = "Edit Notice";
+                require_once("views/editnotice.view.php");
+            }
+        } elseif ($_SESSION["user_role"] == "1" && isset($id) && is_numeric($id) && isset($_GET['delete'])) {
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                if (isset($_POST["id"]) && !empty($_POST["id"]) && is_numeric($_POST["id"])) {
+                    $result = $noticeModel->deleteNotice($_POST["id"]);
+                 
+                    if ($result) {
+                        header('Content-Type: application/json; charset=utf-8');
+                    
+                        echo json_encode(['status' => 'success', 'message' => 'Notice deleted successfully']);
+                    } else {
+                        header('Content-Type: application/json; charset=utf-8');
+                        echo json_encode(['status' => 'error', 'message' => 'Error deleting notice']);
+                    }
+                }
+            }
+        } elseif (isset($id) && is_numeric($id) && !isset($_GET['edit'])) {
+            $title = "Notice Details";
+            if ($_SESSION["user_role"] == "1") {
+                $notice = $noticeModel->getNoticeAdmin($id);
+            } else {
+                $notice = $noticeModel->getNotice($_SESSION["user_role"], $_SESSION["user_id"], $id);
+            }
+            if (empty($notice)) {
+                http_response_code(404);
+                $title = "Not Found";
+                require_once("views/error404.view.php");
+                exit;
+            }
+           
+            require_once("views/noticesdetails.view.php");
+        } else {
+            http_response_code(400);
+            $title = "Bad Request";
+            require("views/error400.view.php");
+            exit;
+        }
+    } else {
+        header("Location: " . ROOT . "");
+        exit;
+    }
+}
