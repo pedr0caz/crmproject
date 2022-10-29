@@ -13,9 +13,10 @@ require_once('layout/navbar.php');
     <!-- CONTENT WRAPPER START -->
     <div class="content-wrapper">
         <!-- Add Task Export Buttons Start -->
+        <?php if($_SESSION['user_role'] <= 2):?>
         <div class="d-block d-lg-flex d-md-flex justify-content-between action-bar">
             <div id="table-actions" class="flex-grow-1 align-items-center">
-                <a href="<?=ROOT?>/addtask"
+                <a href="<?=ROOT?>/task/create"
                     class="btn-primary rounded f-14 p-2 mr-3 openRightModal float-left">
                     <i class="bi bi-plus"></i>
                     Add Task
@@ -26,79 +27,9 @@ require_once('layout/navbar.php');
                 </button>
 
             </div>
-            <form action="" class="align-self-center" id="quick-action-form" style="display: none">
-                <input type="hidden" name="_token" value="hCEtHiQcxLFMNpNMIjEHGEzqtv0J2YpLtfTtii9W" autocomplete="off"
-                    data-np-invisible="1" data-np-checked="1">
-                <div class="d-flex align-items-center" id="quick-actions">
-                    <div class="select-status mr-3 pl-lg-3">
-                        <div class="dropdown bootstrap-select disabled form-control select-picker">
-                            <select name="action_type" class="form-control select-picker" id="quick-action-type"
-                                disabled="">
-                                <option value="">No Action</option>
-                                <option value="change-status">Change Status</option>
-                                <option value="delete">Delete</option>
-                            </select>
-                            <button type="button" tabindex="-1"
-                                class="btn dropdown-toggle disabled btn-light bs-placeholder" data-toggle="dropdown"
-                                role="combobox" aria-owns="bs-select-12" aria-haspopup="listbox" aria-expanded="false"
-                                data-id="quick-action-type" aria-disabled="true" title="No Action">
-                                <div class="filter-option">
-                                    <div class="filter-option-inner">
-                                        <div class="filter-option-inner-inner">No Action</div>
-                                    </div>
-                                </div>
-                            </button>
-                            <div class="dropdown-menu ">
-                                <div class="inner show" role="listbox" id="bs-select-12" tabindex="-1">
-                                    <ul class="dropdown-menu inner show" role="presentation"></ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="select-status mr-3 d-none quick-action-field" id="change-status-action">
-                        <div class="dropdown bootstrap-select form-control select-picker">
-                            <select name="status" class="form-control select-picker">
-                                <option value="1">Incomplete</option>
-                                <option value="2">Completed</option>
-                            </select>
-                            <button type="button" tabindex="-1" class="btn dropdown-toggle btn-light"
-                                data-toggle="dropdown" role="combobox" aria-owns="bs-select-13" aria-haspopup="listbox"
-                                aria-expanded="false" title="Incomplete">
-                                <div class="filter-option">
-                                    <div class="filter-option-inner">
-                                        <div class="filter-option-inner-inner">Incomplete</div>
-                                    </div>
-                                </div>
-                            </button>
-                            <div class="dropdown-menu ">
-                                <div class="inner show" role="listbox" id="bs-select-13" tabindex="-1">
-                                    <ul class="dropdown-menu inner show" role="presentation"></ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="select-status">
-                        <button type="button" disabled="" class="btn-primary rounded f-14 p-2" id="quick-action-apply">
-                            Apply
-                        </button>
-                        <input type="password" class="autocomplete-password" style="opacity: 0;position: absolute;"
-                            autocomplete="off" data-np-invisible="1" data-np-checked="1">
-                        <input type="search" class="autocomplete-password" style="opacity: 0;position: absolute;"
-                            autocomplete="off" data-np-invisible="1" data-np-checked="1">
-                    </div>
-                </div>
-            </form>
-            <div class="btn-group mt-3 mt-lg-0 mt-md-0 ml-lg-3" role="group">
-                <a href="http://localhost/script/public/account/tasks" class="btn btn-secondary f-14 btn-active"
-                    data-toggle="tooltip" data-original-title="Tasks"><i class="side-icon bi bi-list-ul"></i></a>
-                <a href="http://localhost/script/public/account/tasks/taskboards" class="btn btn-secondary f-14"
-                    data-toggle="tooltip" data-original-title="Task Board"><i class="side-icon bi bi-kanban"></i></a>
-                <a href="http://localhost/script/public/account/tasks/task-calendar" class="btn btn-secondary f-14"
-                    data-toggle="tooltip" data-original-title="Calendar"><i class="side-icon bi bi-calendar"></i></a>
-                <a href="javascript:;" class="btn btn-secondary f-14 show-pinned" data-toggle="tooltip"
-                    data-original-title="Pinned"><i class="side-icon bi bi-pin-angle"></i></a>
-            </div>
+
         </div>
+        <?php endif; ?>
         <div class="d-flex flex-column w-tables rounded mt-3 bg-white">
 
             <div id="allTasks-table_wrapper" class="">
@@ -136,7 +67,7 @@ require_once('layout/navbar.php');
                                         <div class="media align-items-center">
                                             <div class="media-body">
                                                 <h5 class="mb-0 f-13 text-darkest-grey"><a
-                                                        href="<?=ROOT?>/taskdetails/<?=$getEmployeeTask['task_id']?>"
+                                                        href="<?=ROOT?>/task/<?=$getEmployeeTask['task_id']?>"
                                                         class="openRightModal"><?=$getEmployeeTask['heading']?></a>
                                                 </h5>
                                                 <p class="mb-0"> </p>
@@ -145,7 +76,7 @@ require_once('layout/navbar.php');
                                     </td>
                                     <td
                                         data-search="<?=$getEmployeeTask['project_name']?>">
-                                        <a href="http://localhost/script/public/account/projects/1"
+                                        <a href="<?=ROOT?>/project/<?=$getEmployeeTask['project_id']?>"
                                             class="text-darkest-grey"><?=$getEmployeeTask['project_name']?></a>
                                     </td>
                                     <td data-search="<?=strtotime($getEmployeeTask['due_date']);?>"
@@ -163,13 +94,13 @@ require_once('layout/navbar.php');
                                     ?>
                                     </td>
 
-                                    <td data-search="<?php foreach($employeeModel->getTaskEmployees($getEmployeeTask['task_id']) as $member) {
+                                    <td data-search="<?php foreach($employeesModel->getTaskEmployees($getEmployeeTask['task_id']) as $member) {
                                         echo $member['employee_name'];
                                     } ?> ">
                                         <div class="position-relative">
                                             <?php
                                     $left = 0;
-                                    foreach($employeeModel->getTaskEmployees($getEmployeeTask['task_id']) as $member):
+                                    foreach($employeesModel->getTaskEmployees($getEmployeeTask['task_id']) as $member):
                                         $left = $left + 13;
                                         ?>
 
@@ -191,6 +122,7 @@ require_once('layout/navbar.php');
                                     </td>
                                     <td
                                         data-order="<?=$getEmployeeTask['board_column_id']?>">
+                                        <?php if($_SESSION['user_role'] == 1) : ?>
                                         <select class="selectpicker" id="status_task">
                                             <?php foreach($taskLabels as $taskLabel): ?>
 
@@ -204,7 +136,13 @@ require_once('layout/navbar.php');
                                             </option>
                                             <?php endforeach; ?>
                                         </select>
-
+                                        <?php else:
+                                            foreach($taskLabels as $taskLabel):
+                                                if($taskLabel['id'] == $getEmployeeTask['board_column_id']) {
+                                                    echo '<span class="badge badge-pill" style="background-color:'.$taskLabel['label_color'].'">'.$taskLabel['column_name'].'</span>';
+                                                }
+                                            endforeach;
+                                        endif; ?>
                                     </td>
                                     <td class=" text-right pr-20">
                                         <div class="task_view">
@@ -219,11 +157,13 @@ require_once('layout/navbar.php');
                                                     aria-labelledby="dropdownMenuLink-1" tabindex="0"
                                                     x-placement="bottom-end"
                                                     style="position: absolute; transform: translate3d(-137px, 26px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                                    <a href="<?=ROOT?>/taskdetails/<?=$getEmployeeTask['task_id']?>"
+                                                    <a href="<?=ROOT?>/task/<?=$getEmployeeTask['task_id']?>"
                                                         class="dropdown-item openRightModal">
                                                         <i class="bi bi-eye-fill mr-2"></i>
-                                                        View</a><a class="dropdown-item openRightModal"
-                                                        href="<?=ROOT;?>/edittask/<?=$getEmployeeTask['task_id']?>">
+                                                        View</a>
+                                                    <?php if($_SESSION['user_role'] == 1 || $getEmployeeTask['added_by'] == $_SESSION['user_id']): ?>
+                                                    <a class="dropdown-item openRightModal"
+                                                        href="<?=ROOT;?>/task/<?=$getEmployeeTask['task_id']?>?edit">
                                                         <i class="bi bi-pencil-fill mr-2"></i>
                                                         Edit
                                                     </a><a class="dropdown-item delete-table-row" href="javascript:;"
@@ -231,6 +171,7 @@ require_once('layout/navbar.php');
                                                         <i class="bi bi-trash-fill mr-2"></i>
                                                         Delete
                                                     </a>
+                                                    <?php endif; ?>
                                                 </div>
                                             </div>
                                         </div>
@@ -272,7 +213,7 @@ require_once('layout/footer.php');
             var status = $(this).val();
             var id = $(this).closest('tr').data('id');
             $.ajax({
-                url: '<?=ROOT;?>/taskdetails/' + id +
+                url: '<?=ROOT;?>/task/' + id +
                     '?action=change_task_status',
                 type: "POST",
                 data: {
@@ -320,7 +261,7 @@ require_once('layout/footer.php');
             }).then((result) => {
                 if (result.value) {
                     $.ajax({
-                        url: '<?=ROOT;?>/taskdetails/' +
+                        url: '<?=ROOT;?>/task/' +
                             id +
                             '?action=delete_task',
                         type: "POST",

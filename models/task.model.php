@@ -70,6 +70,7 @@ class Task extends Base
         t.created_by,
         t.created_at,
         t.updated_at,
+        t.added_by,
         
         u.id AS user_id,
         u.name AS user_name,
@@ -106,7 +107,7 @@ class Task extends Base
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getTask($id)
+    public function getTaskAdmin($id)
     {
         $query = $this->db->prepare("
         SELECT 
@@ -125,7 +126,7 @@ class Task extends Base
         t.created_by,
         t.created_at,
         t.updated_at,
-        
+        t.added_by,
         u.id AS user_id,
         u.name AS user_name,
         u.email AS user_email,
@@ -150,7 +151,7 @@ class Task extends Base
         return $query->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function getTasks()
+    public function getTask($id, $user_id)
     {
         $query = $this->db->prepare("
         SELECT 
@@ -169,7 +170,7 @@ class Task extends Base
         t.created_by,
         t.created_at,
         t.updated_at,
-        
+        t.added_by,
         u.id AS user_id,
         u.name AS user_name,
         u.email AS user_email,
@@ -187,9 +188,149 @@ class Task extends Base
         INNER JOIN taskboard_columns tc ON tc.id = t.board_column_id
         INNER JOIN task_category tcat ON tcat.id = t.task_category_id
         LEFT JOIN projects p ON t.project_id = p.id
+        WHERE t.id = ? AND (t.id IN (SELECT task_id FROM task_users WHERE user_id = ?) OR t.created_by = ?);
+
+        ");
+        $query->execute([$id, $user_id, $user_id]);
+        return $query->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getTasksAdmin()
+    {
+        $query = $this->db->prepare("
+        SELECT 
+        t.id AS task_id,
+        t.heading,
+        t.description,
+        t.due_date,
+        t.start_date,
+        t.board_column_id,
+        t.project_id,
+        p.project_name,
+        t.task_category_id,
+        t.priority AS task_priority,
+        t.status,
+   
+        t.created_by,
+        t.created_at,
+        t.updated_at,
+        t.added_by,
+        
+        u.id AS user_id,
+        u.name AS user_name,
+        u.email AS user_email,
+        u.image AS user_image,
+        tc.id AS task_label_id,
+        tc.column_name,
+        tc.slug,
+        tc.label_color,
+        tc.priority,
+        tcat.id AS task_category_id,
+        tcat.category_name
+
+        FROM tasks t
+        LEFT JOIN users u ON u.id = t.created_by
+        LEFT JOIN taskboard_columns tc ON tc.id = t.board_column_id
+        LEFT JOIN task_category tcat ON tcat.id = t.task_category_id
+        LEFT JOIN projects p ON t.project_id = p.id
 
         ");
         $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getTasks($user_id)
+    {
+        $query = $this->db->prepare("
+        SELECT 
+        t.id AS task_id,
+        t.heading,
+        t.description,
+        t.due_date,
+        t.start_date,
+        t.board_column_id,
+        t.project_id,
+        p.project_name,
+        t.task_category_id,
+        t.priority AS task_priority,
+        t.status,
+   
+        t.created_by,
+        t.created_at,
+        t.updated_at,
+        t.added_by,
+        
+        u.id AS user_id,
+        u.name AS user_name,
+        u.email AS user_email,
+        u.image AS user_image,
+        tc.id AS task_label_id,
+        tc.column_name,
+        tc.slug,
+        tc.label_color,
+        tc.priority,
+        tcat.id AS task_category_id,
+        tcat.category_name
+
+        FROM tasks t
+        LEFT JOIN users u ON u.id = t.created_by
+        LEFT JOIN taskboard_columns tc ON tc.id = t.board_column_id
+        LEFT JOIN task_category tcat ON tcat.id = t.task_category_id
+        LEFT JOIN task_users tu ON tu.task_id = t.id
+        LEFT JOIN projects p ON t.project_id = p.id 
+        WHERE t.created_by = ? OR tu.user_id = ?
+        GROUP BY t.id
+
+        ");
+        $query->execute([$user_id, $user_id]);
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+    public function getTasksOfProjects($user_id)
+    {
+        $query = $this->db->prepare("
+        SELECT 
+        t.id AS task_id,
+        t.heading,
+        t.description,
+        t.due_date,
+        t.start_date,
+        t.board_column_id,
+        t.project_id,
+        p.project_name,
+        t.task_category_id,
+        t.priority AS task_priority,
+        t.status,
+        
+   
+        t.created_by,
+        t.created_at,
+        t.updated_at,
+        t.added_by,
+
+        u.id AS user_id,
+        u.name AS user_name,
+        u.email AS user_email,
+        u.image AS user_image,
+        tc.id AS task_label_id,
+        tc.column_name,
+        tc.slug,
+        tc.label_color,
+        tc.priority,
+        tcat.id AS task_category_id,
+        tcat.category_name
+
+        FROM tasks t
+        LEFT JOIN users u ON u.id = t.created_by
+        LEFT JOIN taskboard_columns tc ON tc.id = t.board_column_id
+        LEFT JOIN task_category tcat ON tcat.id = t.task_category_id
+        LEFT JOIN task_users tu ON tu.task_id = t.id
+        LEFT JOIN projects p ON t.project_id = p.id 
+        WHERE p.client_id = ?
+
+        ");
+        $query->execute([$user_id, $user_id]);
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -283,7 +424,31 @@ class Task extends Base
         }
     }
 
-    public function deleteFile($id, $taskid)
+    public function deleteFile($id, $taskid, $user_id)
+    {
+        $query = $this->db->prepare("
+            DELETE FROM task_files
+            WHERE id = ? AND user_id = ?
+        ");
+        $result = $query->execute([$id, $user_id]);
+        if ($result) {
+            $query = $this->db->prepare("
+            INSERT INTO task_history (task_id,details, created_at, user_id)
+            VALUES (?, ?, ?, ?)
+            ");
+            $query->execute([
+                $taskid,
+                "File deleted by " . $_SESSION["user_name"],
+                date("Y-m-d H:i:s"),
+                $_SESSION["user_id"],
+            ]);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function deleteFileAdmin($id, $taskid)
     {
         $query = $this->db->prepare("
             DELETE FROM task_files
@@ -498,7 +663,7 @@ class Task extends Base
         }
     }
 
-    public function deleteTask($id)
+    public function deleteTaskAdmin($id)
     {
         $query = $this->db->prepare("
             SELECT 
@@ -508,6 +673,59 @@ class Task extends Base
 
         ");
         $query->execute([$id]);
+        $project_id = $query->fetch(PDO::FETCH_ASSOC);
+        
+        if ($project_id) {
+            $query = $this->db->prepare("
+            INSERT INTO project_activity (project_id,activity, created_at)
+            VALUES (?, ?, ?)
+            ");
+            $query->execute([
+                $project_id["project_id"],
+                "Task deleted from Project by " . $_SESSION["user_name"],
+                date("Y-m-d H:i:s"),
+        
+            ]);
+        }
+
+        $query = $this->db->prepare("
+            DELETE FROM tasks
+            WHERE id = ?
+        ");
+        $result = $query->execute([$id]);
+
+        if ($result) {
+            $query = $this->db->prepare("
+            DELETE FROM task_users
+            WHERE task_id = ?
+            ");
+            $query->execute([$id]);
+            $query = $this->db->prepare("
+            DELETE FROM task_comments
+            WHERE task_id = ?
+            ");
+            $query->execute([$id]);
+            $query = $this->db->prepare("
+            DELETE FROM task_history
+            WHERE task_id = ?
+            ");
+            $query->execute([$id]);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function deleteTask($id, $user_id)
+    {
+        $query = $this->db->prepare("
+            SELECT 
+                project_id
+            FROM tasks
+            WHERE id = ? AND added_by = ?
+
+        ");
+        $query->execute([$id, $user_id]);
         $project_id = $query->fetch(PDO::FETCH_ASSOC);
         
         if ($project_id) {

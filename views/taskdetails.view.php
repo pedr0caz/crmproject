@@ -33,19 +33,20 @@ require_once("layout/navbar.php");
                                             aria-expanded="false">
                                             <i class="bi bi-three-dots-vertical"></i>
                                         </button>
-
+                                        <?php if($_SESSION['user_role'] == 1 || $_SESSION['user_id'] == $task['user_id']): ?>
                                         <div class="dropdown-menu dropdown-menu-right border-grey rounded b-shadow-4 p-0"
                                             aria-labelledby="dropdownMenuLink" tabindex="0">
 
 
 
                                             <a class="dropdown-item openRightModal"
-                                                href="<?=ROOT;?>/edittask/<?=$id?>">Edit
+                                                href="<?=ROOT;?>/task/<?=$id?>?edit">Edit
                                                 Task</a>
 
 
 
                                         </div>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>
@@ -91,7 +92,7 @@ require_once("layout/navbar.php");
                                     <a
                                         href="<?=ROOT;?>/employeedetails/<?=$taskEmployee['user_id']?>">
                                         <img title="<?=$taskEmployee['user_name'];?>"
-                                            src="<?=$taskEmployee['user_image'] ? $taskEmployee['user_image'] : 'https://www.gravatar.com/avatar/3ea58e77e21cabdfeabbfd844cbabbca.png?s=200&amp;d=mp';?>">
+                                            src="<?=$taskEmployee['user_image'] ? ROOT.'/'.$taskEmployee['user_image'] : 'https://www.gravatar.com/avatar/3ea58e77e21cabdfeabbfd844cbabbca.png?s=200&amp;d=mp';?>">
                                     </a>
                                 </div>
                                 <?php endforeach; ?>
@@ -108,14 +109,14 @@ require_once("layout/navbar.php");
                                 </style>
 
                                 <div class="media align-items-center mw-250">
-                                    <a href="http://localhost/script/public/account/employees/1"
+                                    <a href="<?=ROOT;?>/employeedetails/<?=$task['user_id']?>"
                                         class="position-relative ">
                                         <img src="<?=$task['user_image'] ? $task['user_image'] : 'https://www.gravatar.com/avatar/3ea58e77e21cabdfeabbfd844cbabbca.png?s=200&amp;d=mp';?>"
                                             class="mr-2 taskEmployeeImg rounded-circle" alt="Pedro" title="Pedro">
                                     </a>
                                     <div class="media-body">
                                         <h5 class="mb-0 f-12">
-                                            <a href="http://localhost/script/public/account/employees/1"
+                                            <a href="<?=ROOT;?>/employeedetails/<?=$task['user_id']?>"
                                                 class="text-darkest-grey "><?=$task['user_name']?></a>
                                             <?php if ($task['user_id'] == $_SESSION['user_id']) {?>
                                             <span class="badge badge-secondary">It's you</span>
@@ -200,6 +201,7 @@ require_once("layout/navbar.php");
                                         <div class="p-20">
 
                                             <div class="card-body ">
+                                                <?php if($_SESSION['user_role'] <= 2): ?>
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <a class="f-15 f-w-500" href="javascript:;"
@@ -265,7 +267,7 @@ require_once("layout/navbar.php");
                                                         </div>
                                                     </div>
                                                 </form>
-
+                                                <?php endif; ?>
                                                 <div class="d-flex flex-wrap mt-3" id="task-file-list">
                                                     <?php foreach($taskFiles as $file):
                                                         $time = date_diff(date_create('now'), date_create($file['created_at']));
@@ -323,11 +325,12 @@ require_once("layout/navbar.php");
 
                                                                             <a class="cursor-pointer d-block text-dark-grey f-13 py-3 px-3 "
                                                                                 href="<?=ROOT?>/<?=$file['filename']?>">Download</a>
-
+                                                                            <?php if($file['added_by'] == $_SESSION['user_id'] || $_SESSION['user_role'] == 1): ?>
 
                                                                             <a class="cursor-pointer d-block text-dark-grey f-13 pb-3 px-3 delete-file"
                                                                                 data-row-id="<?=$file['id']?>"
                                                                                 href="javascript:;">Delete</a>
+                                                                            <?php endif; ?>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -344,6 +347,7 @@ require_once("layout/navbar.php");
                                         </div>
                                     </div>
                                     <div class="tab-pane fade" role="tabpanel" id="comments">
+                                        <?php if($_SESSION['user_role'] <= 2): ?>
                                         <div class="row p-20">
                                             <div class="col-md-12">
                                                 <a class="f-15 f-w-500" href="javascript:;" id="add-comment"><i
@@ -376,7 +380,7 @@ require_once("layout/navbar.php");
                                                     </a>
                                                     <button type="button" class="btn-primary rounded f-14 p-2"
                                                         id="submit-comment">
-                                                        <i class="bi bi-check mr-2"></i>Save
+                                                        <i class="bi bi-check mr-2"></i>
                                                         Submit
                                                     </button>
 
@@ -384,7 +388,7 @@ require_once("layout/navbar.php");
 
                                             </div>
                                         </form>
-
+                                        <?php endif; ?>
 
                                         <div class="d-flex flex-wrap justify-content-between p-20" id="comment-list">
                                             <?php foreach($taskComments as $comment): ?>
@@ -512,6 +516,7 @@ require_once("layout/navbar.php");
 
                         <div class="card-body ">
                             <p class="f-w-500">
+                                <?php if($_SESSION['user_role'] <= 1): ?>
                                 <select class="selectpicker" name="task_status" id="task_status">
                                     <?php foreach($taskLabels as $taskLabel): ?>
                                     <option
@@ -524,6 +529,10 @@ require_once("layout/navbar.php");
                                     </option>
                                     <?php endforeach; ?>
                                 </select>
+                                <?php else: ?>
+                                <i class='bi bi-circle-fill  mr-2'
+                                    style='color:<?=$task['label_color']?>'></i><?=$task['column_name'];?>
+                                <?php endif; ?>
                             </p>
 
 
@@ -567,7 +576,7 @@ if($deadline > date('Y-m-d')) {
 
                     let editor;
                     ClassicEditor
-                        .create(document.querySelector('#editor')).then((newEditor) => {
+                        .create(document.querySelector(' #editor')).then((newEditor) => {
                             editor = newEditor;
                         })
                         .catch(error => {
@@ -589,7 +598,7 @@ if($deadline > date('Y-m-d')) {
                     $('#submit-comment').click(function() {
                         let comment = editor.getData();
                         $.ajax({
-                            url: '<?=ROOT;?>/taskdetails/<?=$id;?>?action=addcomment',
+                            url: '<?=ROOT;?>/task/<?=$id;?>?action=addcomment',
                             container: '#save-comment-data-form',
                             type: "POST",
                             disableButton: true,
@@ -616,16 +625,17 @@ if($deadline > date('Y-m-d')) {
 
 
 
-                    //    change task status
+                    // change task status
                     $('body').on('change', '#task_status', function() {
                         var status = $(this).val();
 
                         $.ajax({
-                            url: '<?=ROOT;?>/taskdetails/<?=$id;?>?action=change_task_status',
+                            url: '<?=ROOT;?>/task/<?=$id;?>?action=change_task_status',
                             type: "POST",
                             data: {
                                 status: status,
-                                task_id: <?=$task['task_id']?>
+                                task_id:
+                                <?=$task['task_id']?>
                             },
 
                             success: function(data) {
@@ -725,7 +735,7 @@ if($deadline > date('Y-m-d')) {
                             if (result.isConfirmed) {
                                 $.ajax({
                                     type: 'POST',
-                                    url: '<?=ROOT;?>/taskdetails/<?=$id;?>?action=deletecomment',
+                                    url: '<?=ROOT;?>/task/<?=$id;?>?action=deletecomment',
                                     data: {
                                         id: id
                                     },
@@ -788,7 +798,7 @@ if($deadline > date('Y-m-d')) {
                         var form = $('#save-taskfile-data-form');
                         var formData = new FormData(form[0]);
                         $.ajax({
-                            url: '<?=ROOT;?>/taskdetails/<?=$id?>?action=uploadfile',
+                            url: '<?=ROOT;?>/task/<?=$id?>?action=uploadfile',
                             type: 'POST',
                             data: formData,
                             processData: false,
@@ -834,7 +844,7 @@ if($deadline > date('Y-m-d')) {
                                 console.log("ok")
                                 $.ajax({
                                     type: 'POST',
-                                    url: '<?=ROOT;?>/taskdetails/<?=$id?>?action=deletefile',
+                                    url: '<?=ROOT;?>/task/<?=$id?>?action=deletefile',
                                     data: {
                                         id
                                     },

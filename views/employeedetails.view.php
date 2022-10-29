@@ -260,7 +260,7 @@
                                         <div class="media align-items-center">
                                             <div class="media-body">
                                                 <h5 class="mb-0 f-13 text-darkest-grey"><a
-                                                        href="<?=ROOT?>/projectdetails/<?=$project['project_id']?>"><?=$project['project_name']?></a>
+                                                        href="<?=ROOT?>/project/<?=$project['project_id']?>"><?=$project['project_name']?></a>
                                                 </h5>
                                                 <p class="mb-0"></p>
                                             </div>
@@ -365,11 +365,11 @@
                                                     aria-labelledby="dropdownMenuLink-1" tabindex="0"
                                                     x-placement="bottom-end"
                                                     style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-169px, 26px, 0px);">
-                                                    <a href="<?=ROOT?>/projectdetails/<?=$project['project_id']?>"
+                                                    <a href="<?=ROOT?>/project/<?=$project['project_id']?>"
                                                         class="dropdown-item">
                                                         <i class="bi bi-eye-fill mr-2"></i>
                                                         View</a><a class="dropdown-item openRightModal"
-                                                        href="<?=ROOT;?>/editproject/<?=$project['project_id']?>">
+                                                        href="<?=ROOT;?>/project/<?=$project['project_id']?>?edit">
                                                         <i class="bi bi-pencil-fill mr-2"></i>
                                                         Edit
                                                     </a>
@@ -404,9 +404,9 @@
                 <!-- Add Task Export Buttons Start -->
                 <div class="d-flex justify-content-between action-bar">
                     <div id="table-actions" class="align-items-center">
-                        <a href="<?=ROOT;?>/addtask"
+                        <a href="<?=ROOT;?>/task/create?user=<?=$id;?>"
                             class="btn-primary rounded f-14 p-2 mr-3 openRightModal float-left"
-                            data-redirect-url="<?=ROOT;?>/addtask">
+                            data-redirect-url="<?=ROOT;?>/task/create?user=<?=$id;?>">
                             <i class="bi bi-plus-circle mr-2"></i>
                             Add Task
                         </a>
@@ -454,7 +454,7 @@
                                                 <div class="media align-items-center">
                                                     <div class="media-body">
                                                         <h5 class="mb-0 f-13 text-darkest-grey"><a
-                                                                href="<?=ROOT?>/taskdetails/<?=$getEmployeeTask['task_id']?>"
+                                                                href="<?=ROOT?>/task/<?=$getEmployeeTask['task_id']?>"
                                                                 class="openRightModal"><?=$getEmployeeTask['heading']?></a>
                                                         </h5>
                                                         <p class="mb-0"> </p>
@@ -463,7 +463,7 @@
                                             </td>
                                             <td
                                                 data-search="<?=$getEmployeeTask['project_name']?>">
-                                                <a href="<?=ROOT?>/projectdetails/<?=$getEmployeeTask['project_id']?>"
+                                                <a href="<?=ROOT?>/project/<?=$getEmployeeTask['project_id']?>"
                                                     class="text-darkest-grey"><?=$getEmployeeTask['project_name']?></a>
                                             </td>
                                             <td
@@ -535,11 +535,11 @@
                                                             aria-labelledby="dropdownMenuLink-1" tabindex="0"
                                                             x-placement="bottom-end"
                                                             style="position: absolute; transform: translate3d(-137px, 26px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                                            <a href="<?=ROOT?>/taskdetails/<?=$getEmployeeTask['task_id']?>"
+                                                            <a href="<?=ROOT?>/task/<?=$getEmployeeTask['task_id']?>"
                                                                 class="dropdown-item openRightModal">
                                                                 <i class="bi bi-eye-fill mr-2"></i>
                                                                 View</a><a class="dropdown-item openRightModal"
-                                                                href="<?=ROOT?>/edittask/<?=$getEmployeeTask['task_id']?>">
+                                                                href="<?=ROOT?>/task/<?=$getEmployeeTask['task_id']?>?edit">
                                                                 <i class="bi bi-pencil-fill mr-2"></i>
                                                                 Edit
                                                             </a><a class="dropdown-item delete-table-row"

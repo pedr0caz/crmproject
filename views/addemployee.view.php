@@ -4,7 +4,6 @@
 
     <!-- PAGE TITLE END -->
     <div class="content-wrapper">
-        <link rel="stylesheet" href="http://localhost/script/public/vendor/css/tagify.css">
         <div class="row">
             <div class="col-sm-12">
                 <form method="POST" action="<?=ROOT;?>/addemployee"
@@ -106,6 +105,7 @@
 
                                                 <?php foreach($departments as $department): ?>
                                                 <option
+                                                    data-content="<span class='badge badge-pill badge-light border p-2'><?=$department['name']?></span>"
                                                     value="<?=$department['id']?>">
                                                     <?=$department['name']?>
                                                 </option>
@@ -708,10 +708,16 @@
                             if (response.status == 'success') {
                                 $('#department_name').val('');
                                 var ole = $('#employee_department')
-                                ole.append('<option value="' + response.catId +
+                                var appendOption = ole.append(
+                                    '<option value="' +
+                                    response.catId +
                                     '">' + response
                                     .catName +
-                                    '</option>');
+                                    '</option>')
+                                $('#employee_department option').last().attr('data-content',
+                                    '<span class="badge badge-pill badge-light border p-2">' +
+                                    response.catName +
+                                    '</span>');
                                 $('#employee_department').selectpicker('refresh');
                                 $('#department_model').append(
                                     ` <tr id="row-` + response.catId + `">
@@ -873,7 +879,8 @@
                                 buttonsStyling: false
                             }).then(function(result) {
                                 if (result.value) {
-                                    window.location.href = response.redirect;
+                                    window.location.href =
+                                        '<?=ROOT;?>/employee';
                                 }
                             });
                         } else {

@@ -213,13 +213,13 @@
                             <div class="d-block text-capitalize">
                                 <h5 class="f-15 f-w-500 mb-20 text-darkest-grey">Tasks</h5>
                                 <div class="d-flex">
-                                    <a href="http://localhost/script/public/account/tasks?assignee=me">
+                                    <a href="">
                                         <p class="mb-0 f-21 font-weight-bold text-blue d-grid mr-5">
                                             0<span class="f-12 font-weight-normal text-lightest">
                                                 Pending </span>
                                         </p>
                                     </a>
-                                    <a href="http://localhost/script/public/account/tasks?assignee=me&amp;overdue=yes">
+                                    <a href="">
                                         <p class="mb-0 f-21 font-weight-bold text-red d-grid">0<span
                                                 class="f-12 font-weight-normal text-lightest">Overdue</span>
                                         </p>

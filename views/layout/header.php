@@ -83,7 +83,7 @@
     <link rel="stylesheet" href="<?=ROOT?>/css/bootstrap-icons.css">
 
     <link rel="stylesheet" href="https://jeremyfagis.github.io/dropify/dist/css/dropify.min.css">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.css">
 
     <!-- Template CSS -->
     <link type=" text/css" rel="stylesheet" media="all"

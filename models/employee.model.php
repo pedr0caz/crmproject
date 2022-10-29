@@ -46,13 +46,16 @@ class Employee extends Base
          r.role_id,
          c.name AS role_name,
          e.designation_id,
-            d.name AS designation_name
+            d.name AS designation_name,
+       GROUP_CONCAT(t.team_name SEPARATOR ',') as team_name
         
         FROM users u
         INNER JOIN role_user r ON u.id = r.user_id
+        LEFT JOIN employee_teams et ON u.id = et.user_id
+        LEFT JOIN teams t ON et.team_id = t.id
         INNER JOIN roles c ON r.role_id = c.id
         INNER JOIN employee_details e ON u.id = e.user_id
-        INNER JOIN designations d ON e.designation_id = d.id;
+        LEFT JOIN designations d ON e.designation_id = d.id;
         ");
            
      
@@ -90,6 +93,39 @@ class Employee extends Base
         ");
         $query->execute([$id]);
         return $query->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function deleteEmployee($id)
+    {
+        $query = $this->db->prepare("DELETE FROM users WHERE id = ?");
+        $result = $query->execute([$id]);
+        if ($result) {
+            $query = $this->db->prepare("DELETE FROM role_user WHERE user_id = ?");
+            $result = $query->execute([$id]);
+            if ($result) {
+                $query = $this->db->prepare("DELETE FROM employee_details WHERE user_id = ?");
+                $result = $query->execute([$id]);
+                if ($result) {
+                    $query = $this->db->prepare("DELETE FROM employee_teams WHERE user_id = ?");
+                    $result = $query->execute([$id]);
+                    if ($result) {
+                        $query = $this->db->prepare("DELETE FROM employee_docs WHERE user_id = ?");
+                        $result = $query->execute([$id]);
+                        if ($result) {
+                            return [
+                                "status" => true,
+                                "message" => "Employee was deleted"
+                            ];
+                        } else {
+                            return [
+                                "status" => false,
+                                "message" => "Error trying to delete"
+                            ];
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public function getDesignations()
@@ -283,6 +319,27 @@ class Employee extends Base
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function changeRole($id, $role_id)
+    {
+        $query = $this->db->prepare("
+            UPDATE role_user
+            SET role_id = ?
+            WHERE user_id = ?
+        ");
+        $result = $query->execute([$role_id, $id]);
+        if ($result) {
+            return [
+                "status" => true,
+                "message" => "Role changed successfully"
+            ];
+        } else {
+            return [
+                "status" => false,
+                "message" => "Something went wrong"
+            ];
+        }
+    }
+
     public function getEmployeeTeams($id)
     {
         $query = $this->db->prepare("
@@ -324,7 +381,8 @@ class Employee extends Base
         u.image,
         pt.team_id,
         t.team_name,
-        c.company_name
+        c.company_name,
+        u.name AS name
     FROM projects p
     LEFT JOIN project_teams pt ON p.id = pt.project_id
     LEFT JOIN teams t ON pt.team_id = t.id
@@ -359,6 +417,29 @@ class Employee extends Base
         WHERE pt.project_id = ?
         ");
         $query->execute([$id]);
+
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getMembersOfMyProjects($id, $user_id)
+    {
+        $query = $this->db->prepare("
+        SELECT
+            pt.team_id,
+            t.team_name,
+            u.id AS user_id,
+            u.name,
+            u.email,
+        
+            u.image,
+            u.status
+        FROM project_teams pt
+        LEFT JOIN teams t ON pt.team_id = t.id
+        INNER JOIN employee_teams et ON t.id = et.team_id
+        LEFT JOIN users u ON et.user_id = u.id
+        WHERE pt.project_id = ? and u.id IN (SELECT user_id FROM employee_teams WHERE team_id IN (SELECT team_id FROM employee_teams WHERE user_id = ?))
+        ");
+        $query->execute([$id, $user_id]);
 
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -467,14 +548,15 @@ class Employee extends Base
         u.image AS employee_image,
         ut.id AS asigned_id,
         ut.name as asigned_by_name,
-        ut.image as asigned_by_image
+        ut.image as asigned_by_image,
+        t.added_by
 
 
     FROM task_users tu
     INNER JOIN tasks t ON tu.task_id = t.id
     INNER JOIN users u ON tu.user_id = u.id
     INNER JOIN users ut ON t.added_by = ut.id
-    INNER JOIN projects p ON t.project_id = p.id
+    LEFT JOIN projects p ON t.project_id = p.id
 
     WHERE tu.task_id = ?;
 

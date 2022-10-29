@@ -22,7 +22,7 @@
                                     </label>
                                     <input type="text" class="form-control height-35 f-14"
                                         placeholder="Write a project name"
-                                        value="<?=$getProject['project_name'];?>"
+                                        value="<?=$project['project_name'];?>"
                                         name="project_name" id="project_name" autocomplete="off" data-np-checked="1">
                                 </div>
                             </div>
@@ -34,7 +34,7 @@
                                     </label>
                                     <input type="date" class="form-control  date-picker height-35 f-14"
                                         placeholder="Select Date"
-                                        value="<?=$getProject['start_date'];?>"
+                                        value="<?=$project['start_date'];?>"
                                         name="start_date" id="start_date" autocomplete="off" data-np-checked="1">
                                 </div>
                             </div>
@@ -45,7 +45,7 @@
                                     </label>
                                     <input type="date" class="form-control  date-picker height-35 f-14"
                                         placeholder="Select Date"
-                                        value="<?=$getProject['deadline'];?>"
+                                        value="<?=$project['deadline'];?>"
                                         name="deadline" id="deadline" autocomplete="off" data-np-checked="1">
                                 </div>
                             </div>
@@ -62,7 +62,7 @@
                                         <?php foreach($projectCategory as $category): ?>
                                         <option
                                             value="<?=$category['id'];?>"
-                                            <?php if($category['id'] == $getProject['category_id']) {
+                                            <?php if($category['id'] == $project['category_id']) {
                                                 echo "selected";
                                             }?>>
                                             <?=$category['category_name'];?>
@@ -107,7 +107,7 @@
                                         <?php foreach($clients as $client):?>
                                         <option
                                             value="<?=$client['client_id'];?>"
-                                            <?php if($client['client_id'] == $getProject['client_id']) {
+                                            <?php if($client['client_id'] == $project['client_id']) {
                                                 echo "selected";
                                             }?>>
                                             <?=$client['name'];?>
@@ -425,7 +425,7 @@
         .create(document.querySelector('#editor')).then(editor => {
             project_description = editor;
             project_description.setData(
-                `<?=$getProject['project_summary'];?>`
+                `<?=$project['project_summary'];?>`
             );
 
 
@@ -437,7 +437,7 @@
         .create(document.querySelector('#editor2')).then(editor => {
             notes = editor;
             notes.setData(
-                `<?=$getProject['notes'];?>`
+                `<?=$project['notes'];?>`
             );
 
         })

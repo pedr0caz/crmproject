@@ -5,19 +5,19 @@
     <!-- PROJECT HEADER STARTmplete -->
     <div class="d-flex filter-box project-header bg-white">
         <div class="project-menu d-lg-flex" id="mob-client-detail">
-            <a href="<?=ROOT?>/clientdetails/<?=$id?>"
+            <a href="<?=ROOT?>/client/<?=$id?>"
                 class="text-dark-grey text-capitalize border-right-grey p-sub-menu ajax-tab profile <?php if(!isset($_GET['tab'])) {
                     echo 'active';
                 }?>"><span>Profile</span></a>
-            <a href=" <?=ROOT?>/clientdetails/<?=$id?>?tab=projects"
+            <a href=" <?=ROOT?>/client/<?=$id?>?tab=projects"
                 class="text-dark-grey text-capitalize border-right-grey p-sub-menu projects <?php if(isset($_GET['tab']) && $_GET['tab'] == "projects") {
                     echo 'active';
                 }?>"><span>Projects</span></a>
-            <a href="<?=ROOT?>/clientdetails/<?=$id?>?tab=documents"
+            <a href="<?=ROOT?>/client/<?=$id?>?tab=documents"
                 class="text-dark-grey text-capitalize border-right-grey p-sub-menu documents <?php if(isset($_GET['tab']) && $_GET['tab'] == "documents") {
                     echo 'active';
                 }?>"><span>Documents</span></a>
-            <a href="<?=ROOT?>/clientdetails/<?=$id?>?tab=notes"
+            <a href="<?=ROOT?>/client/<?=$id?>?tab=notes"
                 class="text-dark-grey text-capitalize border-right-grey p-sub-menu notes <?php if(isset($_GET['tab']) && $_GET['tab'] == "notes") {
                     echo 'active';
                 }?>"><span>Notes</span></a>
@@ -58,7 +58,7 @@
                                                 <div class="dropdown-menu dropdown-menu-right border-grey rounded b-shadow-4 p-0"
                                                     aria-labelledby="dropdownMenuLink" tabindex="0">
                                                     <a class="dropdown-item openRightModal"
-                                                        href="<?=ROOT?>/clientdetails/<?=$id?>5/edit">Edit</a>
+                                                        href="<?=ROOT?>/client/<?=$id?>?edit">Edit</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -178,9 +178,9 @@
         <div class="col-lg-12 col-md-12 mb-4 mb-xl-0 mb-lg-4">
             <!-- Add Task Export Buttons Start -->
             <div class="d-flex" id="table-actions">
-                <a href="<?=ROOT?>"
+                <a href="<?=ROOT?>/project/create?client_id=<?=$client['client_id'];?>"
                     class="btn-primary rounded f-14 p-2 mr-3 openRightModal"
-                    data-redirect-url="<?=ROOT?>//account/clients/5?tab=projects">
+                    data-redirect-url="<?=ROOT?>/project/create?client_id=<?=$client['client_id'];?>">
                     <i class="bi bi-plus-circle"></i>
                     Add Project
                 </a>
@@ -533,7 +533,7 @@
                         var form = $('#save-taskfile-data-form');
                         var formData = new FormData(form[0]);
                         $.ajax({
-                            url: '<?=ROOT;?>/employeedetails/<?=$id;?>?action=uploadfile',
+                            url: '<?=ROOT;?>/client/<?=$id;?>?action=uploadfile',
                             type: 'POST',
                             data: formData,
                             processData: false,

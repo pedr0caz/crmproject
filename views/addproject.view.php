@@ -232,7 +232,7 @@
                         if (result.isConfirmed) {
                             $.ajax({
                                 type: 'POST',
-                                url: '<?=ROOT;?>/addproject/0?projectCategory=delete',
+                                url: '<?=ROOT;?>/project/create?projectCategory=delete',
                                 data: {
                                     'catId': catId
 
@@ -277,7 +277,7 @@
                 $('body').on('click', '#save-category', function(event) {
                     event.preventDefault();
                     $.ajax({
-                        url: '<?=ROOT;?>/addproject/0?projectCategory=add',
+                        url: '<?=ROOT;?>/project/create?projectCategory=add',
                         container: '#createProjectCategory',
                         type: "POST",
                         disableButton: true,
@@ -349,7 +349,7 @@
                     let value = $(this).html();
                     if (initialText != value) {
                         $.ajax({
-                            url: '<?=ROOT;?>/addproject/0?projectCategory=edit',
+                            url: '<?=ROOT;?>/project/create?projectCategory=edit',
                             container: '#row-' + id,
                             type: "POST",
                             data: {
@@ -413,6 +413,10 @@
             console.error(error);
         });
 
+    $('#client_list_id').selectpicker('val',
+        '<?=isset($_GET['client_id']) ? $_GET['client_id']: "";?>'
+    );
+
     $('#save-project-form').click(function(event) {
         event.preventDefault();
         var form = $('#project-form');
@@ -422,7 +426,7 @@
             formData.append('notes', notes.getData());
 
             $.ajax({
-                url: '<?=ROOT;?>/addproject/save',
+                url: '<?=ROOT;?>/project/create?submit',
                 type: 'POST',
                 data: formData,
                 contentType: false,
@@ -449,7 +453,7 @@
                         }).then(function(result) {
                             if (result.value) {
                                 window.location.href =
-                                    '<?=ROOT;?>/projectdetails/' +
+                                    '<?=ROOT;?>/project/' +
                                     response.id;
                             }
                         });

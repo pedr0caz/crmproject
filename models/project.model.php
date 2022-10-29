@@ -39,6 +39,8 @@ class Project extends Base
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    
+
     public function getProject($id)
     {
         $query = $this->db->prepare("
@@ -73,6 +75,79 @@ class Project extends Base
         $query->execute([$id]);
         return $query->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function getProjectIDClient($id)
+    {
+        $query = $this->db->prepare("
+        SELECT
+        p.id AS project_id,
+        p.project_name,
+        p.project_summary,
+        p.project_admin,
+        p.completion_percent,
+        p.client_id,
+        p.status,
+        p.start_date,
+        p.deadline,
+        p.notes,
+        p.category_id,
+        c.category_name,
+        u.name,
+        u.email,
+        u.image,
+        cd.company_name,
+        u.id AS user_id,
+        CONCAT('[', GROUP_CONCAT(pt.team_id SEPARATOR ','), ']') as teams_id
+    
+    FROM projects p
+    LEFT JOIN project_category c ON p.category_id = c.id
+    LEFT JOIN client_details cd ON p.client_id = cd.id
+    LEFT JOIN project_teams pt ON p.id = pt.project_id
+    LEFT JOIN users u ON cd.user_id = u.id
+    LEFT JOIN teams t ON pt.id = t.id
+    WHERE p.id = ? AND p.client_id = ?;
+        ");
+        $query->execute([$id]);
+        return $query->fetch(PDO::FETCH_ASSOC);
+    }
+
+
+    public function getProjectID($id, $user_id)
+    {
+        $query = $this->db->prepare("
+        SELECT
+        p.id AS project_id,
+        p.project_name,
+        p.project_summary,
+        p.project_admin,
+        p.completion_percent,
+        p.client_id,
+        p.status,
+        p.start_date,
+        p.deadline,
+        p.notes,
+        p.category_id,
+        c.category_name,
+        u.name,
+        u.email,
+        u.image,
+        cd.company_name,
+        u.id AS user_id,
+		CONCAT('[', GROUP_CONCAT(pt.team_id SEPARATOR ','), ']') as teams_id
+        
+    FROM projects p
+    LEFT JOIN project_category c ON p.category_id = c.id
+    LEFT JOIN client_details cd ON p.client_id = cd.id
+    LEFT JOIN project_teams pt ON p.id = pt.project_id
+    LEFT JOIN users u ON cd.user_id = u.id
+    LEFT JOIN teams t ON pt.id = t.id
+    WHERE p.id = ? AND p.id IN ( SELECT project_id FROM project_teams WHERE team_id IN (SELECT team_id FROM employee_teams WHERE user_id = ?) )
+    GROUP BY p.id;
+        ");
+        $query->execute([$id, $user_id]);
+        return $query->fetch(PDO::FETCH_ASSOC);
+    }
+
 
     public function getTaskColumns()
     {
@@ -213,7 +288,7 @@ class Project extends Base
     public function getProjectTeamMembers($id)
     {
         $query = $this->db->prepare("
-        SELECT
+        SELECT DISTINCT
         pt.team_id,
         et.user_id,
         u.id AS user_id,
@@ -454,7 +529,7 @@ class Project extends Base
     public function getFiles($id)
     {
         $query = $this->db->prepare("
-        SELECT name, id, filename, created_at FROM project_files WHERE project_id = ?
+        SELECT name, id, filename, created_at,user_id FROM project_files WHERE project_id = ?
         ");
         $query->execute([$id]);
         return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -556,6 +631,7 @@ class Project extends Base
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
+
     public function getProjectTasks($id)
     {
         $query = $this->db->prepare("
@@ -600,13 +676,52 @@ class Project extends Base
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function deleteFile($id)
+    public function deleteFile($id, $user_id)
+    {
+        $query = $this->db->prepare("
+        DELETE FROM project_files WHERE id = ? AND user_id = ?
+        ");
+        $result = $query->execute([$id, $user_id]);
+        if ($result) {
+            $query = $this->db->prepare("
+            INSERT INTO project_activity (project_id, activity, created_at)
+            VALUES (?, ?, ?)
+
+            ");
+            $query->execute([
+                $id,
+                "File deleted by " . $_SESSION["user_name"],
+                date("Y-m-d H:i:s")
+            ]);
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function deleteFileAdmin($id)
     {
         $query = $this->db->prepare("
         DELETE FROM project_files WHERE id = ?
         ");
-        $query->execute([$id]);
-        return $query->rowCount();
+        $result = $query->execute([$id]);
+        if ($result) {
+            $query = $this->db->prepare("
+            INSERT INTO project_activity (project_id, activity, created_at)
+            VALUES (?, ?, ?)
+
+            ");
+            $query->execute([
+                $id,
+                "File deleted by " . $_SESSION["user_name"],
+                date("Y-m-d H:i:s")
+            ]);
+
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function newCategory($name)
@@ -655,6 +770,66 @@ class Project extends Base
             return [
                 "status" => true,
                 "message" => "Project status changed successfully"
+            ];
+        }
+    }
+
+    public function deleteMemberFromProject($id, $user_id)
+    {
+        $query = $this->db->prepare("
+            DELETE FROM employee_teams
+            WHERE team_id = ? AND user_id = ?
+        ");
+        $result = $query->execute([$id, $user_id]);
+        if ($result) {
+            $query = $this->db->prepare("
+            INSERT INTO project_activity (project_id, activity, created_at)
+            VALUES (?, ?, ?)
+            ");
+            $query->execute([
+                $id,
+                "Member removed from project",
+                date("Y-m-d H:i:s")
+            ]);
+            return [
+                "status" => true,
+                "message" => "Member removed from project successfully"
+            ];
+        }
+    }
+
+    public function editTeamsOnProject($id, $teams)
+    {
+        $query = $this->db->prepare("
+            DELETE FROM project_teams
+            WHERE project_id = ?
+        ");
+        $result = $query->execute([$id]);
+        if ($result) {
+            foreach ($teams as $team) {
+                $query = $this->db->prepare("
+                    INSERT INTO project_teams (project_id, team_id)
+                    VALUES (?, ?)
+                ");
+                $query->execute([$id, $team]);
+            }
+            $query = $this->db->prepare("
+            INSERT INTO project_activity (project_id, activity, created_at)
+            VALUES (?, ?, ?)
+            ");
+            $query->execute([
+                $id,
+                "Teams updated on project",
+                date("Y-m-d H:i:s")
+            ]);
+            return [
+                "status" => true,
+                "message" => "Teams updated on project successfully"
+            ];
+        } else {
+            return [
+                "status" => false,
+                "message" => "Something went wrong"
             ];
         }
     }

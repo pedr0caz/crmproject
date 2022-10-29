@@ -17,28 +17,23 @@ $controllers = [
     "home",
     "login",
     "client",
-    "addclient",
-    "clientdetails",
-    "addproject",
     "project",
-    "projectdetails",
-    "editproject",
     "employee",
     "addemployee",
     "task",
-    "addtask",
-    "edittask",
-    "taskdetails",
     "employeedetails",
     "logout",
     "messages",
-    "noticesdetails"
+    "notice",
+    "event",
 
 ];
 
 if (!in_array($controller, $controllers)) {
     http_response_code(404);
-    die("Página não encontrada");
+    $title = "Not Found";
+    require("views/error404.view.php");
+    exit;
 }
 
 require("controllers/" . $controller . ".controller.php");

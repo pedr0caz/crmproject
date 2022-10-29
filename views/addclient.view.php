@@ -332,7 +332,7 @@
                     formData.append('note', note);
                     if (form[0].checkValidity()) {
                         $.ajax({
-                            url: '<?=ROOT;?>/addclient/save',
+                            url: '<?=ROOT;?>/client/create?submit',
                             container: '#save-client-data-form',
                             type: "POST",
                             data: formData,
@@ -349,7 +349,7 @@
                                     }).then((result) => {
                                         if (result.isConfirmed) {
                                             window.location.href =
-                                                "<?=ROOT;?>/clientdetails/" +
+                                                "<?=ROOT;?>/client/" +
                                                 response.id;
                                         }
                                     })
@@ -495,7 +495,7 @@
                         if (result.isConfirmed) {
                             $.ajax({
                                 type: 'POST',
-                                url: '<?=ROOT;?>/addclient/0?clientCategory=delete',
+                                url: '<?=ROOT;?>/client/create?clientCategory=delete',
                                 data: {
                                     'catId': catId
 
@@ -540,7 +540,7 @@
                 $('body').on('click', '#save-category', function(event) {
                     event.preventDefault();
                     $.ajax({
-                        url: '<?=ROOT;?>/addclient/0?clientCategory=add',
+                        url: '<?=ROOT;?>/client/create?clientCategory=add',
                         container: '#createProjectCategory',
                         type: "POST",
                         disableButton: true,
@@ -611,7 +611,7 @@
                     let value = $(this).html();
                     if (initialText != value) {
                         $.ajax({
-                            url: '<?=ROOT;?>/addclient/0?clientCategory=edit',
+                            url: '<?=ROOT;?>/client/create?clientCategory=edit',
                             container: '#row-' + id,
                             type: "POST",
                             data: {

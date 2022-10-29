@@ -44,12 +44,14 @@
 
                                             </select>
                                         </div>
+                                        <?php if($_SESSION['user_role'] == 1) : ?>
                                         <div class="input-group-append">
                                             <button type="button" class="btn btn-outline-secondary border-grey"
                                                 data-toggle="modal" data-target="#myModal2">
                                                 Add
                                             </button>
                                         </div>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>
@@ -83,7 +85,7 @@
                                     <div class="input-group">
                                         <div class="dropdown bootstrap-select show-tick form-control">
                                             <select class="selectpicker form-control height-35 f-14" name="project_id"
-                                                id="project_id" data-live-search="true">
+                                                id="project_id" data-live-search="true" data-size="4">
                                                 <option value="">--</option>
                                                 <?php foreach ($projects as $project) : ?>
                                                 <option
@@ -106,7 +108,9 @@
                                             <select class="selectpicker form-control height-35 f-14" multiple=""
                                                 name="user_id[]" id="selectAssignee" data-live-search="true">
                                                 <?php foreach($employees as $employee) : ?>
+                                                <?php $image = $employee['image'] ? ROOT.'/'.$employee['image'] : 'https://www.gravatar.com/avatar/a456ed61bc3c5d05f3ad79d85069098a.png?s=200&d=mp'; ?>
                                                 <option
+                                                    data-content="<span class='badge badge-pill badge-light border p-2'><img src='<?=$image;?>' class='rounded-circle mr-1' width='20' height='20'><?=$employee['name'];?></span>"
                                                     value="<?php echo $employee["user_id"]; ?>">
                                                     <?php echo $employee["name"];?>
                                                 </option>
@@ -129,10 +133,7 @@
                                         <?php foreach($taskLabels as $taskLabel): ?>
                                         <option
                                             data-content="<i class='bi bi-circle-fill  mr-2'  style='color:<?=$taskLabel['label_color']?>'></i>  <?=$taskLabel['column_name']?>"
-                                            value="<?=$taskLabel['id']?>"
-                                            <?php if($taskLabel['id'] == $task['board_column_id']) {
-                                                echo 'selected';
-                                            } ?>>
+                                            value="<?=$taskLabel['id']?>">
                                             <?=$taskLabel['column_name']?>
                                         </option>
                                         <?php endforeach; ?>
@@ -175,11 +176,10 @@
                         <div class="w-100 border-top-grey d-block d-lg-flex d-md-flex justify-content-start px-4 py-3">
                             <button type="button" name="submit" class="btn-primary rounded f-14 p-2 mr-3"
                                 id="save-task-form">
-                                <i class="bi bi-save mr-2"></i>Save
+                                <i class="bi bi-save mr-2"></i>
                                 Save
                             </button>
-                            <a href="http://localhost/script/public/account/tasks"
-                                class="btn-cancel rounded f-14 p-2 border-0">
+                            <a href="" class="btn-cancel rounded f-14 p-2 border-0">
                                 Cancel
                             </a>
                         </div>
@@ -189,20 +189,37 @@
         </div>
         <script>
             $(document).ready(function() {
+                $('#project_id').selectpicker('val',
+                    '<?=isset($_GET['project_id']) ? $_GET['project_id'] : '';?>'
+                );
+
+                $('#selectAssignee').selectpicker('val',
+                    '<?=isset($_GET['user']) ? $_GET['user'] : '';?>'
+                );
+
                 $('#project_id').on('change', function() {
                     var project_id = parseInt($(this).val());
 
                     if (Number.isInteger(project_id)) {
                         console.log(" run")
                         $.ajax({
-                            url: '<?=ROOT;?>/addtask/0?project_id=' +
+                            url: '<?=ROOT;?>/task/create?project_id=' +
                                 project_id,
                             type: 'POST',
                             success: function(data) {
                                 $('select[id="selectAssignee"]').empty();
                                 $.each(data, function(key, value) {
+                                    var image = value.image ?
+                                        '<?=ROOT;?>/' +
+                                        value.image :
+                                        'https://www.gravatar.com/avatar/a456ed61bc3c5d05f3ad79d85069098a.png?s=200&d=mp';
                                     var user = $('<option />').attr('value',
-                                        value.user_id).text(value.name);
+                                        value.user_id).text(value.name).attr(
+                                        'data-content',
+                                        "<span class='badge badge-pill badge-light border p-2'><img src='" +
+                                        image +
+                                        "' class='rounded-circle mr-1' width='20' height='20'>" +
+                                        value.name + "</span>");
                                     $('select[id="selectAssignee"]').append(user);
                                 });
                                 $('select[id="selectAssignee"]').selectpicker("destroy");
@@ -215,14 +232,22 @@
                         $('select[id="selectAssignee"]').empty();
                         console.log("nu run")
                         $.ajax({
-                            url: '<?=ROOT;?>/addtask/0?noproject',
+                            url: '<?=ROOT;?>/task/create?noproject',
                             type: 'POST',
                             success: function(data) {
                                 $('select[id="selectAssignee"]').empty();
                                 $.each(data, function(key, value) {
-                                    var user = $('<option />').html(
-                                        "<img src='' />" + value.name).val(
-                                        value.id);
+                                    var image = value.image ?
+                                        '<?=ROOT;?>/' +
+                                        value.image :
+                                        'https://www.gravatar.com/avatar/a456ed61bc3c5d05f3ad79d85069098a.png?s=200&d=mp';
+                                    var user = $('<option />').attr('value',
+                                        value.user_id).text(value.name).attr(
+                                        'data-content',
+                                        "<span class='badge badge-pill badge-light border p-2'><img src='" +
+                                        image +
+                                        "' class='rounded-circle mr-1' width='20' height='20'>" +
+                                        value.name + "</span>");
                                     $('select[id="selectAssignee"]').append(user);
                                 });
                                 $('select[id="selectAssignee"]').selectpicker("destroy");
@@ -255,7 +280,7 @@
                     let description = editor.getData();
                     formData.append('description', description);
                     $.ajax({
-                        url: '<?=ROOT;?>/addtask/0?submit',
+                        url: '<?=ROOT;?>/task/create?submit',
                         type: 'POST',
                         data: formData,
                         processData: false,
@@ -271,7 +296,7 @@
                                 }).then((result) => {
                                     if (result.isConfirmed) {
                                         window.location.href =
-                                            "<?=ROOT;?>/taskdetails/" +
+                                            "<?=ROOT;?>/task/" +
                                             response.task_id;
                                     }
                                 })
@@ -296,7 +321,7 @@
 <?php
 require_once("layout/footer.php");
     ?>
-
+<?php if($_SESSION['user_role'] == 1): ?>
 <div class="modal" id="myModal2">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -429,7 +454,7 @@ require_once("layout/footer.php");
                         $('body').on('click', '#save-category', function(event) {
                             event.preventDefault();
                             $.ajax({
-                                url: '<?=ROOT;?>/addtask/0?taskCategory=add',
+                                url: '<?=ROOT;?>/task/create?taskCategory=add',
                                 container: '#createTaskCategory',
                                 type: "POST",
                                 disableButton: true,
@@ -488,7 +513,7 @@ require_once("layout/footer.php");
                             if (initialText != value) {
 
                                 $.ajax({
-                                    url: '<?=ROOT;?>/addtask/0?taskCategory=edit',
+                                    url: '<?=ROOT;?>/task/create?taskCategory=edit',
                                     container: '#row-' + id,
                                     type: "POST",
                                     data: {
@@ -518,3 +543,4 @@ require_once("layout/footer.php");
         </div>
     </div>
 </div>
+<?php endif; ?>

@@ -117,7 +117,10 @@
                                             <select class="selectpicker form-control height-35 f-14" multiple=""
                                                 name="user_id[]" id="selectAssignee" data-live-search="true">
                                                 <?php foreach($employees as $employee) : ?>
+                                                <?php $image = $employee['image'] ? ROOT.'/'.$employee['image'] : 'https://www.gravatar.com/avatar/a456ed61bc3c5d05f3ad79d85069098a.png?s=200&d=mp'; ?>
+
                                                 <option
+                                                    data-content="<span class='badge badge-pill badge-light border p-2'><img src='<?=$image;?>' class='rounded-circle mr-1' width='20' height='20'><?=$employee['name'];?></span>"
                                                     value="<?php echo $employee["user_id"]; ?>">
                                                     <?php echo $employee["name"];?>
                                                 </option>
@@ -219,16 +222,24 @@
                     if (Number.isInteger(project_id)) {
 
                         $.ajax({
-                            url: '<?=ROOT;?>/edittask/<?=$id;?>?project_id=' +
+                            url: '<?=ROOT;?>/task/create?project_id=' +
                                 project_id,
                             type: 'POST',
                             success: function(data) {
                                 $('select[id="selectAssignee"]').empty();
                                 $.each(data, function(key, value) {
+                                    var image = value.image ?
+                                        '<?=ROOT;?>/' +
+                                        value.image :
+                                        'https://www.gravatar.com/avatar/a456ed61bc3c5d05f3ad79d85069098a.png?s=200&d=mp';
                                     var user = $('<option />').attr('value',
-                                        value.user_id).text(value.name);
-                                    $('select[id="selectAssignee"]').append(
-                                        user);
+                                        value.user_id).text(value.name).attr(
+                                        'data-content',
+                                        "<span class='badge badge-pill badge-light border p-2'><img src='" +
+                                        image +
+                                        "' class='rounded-circle mr-1' width='20' height='20'>" +
+                                        value.name + "</span>");
+                                    $('select[id="selectAssignee"]').append(user);
                                 });
                                 $('select[id="selectAssignee"]').selectpicker(
                                     "destroy");
@@ -242,16 +253,23 @@
                         $('select[id="selectAssignee"]').empty();
 
                         $.ajax({
-                            url: '<?=ROOT;?>/edittask/<?=$id;?>?noproject',
+                            url: '<?=ROOT;?>/task/create?noproject',
                             type: 'POST',
                             success: function(data) {
                                 $('select[id="selectAssignee"]').empty();
                                 $.each(data, function(key, value) {
-                                    var user = $('<option />').html(
-                                        "<img src='' />" + value.name).val(
-                                        value.id);
-                                    $('select[id="selectAssignee"]').append(
-                                        user);
+                                    var image = value.image ?
+                                        '<?=ROOT;?>/' +
+                                        value.image :
+                                        'https://www.gravatar.com/avatar/a456ed61bc3c5d05f3ad79d85069098a.png?s=200&d=mp';
+                                    var user = $('<option />').attr('value',
+                                        value.user_id).text(value.name).attr(
+                                        'data-content',
+                                        "<span class='badge badge-pill badge-light border p-2'><img src='" +
+                                        image +
+                                        "' class='rounded-circle mr-1' width='20' height='20'>" +
+                                        value.name + "</span>");
+                                    $('select[id="selectAssignee"]').append(user);
                                 });
                                 $('select[id="selectAssignee"]').selectpicker(
                                     "destroy");
@@ -288,7 +306,7 @@
                     let description = editor.getData();
                     formData.append('description', description);
                     $.ajax({
-                        url: '<?=ROOT;?>/edittask/<?=$id;?>?submit',
+                        url: '<?=ROOT;?>/task/<?=$id;?>?edit&submit',
                         type: 'POST',
                         data: formData,
                         processData: false,
@@ -304,11 +322,11 @@
                                 }).then((result) => {
                                     if (result.isConfirmed) {
                                         window.location.href =
-                                            "<?=ROOT;?>/taskdetails/" +
+                                            "<?=ROOT;?>/task/" +
                                             response.task_id;
                                     }
                                 })
-                            } else if (response.status == "error") {
+                            } else {
                                 Swal.fire({
                                     icon: 'error',
                                     title: 'Oops...',
@@ -432,7 +450,7 @@ require_once("layout/footer.php");
                                 if (result.isConfirmed) {
                                     $.ajax({
                                         type: 'POST',
-                                        url: '<?=ROOT;?>/edittask/<?=$id;?>?taskCategory=delete',
+                                        url: '<?=ROOT;?>/task/create?taskCategory=delete',
                                         data: {
                                             'catId': catId
 
@@ -459,7 +477,7 @@ require_once("layout/footer.php");
 
                         $('#save-category').click(function() {
                             $.ajax({
-                                url: '<?=ROOT;?>/edittask/<?=$id;?>?taskCategory=add',
+                                url: '<?=ROOT;?>/task/create?taskCategory=add',
                                 container: '#createTaskCategory',
                                 type: "POST",
                                 disableButton: true,
@@ -508,7 +526,7 @@ require_once("layout/footer.php");
                                 let value = $(this).html();
 
                                 $.ajax({
-                                    url: '<?=ROOT;?>/edittask/<?=$id;?>?taskCategory=edit',
+                                    url: '<?=ROOT;?>/task/create?taskCategory=edit',
                                     container: '#row-' + id,
                                     type: "POST",
                                     data: {

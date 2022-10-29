@@ -86,6 +86,7 @@
                             Dashboard</a>
                     </div>
                 </li>
+                <?php if($_SESSION['user_role'] == 1): ?>
                 <li class="accordionItem openIt">
                     <a class="nav-item text-lightest f-15 sidebar-text-color <?php if (str_contains($controller, 'client')) {
                         echo 'active';
@@ -104,9 +105,10 @@
                         <span class="pl-3">Employees</span>
                     </a>
                 </li>
+                <?php endif; ?>
                 <!-- NAV ITEM - WORK COLLAPASE MENU -->
                 <li class="accordionItem closeIt">
-                    <a class="nav-item text-lightest f-15 sidebar-text-color accordionItemHeading  <?php if (str_contains($controller, 'project')) {
+                    <a class="nav-item text-lightest f-15 sidebar-text-color accordionItemHeading  <?php if (str_contains($controller, 'project') || str_contains($controller, 'task')) {
                         echo 'active';
                     }?>" title="Work">
                         <i class="side-icon bi bi-briefcase"></i>
@@ -129,7 +131,7 @@
                 <li class="accordionItem closeIt">
                     <a class="nav-item text-lightest f-15 sidebar-text-color  <?php if (str_contains($controller, 'event')) {
                         echo 'active';
-                    }?>" href="<?=ROOT?>/events"
+                    }?>" href="<?=ROOT?>/event"
                         title="Events">
                         <i class="side-icon bi bi-calendar"></i>
                         <span class="pl-3">Events</span>
@@ -148,7 +150,7 @@
                 <!-- NAV ITEM - GDPR -->
                 <!-- NAV ITEM - NOTICES -->
                 <li class="accordionItem closeIt">
-                    <a class="nav-item text-lightest f-15 sidebar-text-color  <?php if (str_contains($controller, 'motice')) {
+                    <a class="nav-item text-lightest f-15 sidebar-text-color  <?php if (str_contains($controller, 'notice')) {
                         echo 'active';
                     }?>" href="<?=ROOT?>/notice"
                         title="Notice Board">

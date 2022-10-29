@@ -12,10 +12,7 @@
                     <i class="bi bi-plus-circle mr-1"></i>
                     Add Employee
                 </a>
-                <button type="button" class="btn-secondary rounded f-14 p-2 mr-3 invite-member mb-2 mb-lg-0">
-                    <i class="bi bi-plus-circle mr-1"></i>
-                    Invite Employee
-                </button>
+
                 <button type="button" class="btn-secondary rounded f-14 p-2 mr-3 mb-2 mb-lg-0" id="designation-setting"
                     data-toggle="modal" data-target="#myModal">
                     <i class="bi bi-plus-circle mr-1"></i>
@@ -26,11 +23,7 @@
                     <i class="bi bi-plus-circle mr-1"></i>
                     Add Department
                 </button>
-                <a href="<?=ROOT;?>/employeeimport"
-                    class="btn-secondary rounded f-14 p-2 mr-3 openRightModal mb-2 mb-lg-0">
-                    <i class="bi bi-upload mr-1"></i>
-                    Import
-                </a>
+
             </div>
         </div>
         <!-- Add Task Export Buttons End -->
@@ -49,11 +42,13 @@
                                 <th width="20%" title="User Role">User Role</th>
                                 <th title="Status">Status</th>
                                 <th title="Action">Action</th>
+                                <th class="d-none">Teams</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ($employees as $employee):?>
-                            <tr>
+                            <tr
+                                data-id="<?=$employee['user_id'];?>">
                                 <td><?=$employee['user_id'];?>
                                 </td>
                                 <td><?=$employee['employee_id'];?>
@@ -79,7 +74,7 @@
                                 <td><?=$employee['email'];?>
                                 </td>
                                 <td>
-                                    <select class="form-control selectpicker">
+                                    <select class="form-control selectpicker" id="role_user">
                                         <?php foreach ($roles as $role):
                                             if($role['id'] == 3) {
                                                 continue;
@@ -128,6 +123,10 @@
                                         </div>
                                     </div>
                                 </td>
+                                <td class="d-none">
+                                    <?= $employee['team_name']?>
+
+                                </td>
                             </tr>
                             <?php endforeach;?>
                         </tbody>
@@ -143,6 +142,78 @@
 <script>
     $(document).ready(function() {
         $('#example').DataTable();
+        $('body').on('change', '#role_user', function() {
+            var role_id = $(this).val();
+            var user_id = $(this).closest('tr').data('id');
+            console.log(role_id, user_id);
+            $.ajax({
+                url: '<?=ROOT?>/employee/0?role',
+                type: 'POST',
+                data: {
+                    role_id: role_id,
+                    user_id: user_id
+                },
+                success: function(data) {
+                    console.log(data);
+                    if (data.status == 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Role Updated',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!',
+                            footer: '<a href>Why do I have this issue?</a>'
+                        })
+                    }
+                }
+            });
+        });
+        $('body').on('click', '.delete-table-row', function() {
+            var user_id = $(this).closest('tr').data('id');
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '<?=ROOT?>/employee/0?delete',
+                        type: 'POST',
+                        data: {
+                            user_id: user_id
+                        },
+                        success: function(data) {
+                            console.log(data);
+                            if (data.status == 'success') {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Deleted',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                })
+                                location.reload();
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: 'Something went wrong!',
+                                    footer: '<a href>Why do I have this issue?</a>'
+                                })
+                            }
+                        }
+                    });
+                }
+            })
+        });
     });
 </script>
 <?php require_once("layout/footer.php");

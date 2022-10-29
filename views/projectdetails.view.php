@@ -8,48 +8,50 @@
             <nav class="tabs --jsfied">
                 <ul class="-primary">
                     <li>
-                        <a href="<?=ROOT;?>/projectdetails/<?=$id?>"
+                        <a href="<?=ROOT;?>/project/<?=$id?>"
                             class="text-dark-grey text-capitalize border-right-grey p-sub-menu ajax-tab overview <?php if(!isset($_GET['tab'])) {
                                 echo "active";
                             } ?>"><span>Overview</span></a>
                     </li>
                     <li>
-                        <a href="<?=ROOT;?>/projectdetails/<?=$id?>?tab=members"
+                        <a href="<?=ROOT;?>/project/<?=$id?>?tab=members"
                             class="text-dark-grey text-capitalize border-right-grey p-sub-menu ajax-tab members <?php if(isset($_GET['tab']) && $_GET['tab'] == "members") {
                                 echo "active";
                             }?>"><span>Members</span></a>
                     </li>
                     <li>
-                        <a href="<?=ROOT;?>/projectdetails/<?=$id?>?tab=files"
+                        <a href="<?=ROOT;?>/project/<?=$id?>?tab=files"
                             class="text-dark-grey text-capitalize border-right-grey p-sub-menu ajax-tab files  <?php if(isset($_GET['tab']) && $_GET['tab'] == "files") {
                                 echo "active";
                             }?>"><span>Files</span></a>
                     </li>
                     <li>
-                        <a href="<?=ROOT;?>/projectdetails/<?=$id?>?tab=tasks"
+                        <a href="<?=ROOT;?>/project/<?=$id?>?tab=tasks"
                             class="text-dark-grey text-capitalize border-right-grey p-sub-menu tasks  <?php if(isset($_GET['tab']) && $_GET['tab'] == "tasks") {
                                 echo "active";
                             }?>"><span>Tasks</span></a>
                     </li>
                     <li>
-                        <a href="<?=ROOT;?>/projectdetails/<?=$id?>?tab=taskboard"
+                        <a href="<?=ROOT;?>/project/<?=$id?>?tab=taskboard"
                             class="text-dark-grey text-capitalize border-right-grey p-sub-menu taskboard  <?php if(isset($_GET['tab']) && $_GET['tab'] == "taskboard") {
                                 echo "active";
                             }?>"><span>Task
                                 Board</span></a>
                     </li>
                     <li>
-                        <a href="<?=ROOT;?>/projectdetails/<?=$id?>?tab=discussion"
+                        <a href="<?=ROOT;?>/project/<?=$id?>?tab=discussion"
                             class="text-dark-grey text-capitalize border-right-grey p-sub-menu discussion  <?php if(isset($_GET['tab']) && $_GET['tab'] == "discussion") {
                                 echo "active";
                             }?>"><span>Discussion</span></a>
                     </li>
+                    <?php if($_SESSION['user_role'] <= 2): ?>
                     <li>
-                        <a href="<?=ROOT;?>/projectdetails/<?=$id?>?tab=notes"
+                        <a href="<?=ROOT;?>/project/<?=$id?>?tab=notes"
                             class="text-dark-grey text-capitalize border-right-grey p-sub-menu notes  <?php if(isset($_GET['tab']) && $_GET['tab'] == "notes") {
                                 echo "active";
                             }?>"><span>Notes</span></a>
                     </li>
+                    <?php endif; ?>
                 </ul>
             </nav>
         </div>
@@ -85,7 +87,7 @@
                                                     <div class="card-body border-0 p-0 ml-4 ml-xl-4 ml-lg-3 ml-md-3">
                                                         <h4
                                                             class="card-title f-15 font-weight-normal mb-0 text-capitalize">
-                                                            <a href="<?=ROOT?>/clientdetails/<?=$project['client_id']?>"
+                                                            <a href="<?=ROOT?>/client/<?=$project['client_id']?>"
                                                                 class="text-dark"><?=$project['name'];?></a>
                                                         </h4>
                                                         <p class="card-text f-14 text-lightest mb-0">
@@ -117,12 +119,12 @@
                                                 needleColor: 'gray',
                                                 needleUpdateSpeed: 1000,
                                                 arcColors: ['rgb(44, 177, 0)', 'rgb(232, 238, 243)'],
-                                                arcDelimiters: [50],
+                                                arcDelimiters: [ <?=$getProjectProgress >= 99.99 ? 99.99 : $getProjectProgress;?> ],
                                                 rangeLabel: ['0', '100'],
                                                 centralLabel: '<?=$getProjectProgress?>%'
                                             }
                                             // Drawing and updating the chart
-                                            GaugeChart.gaugeChart(elementGauge, 100, gaugeOptions).updateNeedle(50);
+                                            GaugeChart.gaugeChart(elementGauge, 150, gaugeOptions)
                                         </script>
                                         <!-- PROGRESS START DATE START -->
                                         <div class="p-start-date mb-xl-0 mb-lg-3">
@@ -159,6 +161,7 @@
                     <div class="col-4 h-75 ">
                         <div class="d-flex align-content-center flex-lg-row-reverse mb-4">
                             <div class="ml-lg-3 ml-md-0 ml-0 mr-3 mr-lg-0 mr-md-3">
+                                <?php if($_SESSION['user_role'] <= 1) { ?>
                                 <select class="form-control selectpicker change-status height-35">
                                     <option
                                         data-content="<i class='bi bi-circle-fill  mr-2  text-blue'></i> In Progress"
@@ -174,8 +177,25 @@
                                         data-content="<i class='bi bi-circle-fill  mr-2  text-dark-green'></i> Finished"
                                         value="finished">Finished</option>
                                 </select>
+
+
+                                <?php } else {
+                                    if ($project['status'] == 'in progress') {
+                                        echo "<i class='bi bi-circle-fill  mr-2  text-blue'></i> In Progress";
+                                    } elseif ($project['status'] == 'on hold') {
+                                        echo "<i class='bi bi-circle-fill  mr-2  text-warning'></i> On Hold";
+                                    } elseif ($project['status'] == 'not started') {
+                                        echo "<i class='bi bi-circle-fill mr-2 text-dark-grey'></i> Not Started";
+                                    } elseif ($project['status'] == 'canceled') {
+                                        echo "<i class='bi bi-circle-fill mr-2 text-red'></i> Canceled";
+                                    } elseif ($project['status'] == 'finished') {
+                                        echo "<i class='bi bi-circle-fill  mr-2  text-dark-green'></i> Finished";
+                                    }
+                                }?>
+
                             </div>
                             <div class="ml-lg-3 ml-md-0 ml-0 mr-3 mr-lg-0 mr-md-3">
+                                <?php if($_SESSION['user_role'] <= 1) { ?>
                                 <div class="dropdown">
                                     <button
                                         class="btn btn-lg bg-white border height-35 f-15 px-2 py-1 text-dark-grey text-capitalize rounded  dropdown-toggle"
@@ -185,10 +205,11 @@
                                     <div class="dropdown-menu dropdown-menu-right border-grey rounded b-shadow-4 p-0"
                                         aria-labelledby="dropdownMenuLink" tabindex="0">
                                         <a class="dropdown-item openRightModal"
-                                            href="<?=ROOT;?>/projectdetails/<?=$id?>1/edit">Edit
+                                            href="<?=ROOT;?>/project/<?=$id?>?edit">Edit
                                             Project</a>
                                     </div>
                                 </div>
+                                <?php } ?>
                             </div>
                         </div>
                         <div class="card bg-white border-0 b-shadow-4">
@@ -197,24 +218,24 @@
                                 <h4 class="f-18 f-w-500 mb-0">Tasks</h4>
                             </div>
                             <?php
-                                if(empty($getProjectTasks)) {
-                                    echo '<div class="card-body p-20">';
-                                    echo ' <i class="side-icon f-21 bi bi-pie-chart"></i>';
-                                    echo '<div class="f-15 mt-4">';
-                                    echo 'No Tasks Found';
-                                    echo '</div>';
-                                    echo '</div>';
-                                } else {
-                                    echo '<div class="card-body p-0 ">';
-                                    echo '<div class="m-auto" style="height: 220px; width: 250px">';
-                                    echo '<canvas id="task-chart" height="250" width="250"
+            if(empty($getProjectTasks)) {
+                echo '<div class="card-body p-20">';
+                echo ' <i class="side-icon f-21 bi bi-pie-chart"></i>';
+                echo '<div class="f-15 mt-4">';
+                echo 'No Tasks Found';
+                echo '</div>';
+                echo '</div>';
+            } else {
+                echo '<div class="card-body p-0 ">';
+                echo '<div class="m-auto" style="height: 220px; width: 250px">';
+                echo '<canvas id="task-chart" height="250" width="250"
 								style="display: block; box-sizing: border-box; height: 250px; width: 250px;"></canvas>';
-                                    echo '</div>';
-                                    echo '</div>';
-                                }?>
+                echo '</div>';
+                echo '</div>';
+            }?>
                             <script>
                                 <?php
-                                    $myArray = array();
+                $myArray = array();
             foreach($taskStatus as $status) {
                 $myArray[$status['slug']] = $status;
             } ?>
@@ -324,10 +345,10 @@
         <?php }
         if(isset($_GET['tab']) && $_GET['tab'] == 'tasks') { ?>
         <div class="content-wrapper">
-            <!-- Add Task Export Buttons Start -->
+            <?php if($_SESSION['user_role'] <= 2): ?>
             <div class="d-block d-lg-flex d-md-flex justify-content-between action-bar">
                 <div id="table-actions" class="flex-grow-1 align-items-center">
-                    <a href="<?=ROOT?>/addtask"
+                    <a href="<?=ROOT?>/task/create?project_id=<?=$project['project_id']?>"
                         class="btn-primary rounded f-14 p-2 mr-3 openRightModal float-left">
                         <i class="bi bi-plus-circle mr-2" style="font-size: 16px;"></i>
                         Add Task
@@ -339,6 +360,7 @@
 
                 </div>
             </div>
+            <?php endif; ?>
             <div class="d-flex flex-column w-tables rounded mt-3 bg-white">
                 <div id="allTasks-table_wrapper" class="">
                     <div class="row">
@@ -370,7 +392,7 @@
                                             <div class="media align-items-center">
                                                 <div class="media-body">
                                                     <h5 class="mb-0 f-13 text-darkest-grey"><a
-                                                            href="<?=ROOT?>/taskdetails/<?=$projectTasks['task_id']?>"
+                                                            href="<?=ROOT?>/task/<?=$projectTasks['task_id']?>"
                                                             class="openRightModal"><?=$projectTasks['heading']?></a>
                                                     </h5>
                                                     <p class="mb-0"> </p>
@@ -379,7 +401,7 @@
                                         </td>
                                         <td
                                             data-search="<?=$projectTasks['project_name']?>">
-                                            <a href="http://localhost/script/public/account/projects/1"
+                                            <a href="<?=ROOT?>/project/<?=$projectTasks['project_id']?>"
                                                 class="text-darkest-grey"><?=$projectTasks['project_name']?></a>
                                         </td>
                                         <td data-search="<?=strtotime($projectTasks['due_date']);?>"
@@ -421,6 +443,7 @@
                                         </td>
                                         <td
                                             data-order="<?=$projectTasks['board_column_id']?>">
+                                            <?php if($_SESSION['user_role'] <= 1): ?>
                                             <select class="selectpicker" id="status_task">
                                                 <?php foreach($taskLabels as $taskLabel): ?>
                                                 <option
@@ -433,6 +456,13 @@
                                                 </option>
                                                 <?php endforeach; ?>
                                             </select>
+                                            <?php else:
+                                                foreach($taskLabels as $taskLabel):
+                                                    if($taskLabel['id'] == $projectTasks['board_column_id']) {
+                                                        echo '<span class="badge badge-pill" style="background-color:'.$taskLabel['label_color'].'">'.$taskLabel['column_name'].'</span>';
+                                                    }
+                                                endforeach;
+                                            endif; ?>
                                         </td>
                                         <td class=" text-right pr-20">
                                             <div class="task_view">
@@ -446,23 +476,28 @@
                                                         aria-labelledby="dropdownMenuLink-1" tabindex="0"
                                                         x-placement="bottom-end"
                                                         style="position: absolute; transform: translate3d(-137px, 26px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                                        <a href="<?=ROOT?>/taskdetails/<?=$projectTasks['task_id']?>"
+                                                        <a href="<?=ROOT?>/task/<?=$projectTasks['task_id']?>"
                                                             class="dropdown-item openRightModal">
 
-                                                            <i class="bi bi-eye mr-2" style="font-size: 16px;"></i>View
+                                                            <i class="bi bi-eye-fill mr-2"
+                                                                style="font-size: 16px;"></i>View
                                                         </a>
-                                                        <a class="dropdown-item openRightModal"
-                                                            href="<?=ROOT;?>/edittask/<?=$projectTasks['task_id']?>">
+                                                        <?php if($_SESSION['user_role'] == 1 || $projectTasks['added_by'] == $_SESSION['user_id']): ?>
 
-                                                            <i class="bi bi-pen mr-2" style="font-size: 16px;"></i>
+                                                        <a class="dropdown-item openRightModal"
+                                                            href="<?=ROOT;?>/task/<?=$projectTasks['task_id']?>?edit">
+
+                                                            <i class="bi bi-pen-fill mr-2" style="font-size: 16px;"></i>
                                                             Edit
                                                         </a>
                                                         <a class="dropdown-item delete-table-row" href="javascript:;"
                                                             data-task-id="<?=$projectTasks['task_id']?>">
-                                                            <i class="bi bi-bi-trash mr-2" style="font-size: 16px;"></i>
+                                                            <i class="bi bi-trash-fill mr-2"
+                                                                style="font-size: 16px;"></i>
                                                             <!-- <i class="fa fa-trash mr-2"></i> Font Awesome fontawesome.com -->
                                                             Delete
                                                         </a>
+                                                        <?php endif; ?>
                                                     </div>
                                                 </div>
                                             </div>
@@ -493,12 +528,14 @@
                     <h4 class="f-18 f-w-500 mb-0">Documents</h4>
                 </div>
                 <div class="card-body ">
+                    <?php if($_SESSION['user_role'] <= 2): ?>
                     <div class="row">
                         <div class="col-md-12">
                             <a class="f-15 f-w-500" href="javascript:;" id="add-task-file"><i
                                     class="icons icon-plus font-weight-bold mr-1"></i>Add Files</a>
                         </div>
                     </div>
+
                     <form method="POST" id="save-taskfile-data-form" class="d-none" autocomplete="off"
                         enctype="application/x-www-form-urlencoded">
                         <div class="row">
@@ -546,6 +583,7 @@
                             </div>
                         </div>
                     </form>
+                    <?php endif; ?>
                     <div class="d-flex flex-wrap mt-3" id="task-file-list">
                         <?php foreach($getProjectFiles as $file):
                             $time = date_diff(date_create('now'), date_create($file['created_at']));
@@ -600,11 +638,11 @@
                                                     href="<?=ROOT?>/<?=$file['filename']?>">View</a>
                                                 <a class="cursor-pointer d-block text-dark-grey f-13 py-3 px-3 "
                                                     href="<?=ROOT?>/<?=$file['filename']?>">Download</a>
-                                                <a class="cursor-pointer d-block text-dark-grey pb-3 f-13 px-3 edit-file"
-                                                    href="javascript:;" data-file-id="1">Edit</a>
+                                                <?php if($file['user_id'] == $_SESSION['user_id'] || $_SESSION['user_role'] == 1): ?>
                                                 <a class="cursor-pointer d-block text-dark-grey f-13 pb-3 px-3 delete-file"
                                                     data-row-id="<?=$file['id']?>"
                                                     href="javascript:;">Delete</a>
+                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     </div>
@@ -648,14 +686,14 @@
                 var form = $('#save-taskfile-data-form');
                 var formData = new FormData(form[0]);
                 $.ajax({
-                    url: '<?=ROOT;?>/projectdetails/<?=$id?>?action=uploadfile',
+                    url: '<?=ROOT;?>/project/<?=$id?>?action=uploadfile',
                     type: 'POST',
                     data: formData,
                     processData: false,
                     contentType: false,
                     success: function(response) {
                         if (response.status) {
-                            console.log(response.data);
+
                             $('#task-file-list').append(response.data);
                             $('#save-taskfile-data-form').addClass('d-none');
                             $('#add-task-file').closest('.row').removeClass('d-none');
@@ -689,7 +727,7 @@
                         console.log("ok")
                         $.ajax({
                             type: 'POST',
-                            url: '<?=ROOT;?>/projectdetails/<?=$id?>?action=deletefile',
+                            url: '<?=ROOT;?>/project/<?=$id?>?action=deletefile',
                             data: {
                                 id
                             },
@@ -745,13 +783,8 @@
                 <div class="board-panel rounded bg-additional-grey border-grey mr-3">
                     <div class="d-flex m-3 b-p-header">
                         <p class="mb-0 f-15 mr-3 text-dark-grey font-weight-bold">
-                            <svg class="svg-inline--bi bi-circle fa-w-16 mr-2 text-yellow"
-                                style="color: <?=$label['label_color'];?>"
-                                aria-hidden="true" focusable="false" data-prefix="fa" data-icon="circle" role="img"
-                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
-                                <path fill="currentColor"
-                                    d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path>
-                            </svg>
+                            <i class="bi bi-circle-fill mr-2"
+                                style="color: <?=$label['label_color'];?>"></i>
                             <?=$label['column_name'];?>
                         </p>
                     </div>
@@ -763,7 +796,7 @@
                                 data-task-id="2" id="drag-task-2">
                                 <div class="card-body p-2">
                                     <div class="d-flex justify-content-between mb-1">
-                                        <a href="<?=ROOT;?>/taskdetails/<?=$task['task_id'];?>"
+                                        <a href="<?=ROOT;?>/task/<?=$task['task_id'];?>"
                                             class="f-12 f-w-500 text-dark mb-0 text-wrap openRightModal"><?=$task['heading'];?></a>
                                         <p class="f-12 font-weight-bold text-dark-grey mb-0">
                                             #<?=$task['task_id'];?>
@@ -975,7 +1008,7 @@
                 bottom: -15px;
                 color: rgba(255, 255, 255, 0.5);
                 font-size: 10px;
-                min-width: 82px;
+                min-width: 108px;
             }
 
             .msg_head {
@@ -1100,7 +1133,7 @@
                     message = $("#message").val();
                     if (message == "") return;
                     $.ajax({
-                        url: '<?=ROOT;?>/projectdetails/<?=$id?>?msg=add',
+                        url: '<?=ROOT;?>/project/<?=$id?>?msg=add',
                         type: 'POST',
                         data: {
                             message: message
@@ -1126,7 +1159,7 @@
                     }));
 
                     $.ajax({
-                        url: '<?=ROOT;?>/projectdetails/<?=$id?>?msg=fetch',
+                        url: '<?=ROOT;?>/project/<?=$id?>?msg=fetch',
                         type: 'POST',
                         data: {
                             lastid: maxId
@@ -1204,11 +1237,14 @@
     <!-- ROW START -->
     <div class="row py-5">
         <div class="col-lg-12 col-md-12 mb-4 mb-xl-0 mb-lg-4">
-            <button type="button" class="btn-primary rounded f-14 p-2 type-btn mb-3" id="add-project-member">
+            <?php if($_SESSION['user_role'] == 1): ?>
+            <button type="button" class="btn-primary rounded f-14 p-2 type-btn mb-3" id="add-project-member"
+                data-toggle="modal" data-target="#myModal">
                 <i class="bi bi-plus" style="font-size: 16px;"></i>
                 <!-- <i class="fa fa-plus mr-1"></i> Font Awesome fontawesome.com -->
-                Add Members team
+                Edit Project Teams
             </button>
+            <?php endif; ?>
             <div class="card bg-white border-0 b-shadow-4">
                 <div class="card-header bg-white border-0 text-capitalize d-flex justify-content-between p-20">
                     <h4 class="f-18 f-w-500 mb-0">Members</h4>
@@ -1218,16 +1254,19 @@
                     <table id="example" class="table border-0 pb-3 admin-dash-table table-hover">
                         <thead class="">
                             <tr>
-                                <th class="pl-20">#</th>
+                                <th class="pl-20">Team</th>
                                 <th>Name</th>
+                                <?php if($_SESSION['user_role'] == 1): ?>
                                 <th class="text-right pr-20">Action</th>
+                                <?php endif; ?>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach($getProjectMembers as $employeeProject):?>
-                            <tr id="row-1">
+                            <?php  $i = 0;
+        foreach($getProjectMembers as $employeeProject): ?>
+                            <tr id="row-<?=$i;?>">
                                 <td class="pl-20">
-                                    <?=$employeeProject['user_id'];?>
+                                    <?=$employeeProject['team_name'];?>
                                 </td>
                                 <td>
                                     <style>
@@ -1254,32 +1293,88 @@
                                         </div>
                                     </div>
                                 </td>
+                                <?php if($_SESSION['user_role'] == 1): ?>
                                 <td class="text-right pr-20">
                                     <button type="button" class="btn-secondary rounded f-14 p-2 delete-row"
-                                        data-row-id="1">
+                                        data-row-id="<?=$employeeProject['user_id'];?>"
+                                        data-row-teamid="<?=$employeeProject['team_id'];?>">
 
                                         <i class="bi bi-trash" style="font-size: 16px;"></i>
                                         <!-- <i class="fa fa-trash mr-1"></i> Font Awesome fontawesome.com -->
                                         Delete
                                     </button>
                                 </td>
+                                <?php endif; ?>
                             </tr>
-                            <?php endforeach; ?>
+                            <?php $i++; endforeach; ?>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-    <!-- ROW END -->
+    <div class="modal" id="myModal">
+        <div class="modal-dialog">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modelHeading">Add Project Members</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" id="addProjectMemberForm" autocomplete="off">
+                        <div class="row">
+
+                            <div class="col-md-12" id="select-department-section">
+                                <div class="form-group my-3">
+                                    <label class="f-14 text-dark-grey mb-12" data-label="true"
+                                        for="selectDepartment">Edit Departments
+                                        <sup class="f-14 mr-1">*</sup>
+                                    </label>
+                                    <div class="input-group">
+
+                                        <select class="form-control selectpicker show-tick height-50" multiple=""
+                                            name="team_id[]" id="department_list_id" data-live-search="true"
+                                            data-size="8">
+                                            <?php foreach($getDepartments as $team): ?>
+                                            <option
+                                                data-content="<span class='badge badge-pill badge-light border p-2'><?=$team['team_name'];?></span>"
+                                                value="<?=$team['id'];?>">
+                                                <?=$team['team_name'];?>
+                                            </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:;" class="btn-cancel rounded f-14 p-2 border-0 mr-3" data-dismiss="modal">
+                        Close
+                    </a>
+                    <button type="button" class="btn-primary rounded f-14 p-2" id="save-project-department">
+                        <i class="bi bi-check mr-1"></i>
+                        Save
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         $('.delete-row').click(function() {
             var id = $(this).data('row-id');
+            var teamid = $(this).data('row-teamid');
+            var tr = $(this).closest('tr');
             var url =
-                "<?=ROOT?>projectdetails/<?=$id;?>?action=delete_member";
+                "<?=ROOT?>/project/<?=$id;?>?action=delete_member";
             Swal.fire({
                 title: "Are you sure?",
-                text: "You will not be able to recover the deleted record!",
+                text: "Removing this members from the project will also remove him from the team he is assigned to.",
                 icon: 'warning',
                 showCancelButton: true,
                 focusConfirm: false,
@@ -1296,19 +1391,80 @@
                 buttonsStyling: false
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $.easyAjax({
+                    $.ajax({
                         type: 'POST',
                         url: url,
                         data: {
-                            '_token': token,
-                            '_method': 'DELETE'
+                            user_id: id,
+                            team_id: teamid
                         },
                         success: function(response) {
+                            console.log(response);
                             if (response.status == "success") {
-                                $('#row-' + id).fadeOut();
+                                tr.remove();
+                                Swal.fire({
+                                    title: "Deleted!",
+                                    text: "Member has been removed from the project and team",
+                                    icon: 'success',
+                                    showCancelButton: false,
+                                    focusConfirm: false,
+                                    confirmButtonText: "Ok",
+                                    customClass: {
+                                        confirmButton: 'btn btn-primary mr-3',
+                                    },
+                                    showClass: {
+                                        popup: 'swal2-noanimation',
+                                        backdrop: 'swal2-noanimation'
+                                    },
+                                    buttonsStyling: false
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        location.reload();
+                                    }
+                                });
+
                             }
                         }
                     });
+                }
+            });
+        });
+
+        $('#save-project-department').on('click', function() {
+            var url =
+                "<?=ROOT?>/project/<?=$id;?>?action=edit_departments";
+            var department = $('#department_list_id').val();
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    department: department
+                },
+                success: function(response) {
+                    console.log(response);
+                    if (response.status == "success") {
+                        Swal.fire({
+                            title: "Saved!",
+                            text: "Departments have been saved",
+                            icon: 'success',
+                            showCancelButton: false,
+                            focusConfirm: false,
+                            confirmButtonText: "Ok",
+                            customClass: {
+                                confirmButton: 'btn btn-primary mr-3',
+                            },
+                            showClass: {
+                                popup: 'swal2-noanimation',
+                                backdrop: 'swal2-noanimation'
+                            },
+                            buttonsStyling: false
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                location.reload();
+                            }
+                        });
+
+                    }
                 }
             });
         });
@@ -1330,7 +1486,7 @@
         changeStatus.on('change', function() {
             var status = $(this).val();
             var url =
-                "<?=ROOT?>/projectdetails/<?=$id;?>?action=change_status";
+                "<?=ROOT?>/project/<?=$id;?>?action=change_status";
             $.ajax({
                 type: 'POST',
                 url: url,
@@ -1370,7 +1526,7 @@
         var status = $(this).val();
         var id = $(this).closest('tr').data('id');
         $.ajax({
-            url: '<?=ROOT;?>/taskdetails/' + id +
+            url: '<?=ROOT;?>/task/' + id +
                 '?action=change_task_status',
             type: "POST",
             data: {
@@ -1418,7 +1574,7 @@
         }).then((result) => {
             if (result.value) {
                 $.ajax({
-                    url: '<?=ROOT;?>/taskdetails/' +
+                    url: '<?=ROOT;?>/task/' +
                         id +
                         '?action=delete_task',
                     type: "POST",
@@ -1454,4 +1610,7 @@
 
 
     });
+
+    selectedDepartments = <?php echo json_encode($teams); ?> ;
+    $('#department_list_id').selectpicker('val', selectedDepartments);
 </script>

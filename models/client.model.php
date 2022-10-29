@@ -45,6 +45,10 @@ class Client extends Base
                 u.email,
                 u.mobile,
                 u.image,
+                u.login,
+                u.status,
+                u.country_id,
+                u.password,
                 u.last_login,
                 u.gender,
                 c.company_name,
@@ -52,6 +56,9 @@ class Client extends Base
                 c.postal_code,
                 c.state,
                 c.city,
+                c.category_id,
+                c.gst_number,
+                c.shipping_address,
 
                 c.office,
                 c.website,
@@ -117,17 +124,138 @@ class Client extends Base
                 $data['gst_number']
 
             ]);
+            $client_id = $this->db->lastInsertId();
             if ($result) {
-                return [
-                    'status' => true,
-                    'message' => 'Client added successfully',
-                    'id' => $this->db->lastInsertId()
-                ];
+                $query = $this->db->prepare("
+                INSERT INTO role_user (user_id, role_id)
+                VALUES (?, ?)");
+                $result = $query->execute([
+                    $user_id,
+                    3
+                ]);
+                if ($result) {
+                    return [
+                        'status' => true,
+                        'message' => 'Client added successfully',
+                        'id' => $client_id
+                    ];
+                } else {
+                    return [
+                        'status' => false,
+                        'message' => 'Something went wrong'
+                    ];
+                }
             }
         } else {
             return [
                 'status' => false,
                 'message' => 'Client already exists'
+            ];
+        }
+    }
+
+    public function editClient($data, $id, $image, $password)
+    {
+        $query = $this->db->prepare("
+            UPDATE users
+            SET name = ?,
+                email = ?,
+                mobile = ?,
+                gender = ?,
+                login = ?,
+                image = ?,
+                country_id = ?,
+                password = ?
+            WHERE id = ?
+        ");
+        $result = $query->execute([
+            $data['name'],
+            $data['email'],
+            $data['mobile'],
+            $data['gender'],
+            $data['login'],
+            $image,
+            $data['country_id'],
+            $password,
+            $id
+        ]);
+
+        if ($result) {
+            $query = $this->db->prepare("
+                UPDATE client_details
+                SET company_name = ?,
+                    address = ?,
+                    postal_code = ?,
+                    state = ?,
+                    city = ?,
+                    office = ?,
+                    website = ?,
+                    note = ?,
+                    category_id = ?,
+                    gst_number = ?
+                WHERE user_id = ?
+            ");
+            $result = $query->execute([
+                $data['company_name'],
+                $data['address'],
+                $data['postal_code'],
+                $data['state'],
+                $data['city'],
+                $data['office'],
+                $data['website'],
+                $data['note'],
+                $data['category_id'],
+                $data['gst_number'],
+                $id
+            ]);
+            if ($result) {
+                return [
+                    'status' => true,
+                    'message' => 'Client updated successfully'
+                ];
+            } else {
+                return [
+                    'status' => false,
+                    'message' => 'Client update failed'
+                ];
+            }
+        } else {
+            return [
+                'status' => false,
+                'message' => 'Error changing client'
+            ];
+        }
+    }
+
+    public function deleteClient($id)
+    {
+        $query = $this->db->prepare("
+            DELETE FROM client_details
+            WHERE user_id = ?
+        ");
+        $result = $query->execute([$id]);
+
+        if ($result) {
+            $query = $this->db->prepare("
+                DELETE FROM users
+                WHERE id = ?
+            ");
+            $result = $query->execute([$id]);
+            if ($result) {
+                return [
+                    'status' => true,
+                    'message' => 'Client deleted successfully'
+                ];
+            } else {
+                return [
+                    'status' => false,
+                    'message' => 'Client delete failed'
+                ];
+            }
+        } else {
+            return [
+                'status' => false,
+                'message' => 'Error deleting client'
             ];
         }
     }
@@ -234,7 +362,17 @@ class Client extends Base
                         $_SESSION['user_id']
                     ]);
                     if ($result) {
-                        $sucessfullEntries++;
+                        $query = $this->db->prepare("
+                        INSERT INTO role_user (user_id, role_id)
+                        VALUES (?, ?)
+                        ");
+                        $result = $query->execute([
+                            $user_id,
+                            3
+                        ]);
+                        if ($result) {
+                            $sucessfullEntries++;
+                        }
                     }
                 } else {
                     $entries++;

@@ -18,7 +18,7 @@
                                     <h3 class="heading-h1 mb-3">Notice Details</h3>
                                 </div>
                                 <div class="col-lg-2 col-2 text-right">
-
+                                    <?php if ($_SESSION["user_role"] == "1") : ?>
                                     <div class="dropdown">
                                         <button
                                             class="btn btn-lg f-14 px-2 py-1 text-dark-grey text-capitalize rounded  dropdown-toggle"
@@ -30,10 +30,12 @@
                                         <div class="dropdown-menu dropdown-menu-right border-grey rounded b-shadow-4 p-0"
                                             aria-labelledby="dropdownMenuLink" tabindex="0">
 
-                                            <a class="dropdown-item openRightModal" href="">Edit</a>
+                                            <a class="dropdown-item openRightModal"
+                                                href="<?=ROOT?>/notice/<?=$id?>?edit">Edit</a>
                                             <a class="dropdown-item delete-notice">Delete</a>
                                         </div>
                                     </div>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
@@ -41,31 +43,35 @@
 
                             <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
                                 <p class="mb-0 text-lightest f-14 w-30 text-capitalize">Notice Heading</p>
-                                <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">Alice thought to herself. 'I dare say
-                                    you're wondering why I don't.</p>
+                                <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">
+                                    <?=$notice['heading'];?>
+                                </p>
                             </div>
                             <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
                                 <p class="mb-0 text-lightest f-14 w-30 text-capitalize">Date</p>
-                                <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">23-10-2022</p>
+                                <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">
+                                    <?=$notice['created_at'];?>
+                                </p>
                             </div>
 
                             <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
                                 <p class="mb-0 text-lightest f-14 w-30 text-capitalize">To</p>
-                                <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">Employee</p>
-                            </div>
-
-                            <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
-                                <p class="mb-0 text-lightest f-14 w-30 text-capitalize">Description</p>
-                                <div class="mb-0 text-dark-grey f-14 w-70 text-wrap ql-editor p-0">W</div>
-                            </div>
-
-
-                            <div class="col-12 px-0 pb-3 d-flex">
-                                <p class="mb-0 text-lightest f-14 w-30 d-inline-block text-capitalize">
-                                    Read By</p>
-                                <p class="mb-0 text-dark-grey f-14">
-                                    --
+                                <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">
+                                    <?php
+                                        if ($notice['toGroup'] == 2) {
+                                            echo $notice['display_name'];
+                                        } else {
+                                            echo "Client";
+                                        }
+?>
                                 </p>
+                            </div>
+
+                            <div class="col-12 px-0 pb-3 ">
+                                <p class="mb-0 text-lightest f-14 w-30 text-capitalize">Description</p>
+                                <div class="mb-0 text-dark-grey f-14 w-70 text-wrap ql-editor p-0 mt-3">
+                                    <?=$notice['description'];?>
+                                </div>
                             </div>
 
                         </div>
