@@ -756,12 +756,7 @@
             });
         </script>
         <?php } elseif(isset($_GET['tab']) && $_GET['tab'] == 'taskboard') { ?>
-        <link rel="stylesheet" href="<?=ROOT;?>/css/dragula.css"
-            type="text/css">
-        <link rel="stylesheet" href="<?=ROOT;?>/css/drag.css"
-            type="text/css">
-        <link rel="stylesheet"
-            href="<?=ROOT;?>/css/bootstrap-colorpicker.css">
+
         <style>
             #colorpicker .form-group {
                 width: 87%;
