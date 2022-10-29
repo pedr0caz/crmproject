@@ -119,7 +119,7 @@
                                                 needleColor: 'gray',
                                                 needleUpdateSpeed: 1000,
                                                 arcColors: ['rgb(44, 177, 0)', 'rgb(232, 238, 243)'],
-                                                arcDelimiters: [ <?=$getProjectProgress >= 99.99 ? 99.99 : $getProjectProgress;?> ],
+                                                arcDelimiters: [ <?=$getProjectProgress >= 99.99 ? 99.99 : $getProjectProgress + 0.01;?> ],
                                                 rangeLabel: ['0', '100'],
                                                 centralLabel: '<?=$getProjectProgress?>%'
                                             }

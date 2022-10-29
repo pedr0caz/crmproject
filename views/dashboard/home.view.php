@@ -3,11 +3,6 @@
 
 <section class="main-container bg-additional-grey" id="fullscreen">
 
-    <div class="preloader-container justify-content-center align-items-center" style="display: none;">
-        <div class="spinner-border" role="status" aria-hidden="true"></div>
-    </div>
-
-
 
     <!-- CONTENT WRAPPER START -->
     <div class="px-4 py-2 border-top-0 emp-dashboard">
@@ -357,5 +352,5 @@
 
 
 </section>
-<?php require_once("views/views/layout/footer.php");
+<?php require_once("views/layout/footer.php");
 ?>
