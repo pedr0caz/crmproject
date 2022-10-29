@@ -1,5 +1,5 @@
-<?php require_once("layout/header.php"); ?>
-<?php require_once("layout/navbar.php"); ?>
+<?php require_once("views/layout/header.php"); ?>
+<?php require_once("views/layout/navbar.php"); ?>
 <?php
 if (isset($_SESSION['user_id'])) {
     # Getting User data data
@@ -316,5 +316,5 @@ if (isset($_SESSION['user_id'])) {
 </section>
 <?php } ?>
 <?php }
-require_once("layout/footer.php");
+require_once("views/layout/footer.php");
 ?>

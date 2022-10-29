@@ -50,6 +50,6 @@
   </p>';
         } else {
             $title = "Add Project";
-            require("views/messages.view.php");
+            require("views/message/messages.view.php");
         }
     }

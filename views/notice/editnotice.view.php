@@ -1,5 +1,5 @@
-<?php require_once("layout/header.php"); ?>
-<?php require_once("layout/navbar.php"); ?>
+<?php require_once("views/layout/header.php"); ?>
+<?php require_once("views/layout/navbar.php"); ?>
 <section class="main-container bg-additional-grey" id="fullscreen">
     <div class="content-wrapper">
         <div class="row">
@@ -19,16 +19,20 @@
                                             <div class="d-flex">
                                                 <div class="form-check-inline custom-control custom-radio mt-2 mr-3">
                                                     <input type="radio" value="employee" class="custom-control-input"
-                                                        id="toEmployee" name="to" checked="" autocomplete="off"
-                                                        data-np-invisible="1" data-np-checked="1">
+                                                        id="toEmployee" name="to"
+                                                        <?=$notice['toGroup'] == 2 ? 'checked=""': null;?>
+                                                    autocomplete="off"
+                                                    data-np-invisible="1" data-np-checked="1">
                                                     <label class="custom-control-label pt-1 cursor-pointer"
                                                         for="toEmployee">To Employees</label>
                                                 </div>
 
                                                 <div class="form-check-inline custom-control custom-radio mt-2 mr-3">
                                                     <input type="radio" value="client" class="custom-control-input"
-                                                        id="toClient" name="to" autocomplete="off" data-np-invisible="1"
-                                                        data-np-checked="1">
+                                                        id="toClient" name="to"
+                                                        <?=$notice['toGroup'] == 3 ? 'checked=""': null;?>
+                                                    autocomplete="off" data-np-invisible="1"
+                                                    data-np-checked="1">
                                                     <label class="custom-control-label pt-1 cursor-pointer"
                                                         for="toClient">To Clients</label>
                                                 </div>
@@ -46,7 +50,8 @@
                                             </label>
 
                                             <input type="text" class="form-control height-35 f-14"
-                                                placeholder="e.g. New year celebrations at office." value=""
+                                                placeholder="e.g. New year celebrations at office."
+                                                value="<?=$notice['heading'];?>"
                                                 name="heading" id="heading" autocomplete="off" data-np-checked="1">
 
                                         </div>
@@ -64,7 +69,8 @@
                                                 title="Select Department">
                                                 <?php foreach($teams as $team): ?>
                                                 <option
-                                                    value="<?=$team['id'];?>">
+                                                    value="<?=$team['id'];?>"
+                                                    <?=$notice['department_id'] == $team['id'] ? 'selected': null;?>>
                                                     <?=$team['name'];?>
                                                 </option>
 
@@ -114,6 +120,9 @@
                 ClassicEditor
                     .create(document.querySelector('#description-text')).then(editor => {
                         noticeDetails = editor;
+                        noticeDetails.setData(
+                            `<?=$notice['description'];?>`
+                        );
 
                     })
                     .catch(error => {
@@ -134,7 +143,7 @@
 
 
                     $.ajax({
-                        url: '<?=ROOT;?>/notice/save',
+                        url: '<?=ROOT;?>/notice/<?=$id;?>?edit',
                         type: 'POST',
                         data: formData,
                         processData: false,
@@ -150,8 +159,7 @@
                                 }).then((result) => {
                                     if (result.isConfirmed) {
                                         window.location.href =
-                                            '<?=ROOT;?>/notice/' +
-                                            response.id;
+                                            '<?=ROOT;?>/notice/<?=$id;?>';
                                     }
                                 })
 
@@ -174,4 +182,4 @@
 
 </section>
 
-<?php require_once("layout/footer.php"); ?>
+<?php require_once("views/layout/footer.php"); ?>

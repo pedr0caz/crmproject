@@ -13,7 +13,7 @@ if (!isset($_SESSION["user_id"])) {
         if (isset($id) && $id == null && $_SESSION['user_role'] <= 1) {
             $title = "Employees";
             $employees = $modelEmployee->getEmployees();
-            require_once("views/employee.view.php.view.php");
+            require_once("views/employee/employee.view.php");
         }
     } else {
         header("Location: " . ROOT . "");

@@ -18,11 +18,11 @@ if (!isset($_SESSION["user_id"])) {
             }
             
             $title = "Notices";
-            require_once("views/notice.view.php");
+            require_once("views/notice/notice.view.php");
         } elseif ($_SESSION["user_role"] == "1" && isset($id) && $id == "create") {
             $teams = $employeeModel->getDepartments();
             $title = "Create Notice";
-            require_once("views/addnotice.view.php");
+            require_once("views/notice/addnotice.view.php");
         } elseif ($_SESSION["user_role"] == "1" && isset($id) && $id == "save") {
             if (isset($_POST["to"]) && isset($_POST["heading"]) && !empty($_POST["heading"]) && mb_strlen($_POST["heading"]) >= 3) {
                 $_POST['to'] = $_POST['to'] == "employee" ? 2 : 3;
@@ -59,7 +59,7 @@ if (!isset($_SESSION["user_id"])) {
                 $notice = $noticeModel->getNoticeAdmin($id);
                 $teams = $employeeModel->getDepartments();
                 $title = "Edit Notice";
-                require_once("views/editnotice.view.php");
+                require_once("views/notice/editnotice.view.php");
             }
         } elseif ($_SESSION["user_role"] == "1" && isset($id) && is_numeric($id) && isset($_GET['delete'])) {
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -86,15 +86,15 @@ if (!isset($_SESSION["user_id"])) {
             if (empty($notice)) {
                 http_response_code(404);
                 $title = "Not Found";
-                require_once("views/error404.view.php");
+                require_once("views/notice/error404.view.php");
                 exit;
             }
            
-            require_once("views/noticesdetails.view.php");
+            require_once("views/notice/noticesdetails.view.php");
         } else {
             http_response_code(400);
             $title = "Bad Request";
-            require("views/error400.view.php");
+            require("views/error404.view.php");
             exit;
         }
     } else {

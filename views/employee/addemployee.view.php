@@ -1,5 +1,5 @@
-<?php require_once("layout/header.php"); ?>
-<?php require_once("layout/navbar.php"); ?>
+<?php require_once("views/layout/header.php"); ?>
+<?php require_once("views/layout/navbar.php"); ?>
 <section class="main-container bg-additional-grey" id="fullscreen">
 
     <!-- PAGE TITLE END -->
@@ -287,7 +287,7 @@
     </div>
 </section>
 
-<?php require_once("layout/footer.php");
+<?php require_once("views/layout/footer.php");
 
 ?>
 

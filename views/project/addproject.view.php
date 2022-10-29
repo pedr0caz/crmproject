@@ -1,5 +1,5 @@
-<?php require_once("layout/header.php"); ?>
-<?php require_once("layout/navbar.php"); ?>
+<?php require_once("views/layout/header.php"); ?>
+<?php require_once("views/layout/navbar.php"); ?>
 <section class="main-container bg-additional-grey" id="fullscreen">
 
     <div class="content-wrapper">
@@ -21,9 +21,8 @@
                                         <sup class="f-14 mr-1">*</sup>
                                     </label>
                                     <input type="text" class="form-control height-35 f-14"
-                                        placeholder="Write a project name"
-                                        value="<?=$project['project_name'];?>"
-                                        name="project_name" id="project_name" autocomplete="off" data-np-checked="1">
+                                        placeholder="Write a project name" value="" name="project_name"
+                                        id="project_name" autocomplete="off" data-np-checked="1">
                                 </div>
                             </div>
                             <div class="col-md-6 col-lg-3">
@@ -33,9 +32,8 @@
                                         <sup class="f-14 mr-1">*</sup>
                                     </label>
                                     <input type="date" class="form-control  date-picker height-35 f-14"
-                                        placeholder="Select Date"
-                                        value="<?=$project['start_date'];?>"
-                                        name="start_date" id="start_date" autocomplete="off" data-np-checked="1">
+                                        placeholder="Select Date" value="" name="start_date" id="start_date"
+                                        autocomplete="off" data-np-checked="1">
                                 </div>
                             </div>
                             <div class="col-md-6 col-lg-3" id="deadlineBox">
@@ -44,9 +42,8 @@
                                         <sup class="f-14 mr-1">*</sup>
                                     </label>
                                     <input type="date" class="form-control  date-picker height-35 f-14"
-                                        placeholder="Select Date"
-                                        value="<?=$project['deadline'];?>"
-                                        name="deadline" id="deadline" autocomplete="off" data-np-checked="1">
+                                        placeholder="Select Date" value="" name="deadline" id="deadline"
+                                        autocomplete="off" data-np-checked="1">
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -59,16 +56,9 @@
                                         title="Choose Category" data-size="8" name="category_id"
                                         id="project_category_id">
 
-                                        <?php foreach($projectCategory as $category): ?>
-                                        <option
-                                            value="<?=$category['id'];?>"
-                                            <?php if($category['id'] == $project['category_id']) {
-                                                echo "selected";
-                                            }?>>
-                                            <?=$category['category_name'];?>
-                                        </option>
-                                        <?php endforeach; ?>
-
+                                        <?php foreach ($projectCategory as $category) {
+                                            echo '<option value="' . $category['id'] . '">' . $category['category_name'] . '</option>';
+                                        } ?>
                                     </select>
                                     <div class="input-group-append">
                                         <button type="button" class="btn btn-outline-secondary border-grey"
@@ -86,13 +76,9 @@
                                     <select class="form-control selectpicker show-tick" data-size="4"
                                         data-live-search="true" name="team_id[]" id="department_list_id"
                                         title="Search Departments" multiple>
-                                        <?php foreach($departments as $department):?>
-                                        <option
-                                            value="<?=$department['id'];?>">
-                                            <?=$department['team_name'];?>
-                                        </option>
-                                        <?php endforeach; ?>
-
+                                        <?php foreach ($departments as $department) {
+                                            echo '<option value="' . $department['id'] . '">' . $department['team_name'] . '</option>';
+                                        } ?>
                                     </select>
                                 </div>
                             </div>
@@ -104,16 +90,9 @@
                                     <select class="form-control selectpicker show-tick" data-size="4"
                                         data-live-search="true" title="Choose Client" name="client_id"
                                         id="client_list_id">
-                                        <?php foreach($clients as $client):?>
-                                        <option
-                                            value="<?=$client['client_id'];?>"
-                                            <?php if($client['client_id'] == $project['client_id']) {
-                                                echo "selected";
-                                            }?>>
-                                            <?=$client['name'];?>
-                                        </option>
-                                        <?php endforeach; ?>
-
+                                        <?php foreach ($clients as $client) {
+                                            echo '<option value="' . $client['client_id'] . '">' . $client['name'] . '</option>';
+                                        } ?>
                                     </select>
                                     <div class="input-group-append">
                                         <a href="<?=ROOT;?>/addclient"
@@ -143,7 +122,7 @@
                         <div class="w-100 border-top-grey d-block d-lg-flex d-md-flex justify-content-start px-4 py-3">
                             <button name="submit" type="button" class="btn-primary rounded f-14 p-2 mr-3"
                                 id="save-project-form">
-                                <i class="bi bi-save2-fill mr-2"></i>
+                                <i class="bi bi-save-fill mr-2"></i>
                                 Save
                             </button>
                             <a href="<?=ROOT?>/project"
@@ -157,7 +136,7 @@
         </div>
     </div>
 </section>
-<?php require_once("layout/footer.php");?>
+<?php require_once("views/layout/footer.php");?>
 <!-- Modal -->
 <div class="modal" id="myModal">
     <div class="modal-dialog">
@@ -223,7 +202,7 @@
                     Close
                 </a>
                 <button type="button" class="btn-primary rounded f-14 p-2" id="save-category">
-                    <i class="bi bi-save2-fill mr-2"></i>
+                    <i class="bi bi-save-fill mr-2"></i>
                     Save
                 </button>
             </div>
@@ -253,7 +232,7 @@
                         if (result.isConfirmed) {
                             $.ajax({
                                 type: 'POST',
-                                url: '<?=ROOT;?>/addproject/0?projectCategory=delete',
+                                url: '<?=ROOT;?>/project/create?projectCategory=delete',
                                 data: {
                                     'catId': catId
 
@@ -298,7 +277,7 @@
                 $('body').on('click', '#save-category', function(event) {
                     event.preventDefault();
                     $.ajax({
-                        url: '<?=ROOT;?>/addproject/0?projectCategory=add',
+                        url: '<?=ROOT;?>/project/create?projectCategory=add',
                         container: '#createProjectCategory',
                         type: "POST",
                         disableButton: true,
@@ -325,7 +304,7 @@
                                 <td class="text-right">
                                     <button type="button" class="btn-secondary rounded f-14 p-2 delete-category"
                                     data-row-id="` + response.catId + `">
-                                        <i class="bi bi-trash-fill mr-2"></i>
+                                    <i class="bi bi-trash-fill mr-2"></i>
                                         Delete
                                     </button>
                                 </td>
@@ -370,7 +349,7 @@
                     let value = $(this).html();
                     if (initialText != value) {
                         $.ajax({
-                            url: '<?=ROOT;?>/addproject/0?projectCategory=edit',
+                            url: '<?=ROOT;?>/project/create?projectCategory=edit',
                             container: '#row-' + id,
                             type: "POST",
                             data: {
@@ -415,19 +394,11 @@
     </div>
 </div>
 <script>
-    var
-        selectedDepartments = <?php echo json_encode($teams); ?> ;
-    $('#department_list_id').selectpicker('val', selectedDepartments);
-
     let project_description;
     let notes;
     ClassicEditor
         .create(document.querySelector('#editor')).then(editor => {
             project_description = editor;
-            project_description.setData(
-                `<?=$project['project_summary'];?>`
-            );
-
 
         })
         .catch(error => {
@@ -436,14 +407,15 @@
     ClassicEditor
         .create(document.querySelector('#editor2')).then(editor => {
             notes = editor;
-            notes.setData(
-                `<?=$project['notes'];?>`
-            );
 
         })
         .catch(error => {
             console.error(error);
         });
+
+    $('#client_list_id').selectpicker('val',
+        '<?=isset($_GET['client_id']) ? $_GET['client_id']: "";?>'
+    );
 
     $('#save-project-form').click(function(event) {
         event.preventDefault();
@@ -454,7 +426,7 @@
             formData.append('notes', notes.getData());
 
             $.ajax({
-                url: '<?=ROOT;?>/editproject/<?=$id;?>?submit',
+                url: '<?=ROOT;?>/project/create?submit',
                 type: 'POST',
                 data: formData,
                 contentType: false,
@@ -481,7 +453,7 @@
                         }).then(function(result) {
                             if (result.value) {
                                 window.location.href =
-                                    '<?=ROOT;?>/projectdetails/' +
+                                    '<?=ROOT;?>/project/' +
                                     response.id;
                             }
                         });

@@ -1,6 +1,6 @@
 <?php
-require_once('layout/header.php');
-require_once('layout/navbar.php');
+require_once('views/layout/header.php');
+require_once('views/layout/navbar.php');
 ?>
 
 
@@ -193,7 +193,7 @@ require_once('layout/navbar.php');
 
 <?php
 
-require_once('layout/footer.php');
+require_once('views/layout/footer.php');
 
 ?>
 

@@ -17,7 +17,7 @@ if (!isset($_SESSION["user_id"])) {
                 $clients = $clientModel->getClients();
             }
             $title = "Client List";
-            require("views/clients.view.php");
+            require("views/client/clients.view.php");
         } elseif ($_SESSION["user_role"] <= 1 && isset($id) && $id == "create") {
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if (isset($_GET["submit"])) {
@@ -103,7 +103,7 @@ if (!isset($_SESSION["user_id"])) {
                 }
             } else {
                 $title = "Create Client";
-                require("views/addclient.view.php");
+                require("views/client/addclient.view.php");
             }
         } elseif ($_SESSION["user_role"] <= 1 && isset($id) && $id != null && $id == "import") {
             if (isset($_GET['file'])) {
@@ -234,7 +234,7 @@ if (!isset($_SESSION["user_id"])) {
                 }
             } else {
                 $title = "Import client";
-                require("views/importclient.view.php");
+                require("views/client/importclient.view.php");
             }
         } elseif ($_SESSION["user_role"] <= 1 && isset($id) && is_numeric($id)) {
             $client = $clientModel->getClient($id);
@@ -268,7 +268,7 @@ if (!isset($_SESSION["user_id"])) {
                 } else {
                     $projects = $projectsModel->getProjectByClientID($id);
                     $title = "Client Details &bull; ".$client["name"];
-                    require("views/clientdetails.view.php");
+                    require("views/client/clientdetails.view.php");
                 }
             } elseif (isset($_GET['edit']) && $_SESSION['user_role'] <= 1) {
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -320,7 +320,7 @@ if (!isset($_SESSION["user_id"])) {
                     }
                 } else {
                     $title = "Edit Client &bull; ".$client["name"];
-                    require("views/editclient.view.php");
+                    require("views/client/editclient.view.php");
                 }
             }
         } else {

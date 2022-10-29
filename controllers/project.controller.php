@@ -36,7 +36,7 @@ if (!isset($_SESSION["user_id"])) {
             }
 
             $title = "Projects";
-            require("views/projects.view.php");
+            require("views/project/projects.view.php");
         } elseif ($_SESSION["user_role"] <= 1 && isset($id) && $id == "create") {
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if (isset($_GET['submit'])) {
@@ -95,7 +95,7 @@ if (!isset($_SESSION["user_id"])) {
                 }
             } else {
                 $title = "Add Project";
-                require("views/addproject.view.php");
+                require("views/project/addproject.view.php");
             }
         } elseif (isset($id) && is_numeric($id)) {
             if ($_SESSION["user_role"] == "1") {
@@ -108,7 +108,7 @@ if (!isset($_SESSION["user_id"])) {
             if (empty($project)) {
                 http_response_code(404);
                 $title = "Not Found";
-                require("views/error404.view.php");
+                require("views/project/error404.view.php");
                 exit;
             }
 
@@ -280,7 +280,7 @@ if (!isset($_SESSION["user_id"])) {
                     $teams = json_decode($project['teams_id'], true);
 
                     $title = "Project - " . $project["project_name"];
-                    require("views/projectdetails.view.php");
+                    require("views/project/projectdetails.view.php");
                 }
             } elseif (isset($_GET['edit']) && $_SESSION['user_role'] == 1) {
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -312,13 +312,13 @@ if (!isset($_SESSION["user_id"])) {
                 } else {
                     $teams = json_decode($project['teams_id'], true);
                     $title = "Edit Project";
-                    require("views/editproject.view.php");
+                    require("views/project/editproject.view.php");
                 }
             }
         } else {
             http_response_code(400);
             $title = "Bad Request";
-            require("views/error400.view.php");
+            require("views/error404.view.php");
             exit;
         }
     } else {

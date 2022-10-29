@@ -26,7 +26,7 @@ if (!isset($_SESSION["user_id"])) {
            
         
             $title = "Task List";
-            require("views/task.view.php");
+            require("views/task/task.view.php");
         } elseif ($_SESSION["user_role"] <= 2 && isset($id) && $id == "create") {
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if (isset($_GET['project_id']) && !empty($_GET['project_id'])) {
@@ -129,7 +129,7 @@ if (!isset($_SESSION["user_id"])) {
                 }
 
                 $title = "Add Task";
-                require("views/addtask.view.php");
+                require("views/task/addtask.view.php");
             }
         } elseif (isset($id) && is_numeric($id)) {
             if ($_SESSION["user_role"] == 1) {
@@ -145,7 +145,7 @@ if (!isset($_SESSION["user_id"])) {
             if (empty($task)) {
                 http_response_code(404);
                 $title = "Not Found";
-                require_once("views/error404.view.php");
+                require("views/error404.view.php");
                 exit;
             }
             $taskEmployees = $taskModel->getEmployeeAssignedToTask($id);
@@ -346,7 +346,7 @@ if (!isset($_SESSION["user_id"])) {
                     $taskComments = $taskModel->getCommentsTask($id);
                     $taskHistory = $taskModel->getTaskHistory($id);
                     $title = "Task Details";
-                    require("views/taskdetails.view.php");
+                    require("views/task/taskdetails.view.php");
                 }
             } elseif (isset($_GET['edit']) && $_SESSION['user_role'] <= 2) {
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -394,7 +394,7 @@ if (!isset($_SESSION["user_id"])) {
                     }
                 
                     $title  = "Edit Task";
-                    require("views/edittask.view.php");
+                    require("views/task/edittask.view.php");
                 }
             }
         } else {
