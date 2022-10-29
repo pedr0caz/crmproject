@@ -7,7 +7,7 @@
         <!-- Add Task Export Buttons Start -->
         <div class="d-flex justify-content-between action-bar">
             <div id="table-actions" class="d-block d-lg-flex align-items-center">
-                <a href="<?=ROOT;?>/addemployee"
+                <a href="<?=ROOT;?>/employee/create"
                     class="btn-primary rounded f-14 p-2 mr-3 openRightModal">
                     <i class="bi bi-plus-circle mr-1"></i>
                     Add Employee
@@ -55,14 +55,14 @@
                                 </td>
                                 <td>
                                     <div class="media align-items-center mw-250">
-                                        <a href="<?=ROOT;?>/employeedetails/<?=$employee['user_id'];?>"
+                                        <a href="<?=ROOT;?>/employee/<?=$employee['user_id'];?>"
                                             class="position-relative ">
                                             <img src="<?=$employee['image'] ? ROOT."/".$employee['image'] : 'https://www.gravatar.com/avatar/a456ed61bc3c5d05f3ad79d85069098a.png?s=200&d=mp'?>"
                                                 class="mr-2 taskEmployeeImg rounded-circle" alt="Dassad" title="Dassad">
                                         </a>
                                         <div class="media-body">
                                             <h5 class="mb-0 f-12">
-                                                <a href="<?=ROOT;?>/employeedetails/<?=$employee['user_id'];?>"
+                                                <a href="<?=ROOT;?>/employee/<?=$employee['user_id'];?>"
                                                     class="text-darkest-grey "><?=$employee['name']?></a>
                                             </h5>
                                             <p class="mb-0 f-12 text-dark-grey">
@@ -108,11 +108,11 @@
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-right"
                                                 aria-labelledby="dropdownMenuLink-6" tabindex="0"><a
-                                                    href="<?=ROOT?>/employeedetails/<?=$employee['user_id'];?>"
+                                                    href="<?=ROOT?>/employee/<?=$employee['user_id'];?>"
                                                     class="dropdown-item">
                                                     <i class="bi bi-eye-fill mr-2"></i>
                                                     View</a><a class="dropdown-item openRightModal"
-                                                    href="<?=ROOT?>/editemployee/<?=$employee['user_id'];?>">
+                                                    href="<?=ROOT?>/employee/<?=$employee['user_id'];?>?edit">
                                                     <i class="bi bi-pencil-fill mr-2"></i>
                                                     Edit
                                                 </a><a class="dropdown-item delete-table-row" href="javascript:;"
@@ -147,7 +147,8 @@
             var user_id = $(this).closest('tr').data('id');
             console.log(role_id, user_id);
             $.ajax({
-                url: '<?=ROOT?>/employee/0?role',
+                url: '<?=ROOT?>/employee/' + user_id +
+                    '?role',
                 type: 'POST',
                 data: {
                     role_id: role_id,
@@ -186,7 +187,8 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: '<?=ROOT?>/employee/0?delete',
+                        url: '<?=ROOT?>/employee/' +
+                            user_id + '?delete',
                         type: 'POST',
                         data: {
                             user_id: user_id
@@ -319,7 +321,7 @@
                         if (result.isConfirmed) {
                             $.ajax({
                                 type: 'POST',
-                                url: '<?=ROOT;?>/addemployee/0?emplooyeDesignation=delete',
+                                url: '<?=ROOT;?>/employee/create?emplooyeDesignation=delete',
                                 data: {
                                     'catId': catId
 
@@ -361,7 +363,7 @@
                 $('body').on('click', '#save-designation', function(event) {
                     event.preventDefault();
                     $.ajax({
-                        url: '<?=ROOT;?>/addemployee/0?emplooyeDesignation=add',
+                        url: '<?=ROOT;?>/employee/create?emplooyeDesignation=add',
                         container: '#createDesignation',
                         type: "POST",
                         disableButton: true,
@@ -428,7 +430,7 @@
                     let value = $(this).html();
                     if (initialText != value) {
                         $.ajax({
-                            url: '<?=ROOT;?>/addemployee/0?emplooyeDesignation=edit',
+                            url: '<?=ROOT;?>/employee/create?emplooyeDesignation=edit',
                             container: '#row-' + id,
                             type: "POST",
                             data: {
@@ -569,7 +571,7 @@
                         if (result.isConfirmed) {
                             $.ajax({
                                 type: 'POST',
-                                url: '<?=ROOT;?>/addemployee/0?emplooyeDepartment=delete',
+                                url: '<?=ROOT;?>/employee/create?emplooyeDepartment=delete',
                                 data: {
                                     'catId': catId
 
@@ -611,7 +613,7 @@
                 $('body').on('click', '#save-department', function(event) {
                     event.preventDefault();
                     $.ajax({
-                        url: '<?=ROOT;?>/addemployee/0?emplooyeDepartment=add',
+                        url: '<?=ROOT;?>/employee/create?emplooyeDepartment=add',
                         container: '#createDepartment',
                         type: "POST",
                         disableButton: true,
@@ -678,7 +680,7 @@
                     let value = $(this).html();
                     if (initialText != value) {
                         $.ajax({
-                            url: '<?=ROOT;?>/addemployee/0?emplooyeDepartment=edit',
+                            url: '<?=ROOT;?>/employee/create?emplooyeDepartment=edit',
                             container: '#row-' + id,
                             type: "POST",
                             data: {

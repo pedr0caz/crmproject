@@ -6,7 +6,8 @@
     <div class="content-wrapper">
         <div class="row">
             <div class="col-sm-12">
-                <form method="POST" action="<?=ROOT;?>/addemployee"
+                <form method="POST"
+                    action="<?=ROOT;?>/employee/create"
                     enctype="multipart/form-data" id="save-employee-data-form">
 
                     <div class="add-client bg-white rounded">
@@ -390,7 +391,7 @@
                         if (result.isConfirmed) {
                             $.ajax({
                                 type: 'POST',
-                                url: '<?=ROOT;?>/addemployee/0?emplooyeDesignation=delete',
+                                url: '<?=ROOT;?>/employee/create?emplooyeDesignation=delete',
                                 data: {
                                     'catId': catId
 
@@ -435,7 +436,7 @@
                 $('body').on('click', '#save-designation', function(event) {
                     event.preventDefault();
                     $.ajax({
-                        url: '<?=ROOT;?>/addemployee/0?emplooyeDesignation=add',
+                        url: '<?=ROOT;?>/employee/create?emplooyeDesignation=add',
                         container: '#createDesignation',
                         type: "POST",
                         disableButton: true,
@@ -507,7 +508,7 @@
                     let value = $(this).html();
                     if (initialText != value) {
                         $.ajax({
-                            url: '<?=ROOT;?>/addemployee/0?emplooyeDesignation=edit',
+                            url: '<?=ROOT;?>/employee/create?emplooyeDesignation=edit',
                             container: '#row-' + id,
                             type: "POST",
                             data: {
@@ -651,7 +652,7 @@
                         if (result.isConfirmed) {
                             $.ajax({
                                 type: 'POST',
-                                url: '<?=ROOT;?>/addemployee/0?emplooyeDepartment=delete',
+                                url: '<?=ROOT;?>/employee/create?emplooyeDepartment=delete',
                                 data: {
                                     'catId': catId
 
@@ -696,7 +697,7 @@
                 $('body').on('click', '#save-department', function(event) {
                     event.preventDefault();
                     $.ajax({
-                        url: '<?=ROOT;?>/addemployee/0?emplooyeDepartment=add',
+                        url: '<?=ROOT;?>/employee/create?emplooyeDepartment=add',
                         container: '#createDepartment',
                         type: "POST",
                         disableButton: true,
@@ -774,7 +775,7 @@
                     let value = $(this).html();
                     if (initialText != value) {
                         $.ajax({
-                            url: '<?=ROOT;?>/addemployee/0?emplooyeDepartment=edit',
+                            url: '<?=ROOT;?>/employee/create?emplooyeDepartment=edit',
                             container: '#row-' + id,
                             type: "POST",
                             data: {
@@ -854,7 +855,7 @@
                 var formData = new FormData(form[0]);
 
                 $.ajax({
-                    url: '<?=ROOT;?>/addemployee/save',
+                    url: '<?=ROOT;?>/employee/create?submit',
                     type: 'POST',
                     data: formData,
                     contentType: false,

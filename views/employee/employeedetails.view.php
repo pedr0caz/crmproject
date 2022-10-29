@@ -9,25 +9,25 @@
             <nav class="tabs --jsfied">
                 <ul class="-primary">
                     <li>
-                        <a href="<?=ROOT?>/employeedetails/<?=$id?>"
+                        <a href="<?=ROOT?>/employee/<?=$id?>"
                             class="text-dark-grey text-capitalize border-right-grey p-sub-menu ajax-tab profile <?php if(!isset($_GET['tab'])) {
                                 echo "active";
                             } ?>" id="profile"><span>Profile</span></a>
                     </li>
                     <li>
-                        <a href="<?=ROOT?>/employeedetails/<?=$id?>?tab=projects"
+                        <a href="<?=ROOT?>/employee/<?=$id?>?tab=projects"
                             class="text-dark-grey text-capitalize border-right-grey p-sub-menu projects <?php if(isset($_GET['tab']) && $_GET['tab'] == "projects") {
                                 echo "active";
                             }?>" id="projects"><span>Projects</span></a>
                     </li>
                     <li>
-                        <a href="<?=ROOT?>/employeedetails/<?=$id?>?tab=tasks"
+                        <a href="<?=ROOT?>/employee/<?=$id?>?tab=tasks"
                             class="text-dark-grey text-capitalize border-right-grey p-sub-menu tasks <?php if(isset($_GET['tab']) && $_GET['tab'] == "tasks") {
                                 echo "active";
                             }?>" id="tasks"><span>Tasks</span></a>
                     </li>
                     <li>
-                        <a href=" <?=ROOT?>/employeedetails/<?=$id?>?tab=documents"
+                        <a href=" <?=ROOT?>/employee/<?=$id?>?tab=documents"
                             class="text-dark-grey text-capitalize border-right-grey p-sub-menu ajax-tab documents <?php if(isset($_GET['tab']) && $_GET['tab'] == "documents") {
                                 echo "active";
                             }?>" id="documents"><span>Documents</span></a>
@@ -279,7 +279,7 @@
                                             <div class="taskEmployeeImg rounded-circle position-absolute"
                                                 style="top:-10px; left:  <?=$left?>px">
                                                 <a
-                                                    href="<?=ROOT?>/employeedetails/<?=$member['user_id'];?>">
+                                                    href="<?=ROOT?>/employee/<?=$member['user_id'];?>">
                                                     <img src="<?php
                                                  if ($member['image']) {
                                                      echo ROOT.'/'.$member['image'];
@@ -494,7 +494,7 @@
                                                     <div class="taskEmployeeImg rounded-circle position-absolute"
                                                         style="top:-10px; left:  <?=$left?>px">
                                                         <a
-                                                            href="<?=ROOT?>/employeedetails/<?=$member['user_id'];?>">
+                                                            href="<?=ROOT?>/employee/<?=$member['user_id'];?>">
                                                             <img src="<?php
                                                             if ($member['employee_image']) {
                                                                 echo ROOT.'/'.$member['employee_image'];
@@ -770,14 +770,14 @@
                     var form = $('#save-taskfile-data-form');
                     var formData = new FormData(form[0]);
                     $.ajax({
-                        url: '<?=ROOT;?>/employeedetails/<?=$id;?>?action=uploadfile',
+                        url: '<?=ROOT;?>/employee/<?=$id;?>?action=uploadfile',
                         type: 'POST',
                         data: formData,
                         processData: false,
                         contentType: false,
                         success: function(response) {
                             if (response.status) {
-                                console.log(response.data);
+
                                 $('#task-file-list').append(response.data);
                                 $('#save-taskfile-data-form').addClass('d-none');
                                 $('#add-task-file').closest('.row').removeClass('d-none');
