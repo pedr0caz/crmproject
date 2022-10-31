@@ -28,6 +28,25 @@ class User extends Base
         if (!empty($user) && password_verify($data["password"], $user["password"])) {
             $query = $this->db->prepare("INSERT user_activities(user_id, activity, created_at) VALUES(?, ?, ?)");
             $query->execute([$user['id'], "Logged in", date("Y-m-d H:i:s")]);
+            $query = $this->db->prepare("UPDATE users SET last_login = ? AND SET last_seen = ? WHERE id = ?");
+            $query->execute([date("Y-m-d H:i:s"),date("Y-m-d H:i:s") ,$user['id']]);
+
+            return $user;
+        }
+        return [];
+    }
+
+
+    public function forgotPassword($data)
+    {
+        $query = $this->db->prepare("
+            SELECT password, id, name
+            FROM users
+            WHERE email = ? and status = 'active' and login = 'enable'
+        ");
+        $query->execute([$data["email"]]);
+        $user = $query->fetch(PDO::FETCH_ASSOC);
+        if (!empty($user)) {
             return $user;
         }
         return [];
@@ -36,20 +55,22 @@ class User extends Base
     public function getUser($id)
     {
         $query = $this->db->prepare("
-            SELECT 
-                u.id AS user_id,
-                u.name,
-                u.email,
-                u.image,
-                u.last_seen,
-                u.current_session,
-                r.role_id,
-                c.name AS role_name
-            
-            FROM users u
-            LEFT JOIN role_user r ON u.id = r.user_id
-            LEFT JOIN roles c ON r.role_id = c.id
-            WHERE u.id = ?
+        SELECT 
+        u.id AS user_id,
+        u.name,
+        u.email,
+        u.image,
+        u.last_seen,
+        u.current_session,
+        r.role_id,
+        c.name AS role_name,
+        cd.id AS client_id
+    
+    FROM users u
+    LEFT JOIN role_user r ON u.id = r.user_id
+    LEFT JOIN roles c ON r.role_id = c.id
+    LEFT JOIN client_details cd ON u.id = cd.user_id
+    WHERE u.id = ?
 
         ");
         $query->execute([$id]);

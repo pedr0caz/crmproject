@@ -71,8 +71,12 @@ class Employee extends Base
          u.name,
          u.email,
          u.mobile,
+         u.password,
          u.gender,
          u.image,
+         e.joining_date,
+         u.country_id,
+         u.login,
          u.status,
          e.id AS employee_id,
          e.address,
@@ -82,13 +86,15 @@ class Employee extends Base
          r.role_id,
          c.name AS role_name,
          e.designation_id,
-            d.name AS designation_name
+        d.name AS designation_name,
+        GROUP_CONCAT(et.team_id SEPARATOR ',') as department_id
         
         FROM users u
         INNER JOIN role_user r ON u.id = r.user_id
         INNER JOIN roles c ON r.role_id = c.id
         INNER JOIN employee_details e ON u.id = e.user_id
         INNER JOIN designations d ON e.designation_id = d.id
+        INNER JOIN employee_teams et ON u.id = et.user_id
         WHERE u.id = ?;
         ");
         $query->execute([$id]);
@@ -262,15 +268,18 @@ class Employee extends Base
         
         if ($result) {
             $query = $this->db->prepare("
-                INSERT INTO employee_details (user_id, address, department_id, designation_id, date_of_birth) 
-                VALUES (?, ?, ?, ?, ?)
+                INSERT INTO employee_details (user_id, address, department_id, designation_id, date_of_birth, joining_date, skills, slack_username)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             ");
             $query->execute([
                 $id,
                 $data["address"],
                 $data["department_id"][0],
                 $data["designation_id"],
-                $data["date_of_birth"]
+                $data["date_of_birth"],
+                $data["joining_date"],
+                $data["skills"],
+                $data["slack_username"]
 
             ]);
 
@@ -303,6 +312,93 @@ class Employee extends Base
             return [
                 "status" => false,
                 "message" => "Email already exists or user already exists"
+            ];
+        }
+    }
+
+    public function editEmployee($id, $data, $image)
+    {
+        $query = $this->db->prepare("
+            UPDATE users
+            SET name = ?, 
+            email = ?, 
+            password = ?, 
+            image = ?, 
+            login = ?, 
+            country_id = ?, 
+            gender = ?, 
+            mobile = ?,
+            login = ?
+            WHERE id = ?
+            ");
+        $result = $query->execute([
+            $data["name"],
+            $data["email"],
+            $data["password"],
+            $image,
+            $data["login"],
+            $data['country_id'],
+            $data['gender'],
+            $data['mobile'],
+            $data['login'],
+            $id
+        ]);
+        if ($result) {
+            $query = $this->db->prepare("
+                UPDATE employee_details
+                SET address = ?, 
+                department_id = ?, 
+                designation_id = ?,
+                joining_date = ?, 
+                date_of_birth = ?,
+                skills = ?,
+                slack_username = ?
+                
+                WHERE user_id = ?
+            ");
+            $result = $query->execute([
+                $data["address"],
+                $data["department_id"][0],
+                $data["designation_id"],
+                $data["joining_date"],
+                $data["date_of_birth"],
+                $data["skills"],
+                $data["slack_username"],
+
+                $id
+            ]);
+            if ($result) {
+                $query = $this->db->prepare("
+                DELETE FROM employee_teams
+                WHERE user_id = ?
+                ");
+                $result = $query->execute([$id]);
+                if ($result) {
+                    foreach ($data["department_id"] as $department_id) {
+                        $query = $this->db->prepare("
+                        INSERT INTO employee_teams (user_id, team_id)
+                        VALUES (?, ?)
+                        ");
+                        $query->execute([
+                            $id,
+                            $department_id
+                        ]);
+                    }
+                    return [
+                        "status" => true,
+                        "message" => "Changed Successfully"
+                    ];
+                }
+            } else {
+                return [
+                    "status" => false,
+                    "message" => "Something went wrong"
+                ];
+            }
+        } else {
+            return [
+                "status" => false,
+                "message" => "Something went wrong"
             ];
         }
     }

@@ -260,8 +260,69 @@ if (!isset($_SESSION["user_id"])) {
                     require("views/employee/employeedetails.view.php");
                 }
             } elseif (isset($_GET['edit']) && $_SESSION['user_role'] <= 1) {
+                $employee = $employeeModel->getEmployee($id);
+                $teams = explode(",", $employee['department_id']);
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                    if (isset($_GET['submit'])) {
+                        if (isset($_POST["name"]) && mb_strlen($_POST["name"]) > 0 &&
+                        isset($_POST["email"]) && mb_strlen($_POST["email"]) > 0 && filter_var($_POST["email"], FILTER_VALIDATE_EMAIL) &&
+                      
+                        isset($_POST["designation_id"]) && is_numeric($_POST["designation_id"])  &&
+                        isset($_POST["department_id"])  &&
+                        isset($_POST["mobile"]) && mb_strlen($_POST["mobile"]) > 0 && is_numeric($_POST["mobile"]) &&
+                        isset($_POST["country_id"]) && is_numeric($_POST["country_id"]) &&
+                        isset($_POST["gender"]) && mb_strlen($_POST["gender"]) > 0 &&
+                        isset($_POST["joining_date"]) && mb_strlen($_POST["joining_date"]) > 0) {
+                            if (isset($_FILES["uploadfile"]) && $_FILES["uploadfile"]["size"] > 0) {
+                                $filepath = $_FILES["uploadfile"]["tmp_name"];
+                                $fileSize = $_FILES["uploadfile"]["size"];
+                                $fileinfot = finfo_open(FILEINFO_MIME_TYPE);
+                                $fileType = finfo_file($fileinfot, $filepath);
+                                $allowedTypes = [
+                                    'image/png' => 'png',
+                                    'image/jpeg' => 'jpg',
+                                    'image/jpg' => 'jpg',
+                                    'image/gif' => 'gif'
+        
+                                 ];
+                                if (!array_key_exists($fileType, $allowedTypes)) {
+                                    header('Content-Type: application/json; charset=utf-8');
+                                    die(json_encode(['status' => 'error', 'message' => 'File type not allowed']));
+                                }
+                                $filename = basename($filepath);
+                                $extension = $allowedTypes[$fileType];
+                                $targetDirectory = 'uploads/';
+                                $newFilepath = $targetDirectory . $filename . "." . $extension;
+                                if (!copy($filepath, $newFilepath)) {
+                                    die(json_encode(['status' => 'error', 'message' => 'File upload failed']));
+                                }
+                                unlink($filepath);
+                            } else {
+                                $newFilepath = $employee["image"];
+                            }
+                            if ($_POST["password"] != "") {
+                                $_POST["password"] = password_hash($_POST["password"], PASSWORD_DEFAULT);
+                            } else {
+                                $_POST["password"] = $employee["password"];
+                            }
+        
+                            $employee = $employeeModel->editEmployee($id, $_POST, $newFilepath);
+                           
+                            if ($employee["status"]) {
+                                header('Content-Type: application/json; charset=utf-8');
+                                echo json_encode(['status' => 'success', 'message' => 'Employee added successfully']);
+                            } else {
+                                header('Content-Type: application/json; charset=utf-8');
+                                echo json_encode(['status' => 'error', 'message' => $employee["message"]]);
+                            }
+                        } else {
+                            header('Content-Type: application/json; charset=utf-8');
+                            echo json_encode(['status' => 'error', 'message' => 'Please fill all the fields']);
+                            exit;
+                        }
+                    }
                 } else {
+                    /*  die(var_dump($employee)); */
                     $title = "Edit Employee";
                     require("views/employee/editemployee.view.php");
                 }

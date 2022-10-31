@@ -258,15 +258,77 @@ if (!isset($_SESSION["user_id"])) {
                                 if ($client["status"]) {
                                     header('Content-Type: application/json; charset=utf-8');
                                     echo json_encode(['status' => 'success', 'message' => 'Client was deleted']);
+                                    exit;
                                 } else {
                                     header('Content-Type: application/json; charset=utf-8');
                                     echo json_encode(['status' => 'error', 'message' => 'Error trying to delete']);
+                                    exit;
                                 }
+                            }
+                        }
+                    } elseif (isset($_GET['notes'])) {
+                        if ($_GET['notes'] == "submit") {
+                            if (isset($_POST['title']) && mb_strlen($_POST['title']) > 3 && isset($_POST['type']) && is_numeric($_POST['type'])) {
+                                $note = $clientModel->newClientNote($id, $_POST, $_SESSION['user_id']);
+                                if ($note) {
+                                    header('Content-Type: application/json; charset=utf-8');
+                                    echo json_encode(['status' => 'success', 'message' => 'Note was added']);
+                                    exit;
+                                } else {
+                                    header('Content-Type: application/json; charset=utf-8');
+                                    echo json_encode(['status' => 'error', 'message' => 'Error trying to add note']);
+                                    exit;
+                                }
+                            } else {
+                                header('Content-Type: application/json; charset=utf-8');
+                                echo json_encode(['status' => 'error', 'message' => 'Invalid data']);
+                                exit;
+                            }
+                        } elseif ($_GET['notes'] == "details" && isset($_POST['id']) && is_numeric($_POST['id'])) {
+                            $note = $clientModel->getClientNoteByID($_POST['id'], $_SESSION['user_id'], $id);
+                            if ($note) {
+                                header('Content-Type: application/json; charset=utf-8');
+                                echo json_encode(['status' => 'success', 'data' => $note]);
+                                exit;
+                            } else {
+                                header('Content-Type: application/json; charset=utf-8');
+                                echo json_encode(['status' => 'error', 'message' => 'Error trying to add note']);
+                                exit;
+                            }
+                        } elseif ($_GET['notes'] == "edit" && isset($_GET['id']) && is_numeric($_GET['id'])) {
+                            if (isset($_POST['title']) && mb_strlen($_POST['title']) > 3 && isset($_POST['type']) && is_numeric($_POST['type'])) {
+                                $note = $clientModel->editClientNoteById($_GET['id'], $_POST);
+                                if ($note) {
+                                    header('Content-Type: application/json; charset=utf-8');
+                                    echo json_encode(['status' => 'success', 'message' => 'Note was edited']);
+                                    exit;
+                                } else {
+                                    header('Content-Type: application/json; charset=utf-8');
+                                    echo json_encode(['status' => 'error', 'message' => 'Error trying to edit note']);
+                                    exit;
+                                }
+                            } else {
+                                header('Content-Type: application/json; charset=utf-8');
+                                echo json_encode(['status' => 'error', 'message' => 'Invalid data']);
+                                exit;
+                            }
+                        } elseif ($_GET['notes'] == "delete" && isset($_POST['id']) && is_numeric($_POST['id'])) {
+                            $note = $clientModel->removeClientNote($_POST['id'], $_SESSION['user_id']);
+                         
+                            if ($note) {
+                                header('Content-Type: application/json; charset=utf-8');
+                                echo json_encode(['status' => 'success', 'message' => 'Note was deleted']);
+                                exit;
+                            } else {
+                                header('Content-Type: application/json; charset=utf-8');
+                                echo json_encode(['status' => 'error', 'message' => 'Error trying to delete note']);
+                                exit;
                             }
                         }
                     }
                 } else {
                     $projects = $projectsModel->getProjectByClientID($id);
+                    $notes = $clientModel->getClientNotes($id, $_SESSION['user_id']);
                     $title = "Client Details &bull; ".$client["name"];
                     require("views/client/clientdetails.view.php");
                 }

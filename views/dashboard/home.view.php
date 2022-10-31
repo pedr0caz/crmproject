@@ -134,9 +134,12 @@
                                             <td class="pr-20">
                                                 <span class="badge badge-light p-2"><?php if(date("d-m-Y", strtotime($birthday['date_of_birth'])) == date("d-m-Y")) {
                                                     echo "Today";
-                                                } else {
+                                                } elseif(date("d-m-Y", strtotime($birthday['date_of_birth'])) < strtotime(date("d-m-Y"))) {
                                                     echo date_diff(date_create($birthday['date_of_birth']), date_create('today'))->format('in %a days');
-                                                } ?>
+                                                } else {
+                                                    echo date_diff(date_create($birthday['date_of_birth']), date_create('today'))->format('%a days ago');
+                                                } ?></span>
+
                                                 </span>
 
                                             </td>

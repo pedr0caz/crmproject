@@ -57,7 +57,7 @@
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-right border-grey rounded b-shadow-4 p-0"
                                                     aria-labelledby="dropdownMenuLink" tabindex="0">
-                                                    <a class="dropdown-item openRightModal"
+                                                    <a class="dropdown-item "
                                                         href="<?=ROOT?>/client/<?=$id?>?edit">Edit</a>
                                                 </div>
                                             </div>
@@ -179,7 +179,7 @@
             <!-- Add Task Export Buttons Start -->
             <div class="d-flex" id="table-actions">
                 <a href="<?=ROOT?>/project/create?client_id=<?=$client['client_id'];?>"
-                    class="btn-primary rounded f-14 p-2 mr-3 openRightModal"
+                    class="btn-primary rounded f-14 p-2 mr-3 "
                     data-redirect-url="<?=ROOT?>/project/create?client_id=<?=$client['client_id'];?>">
                     <i class="bi bi-plus-circle"></i>
                     Add Project
@@ -318,7 +318,7 @@
                                                             <i class="bi bi-eye-fill mr-2"></i>
                                                             View
                                                         </a>
-                                                        <a class="dropdown-item openRightModal"
+                                                        <a class="dropdown-item "
                                                             href="<?=ROOT;?>/editproject/<?=$project['project_id']?>">
                                                             <i class="bi bi-pencil-fill mr-2"></i>
                                                             Edit
@@ -419,69 +419,7 @@
                                 </div>
                             </form>
                             <div class="d-flex flex-wrap mt-3" id="task-file-list">
-                                <?php foreach($employeeFiles as $file):
-                                    $time = date_diff(date_create('now'), date_create($file['created_at']));
-                                    if ($time->format('%a') == 0 && $time->format('%h') == 0 && $time->format('%i') == 0) {
-                                        $time = $time->format('%s seconds ago');
-                                    } elseif ($time->format('%a') == 0 && $time->format('%h') == 0 && $time->format('%i') > 0) {
-                                        $time = $time->format('%i minutes ago');
-                                    } elseif ($time->format('%a') == 0 && $time->format('%h') > 0) {
-                                        $time = $time->format('%h hours ago');
-                                    } else {
-                                        $time = $time->format('%a days ago');
-                                    }
-                                    ?>
-                                <div class="card bg-white border-grey file-card mr-3 mb-3">
-                                    <div class="card-horizontal">
-                                        <div class="card-img mr-0">
-                                            <?php
-                                                $fileE = explode('.', $file['filename']);
-                                    $extension = ltrim($fileE[count($fileE) - 1]);
-                                    if($extension == 'pdf') {
-                                        $img = ' <i class="bi bi-file-pdf mr-2 text-lightest" style="font-size: 16px;"></i>';
-                                    } elseif($extension == 'docx') {
-                                        $img = ' <i class="bi bi-filetype-docx mr-2 text-lightest" style="font-size: 16px;"></i>';
-                                    } elseif($extension == 'jpg' || $extension == 'jpeg' || $extension == 'png' || $extension == 'gif') {
-                                        $img = '<img src="'.ROOT.'/'.$file["filename"].'">';
-                                    } else {
-                                        $img = ' <i class="bi bi-file-earmark mr-2 text-lightest" style="font-size: 16px;"></i>';
-                                    }
-                                    ?>
-                                            <?=$img?>
-                                        </div>
-                                        <div class="card-body pr-2">
-                                            <div class="d-flex flex-grow-1">
-                                                <h4 class="card-title f-12 text-dark-grey mr-3 text-truncate"
-                                                    data-toggle="tooltip" data-original-title="asdsad">
-                                                    <?=$file['name']?>
-                                                </h4>
-                                                <div class="dropdown ml-auto file-action">
-                                                    <button
-                                                        class="btn btn-lg f-14 p-0 text-lightest text-capitalize rounded  dropdown-toggle"
-                                                        type="button" data-toggle="dropdown" aria-haspopup="true"
-                                                        aria-expanded="false">
-                                                        <i class="bi bi-three-dots-vertical"></i>
-                                                    </button>
-                                                    <div class="dropdown-menu dropdown-menu-right border-grey rounded b-shadow-4 p-0"
-                                                        aria-labelledby="dropdownMenuLink" tabindex="0">
-                                                        <a class="cursor-pointer d-block text-dark-grey f-13 pt-3 px-3 "
-                                                            target="_blank"
-                                                            href="<?=ROOT?>/<?=$file['filename']?>">View</a>
-                                                        <a class="cursor-pointer d-block text-dark-grey f-13 py-3 px-3 "
-                                                            href="<?=ROOT?>/<?=$file['filename']?>">Download</a>
 
-                                                        <a class="cursor-pointer d-block text-dark-grey f-13 pb-3 px-3 delete-file"
-                                                            data-row-id="1" href="javascript:;">Delete</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="card-date f-11 text-lightest">
-                                                <?=$time?>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <?php endforeach; ?>
                             </div>
                         </div>
                     </div>
@@ -596,6 +534,381 @@
                 </script>
             </div>
             <?php
+        } elseif(isset($_GET['tab']) && $_GET['tab'] == "notes") {
+            ?>
+            <div class="content-wrapper border-top-0 client-detail-wrapper">
+                <!-- ROW START -->
+                <div class="row pb-5">
+                    <div class="col-lg-12 col-md-12 mb-4 mb-xl-0 mb-lg-4">
+                        <!-- Add Task Export Buttons Start -->
+                        <div class="d-flex justify-content-between action-bar">
+                            <div id="table-actions" class="d-flex align-items-center">
+
+                                <button id="department-setting-add" type="button"
+                                    class="btn-primary rounded f-14 p-2 mr-3" data-toggle="modal"
+                                    data-target="#myModal2"><i class="bi bi-plus-lg mr-2"></i>Add</button>
+
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-column w-tables rounded mt-3 bg-white  text-center">
+                            <div id="client-notes-table_wrapper" class="">
+                                <div class="row justify-content-md-center">
+                                    <div class="col-sm-12">
+                                        <table class="table table-hover justify-content-md-center align-items-center"
+                                            id="client-notes-table" role="grid"
+                                            aria-describedby="client-notes-table_info">
+                                            <thead>
+                                                <tr class="justify-content-md-center align-items-center text-center">
+                                                    <th>Note Title</th>
+                                                    <th>Note Type</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php foreach($notes as $note): ?>
+                                                <tr class="text-center">
+
+                                                    <td>
+                                                        <a data-toggle="modal" data-target="#myModal"
+                                                            data-id="<?=$note['id'];?>"
+                                                            style="color:black;">
+                                                            <?=$note['title']?>
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        <?php if($note['type'] == 1): ?>
+                                                        <span class="badge badge-pill badge-primary">Private</span>
+                                                        <?php else: ?>
+                                                        <span class="badge badge-pill badge-success">Public</span>
+                                                        <?php endif; ?>
+
+                                                        </span>
+                                                    </td>
+                                                    <td class="pr-20">
+                                                        <div class="task_view">
+                                                            <div class="dropdown">
+                                                                <a class="task_view_more d-flex align-items-center justify-content-center dropdown-toggle"
+                                                                    type="link" id="dropdownMenuLink-1"
+                                                                    data-toggle="dropdown" aria-haspopup="true"
+                                                                    aria-expanded="false">
+                                                                    <i class="icon-options-vertical icons"></i>
+                                                                </a>
+                                                                <div class="dropdown-menu dropdown-menu-right"
+                                                                    aria-labelledby="dropdownMenuLink-1" tabindex="0">
+                                                                    <a data-toggle="modal" data-target="#myModal"
+                                                                        data-id="<?=$note['id'];?>"
+                                                                        class="
+                                                                        dropdown-item">
+                                                                        <i class="bi bi-eye-fill mr-2"></i>
+                                                                        View
+                                                                    </a>
+
+                                                                    <a class="dropdown-item delete-table-row"
+                                                                        href="javascript:;"
+                                                                        data-note-id="<?=$note['id'];?>">
+                                                                        <i class="bi bi-trash-fill mr-2"></i>
+                                                                        Delete
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <?php endforeach; ?>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- Task Box End -->
+                    </div>
+                </div>
+
+                <script>
+                    $('body').on('click', '.delete-table-row', function() {
+                        var id = $(this).data('note-id');
+                        Swal.fire({
+                            title: "Are you sure?",
+                            text: "You will not be able to recover the deleted record!",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            focusConfirm: false,
+                            confirmButtonText: "Yes, delete it!",
+                            cancelButtonText: "Cancel",
+                            customClass: {
+                                confirmButton: 'btn btn-primary mr-3',
+                                cancelButton: 'btn btn-secondary'
+                            },
+                            showClass: {
+                                popup: 'swal2-noanimation',
+                                backdrop: 'swal2-noanimation'
+                            },
+                            buttonsStyling: false
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $.ajax({
+                                    url: "<?=ROOT;?>/client/<?=$id;?>?notes=delete",
+                                    type: "POST",
+                                    data: {
+                                        id: id
+                                    },
+                                    success: function(response) {
+                                        console.log(response);
+                                        if (response.status == "success") {
+                                            Swal.fire({
+                                                title: "Deleted!",
+                                                text: "Record has been deleted.",
+                                                icon: "success",
+                                                showClass: {
+                                                    popup: 'swal2-noanimation',
+                                                    backdrop: 'swal2-noanimation'
+                                                },
+                                                buttonsStyling: false,
+                                                customClass: {
+                                                    confirmButton: 'btn btn-primary'
+                                                }
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    location.reload();
+                                                }
+                                            });
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    });
+                </script>
+            </div>
+            <div class="modal" id="myModal2">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modelHeading">Add Note to Client</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">×</span></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <form method="POST" id="save-client-note-data-form" autocomplete="off"
+                                            data-np-checked="1" data-np-autofill-type="other" data-np-watching="1">
+
+                                            <div class="add-client bg-white rounded">
+                                                <div class="row px-4">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group my-3">
+                                                            <label class="f-14 text-dark-grey mb-12" data-label="true"
+                                                                for="title">Note Title
+                                                                <sup class="f-14 mr-1">*</sup>
+                                                            </label>
+                                                            <input type="text" class="form-control height-35 f-14"
+                                                                placeholder="Enter note title" value="" name="title"
+                                                                id="title" autocomplete="off" data-np-checked="1">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-lg-6">
+                                                        <div class="form-group my-3">
+                                                            <label class="f-14 text-dark-grey mb-12" data-label=""
+                                                                for="late_yes">Note Type
+                                                            </label>
+                                                            <div class="d-flex ">
+                                                                <div
+                                                                    class="form-check-inline custom-control custom-radio mt-2 mr-3">
+                                                                    <input type="radio" value="0"
+                                                                        class="custom-control-input" id="public"
+                                                                        name="type" checked="" autocomplete="off"
+                                                                        data-np-checked="1">
+                                                                    <label
+                                                                        class="custom-control-label pt-1 cursor-pointer"
+                                                                        for="public">Public</label>
+                                                                </div>
+                                                                <div
+                                                                    class="form-check-inline custom-control custom-radio mt-2 mr-3">
+                                                                    <input type="radio" value="1"
+                                                                        class="custom-control-input" id="private"
+                                                                        name="type" autocomplete="off"
+                                                                        data-np-checked="1">
+                                                                    <label
+                                                                        class="custom-control-label pt-1 cursor-pointer"
+                                                                        for="private">Private</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row px-4">
+                                                    <div class="col-md-12 col-lg-12">
+                                                        <div class="form-group">
+                                                            <label class="f-14 text-dark-grey mb-12 my-3" data-label=""
+                                                                for="notes">Note Detail
+                                                            </label>
+
+                                                            <textarea name="notedetail" id="editor"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="javascript:;" class="btn-cancel rounded f-14 p-2 border-0 mr-3"
+                                data-dismiss="modal">
+                                Close
+                            </a>
+                            <button type="button" class="btn-primary rounded f-14 p-2" id="save-note">
+                                <i class="bi bi-save mr-2"></i>
+                                Save
+                            </button>
+
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <script>
+                    $(document).ready(function() {
+
+                        var notedetail;
+                        ClassicEditor
+                            .create(document.querySelector('#editor')).then(editor => {
+                                notedetail = editor;
+
+                            })
+                            .catch(error => {
+                                console.error(error);
+                            });
+
+                        $('#save-note').click(function() {
+
+                            var form = $('#save-client-note-data-form');
+                            var formData = new FormData(form[0]);
+                            formData.append('notedetail', notedetail.getData());
+                            $.ajax({
+                                url: "<?=ROOT;?>/client/<?=$id;?>?notes=submit",
+                                type: "POST",
+                                data: formData,
+                                contentType: false,
+                                processData: false,
+                                success: function(response) {
+                                    console.log(response);
+                                    if (response.status == 'success') {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Success',
+                                            text: response.message,
+                                            showConfirmButton: false,
+                                            timer: 1500
+                                        }).then((result) => {
+                                            location.reload();
+                                        })
+                                    }
+                                }
+                            })
+                        });
+
+
+
+                    });
+                </script>
+            </div>
+
+            <div class="modal" id="myModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modelHeading">Note Details</h5>
+
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-sm-12">
+
+                                    <div class="card-body ">
+                                        <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
+                                            <p class="mb-0 text-lightest f-14 w-30 text-capitalize">Note Title
+                                            </p>
+                                            <p class="mb-0 text-dark-grey f-14 w-70 text-wrap" id="ntitle"></p>
+                                        </div>
+                                        <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
+                                            <p class="mb-0 text-lightest f-14 w-30 text-capitalize">Note Type
+                                            </p>
+                                            <p class="mb-0 text-dark-grey f-14 w-70 text-wrap" id="ntype"></p>
+                                        </div>
+
+
+                                        <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
+                                            <p class="mb-0 text-lightest f-14 w-30 text-capitalize">Note Detail
+                                            </p>
+                                            <div class="mb-0 text-dark-grey f-14 w-70 text-wrap ql-editor p-0"
+                                                id="ndesc">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <a href="javascript:;" class="btn-cancel rounded f-14 p-2 border-0 mr-3"
+                                data-dismiss="modal">
+                                Close
+                            </a>
+
+
+                        </div>
+
+                    </div>
+                </div>
+                <script>
+                    $(document).ready(function() {
+                        $('#myModal').on('show.bs.modal', function(event) {
+                            var button = $(event.relatedTarget)
+                            var id = button.data('id')
+                            var modal = $(this)
+                            console.log(id);
+                            $.ajax({
+                                url: "<?=ROOT;?>/client/<?=$id;?>?notes=details",
+                                type: "POST",
+                                data: {
+                                    id: id
+                                },
+                                success: function(response) {
+                                    console.log(response);
+                                    if (response.status == 'success') {
+                                        $('#ntitle').html(response.data.title);
+                                        if (response.data.type == 0) {
+                                            $('#ntype').html('Public');
+                                        } else {
+                                            $('#ntype').html('Private');
+                                        }
+
+                                        $('#ndesc').html(response.data.details);
+                                    }
+                                }
+                            })
+                        })
+                    });
+                </script>
+
+            </div>
+
+
+            <?php
         }
 ?>
         </div>
@@ -605,4 +918,10 @@
 ?>
 <script>
     $('#projects-table').DataTable();
+    $('#client-notes-table').DataTable({
+        columnDefs: [{
+            targets: [-1, -2, -3],
+            className: 'dt-head-center'
+        }],
+    });
 </script>

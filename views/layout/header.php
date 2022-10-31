@@ -20,8 +20,9 @@
 </head>
 
 <body id="body">
+    <?php if(isset($_SESSION['user_id'])): ?>
     <header class="main-header clearfix bg-white" id="header">
-        <!-- NAVBAR LEFT(MOBILE MENU COLLAPSE) START-->
+
         <div class="navbar-left float-left d-flex align-items-center">
             <!-- PAGE TITLE START -->
             <div class="page-title d-none d-lg-flex">
@@ -74,15 +75,14 @@
                         </div>
                     </div>
                 </li>
-                <!-- ADD END -->
-                <!-- NOTIFICATIONS START -->
-                <li>
+
+                <!-- <li>
                     <div class="notification_box dropdown">
                         <a class="d-block dropdown-toggle header-icon-box show-user-notifications" type="link"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="bi bi-bell-fill text-dark-grey f-20"></i>
                         </a>
-                        <!-- DROPDOWN - INFORMATION -->
+                
                         <div class="dropdown-menu dropdown-menu-right notification-dropdown border-0 shadow-lg py-0 bg-additional-grey"
                             tabindex="0">
                             <div
@@ -95,13 +95,13 @@
                             </div>
                         </div>
                     </div>
-                </li>
+                </li> -->
                 <!-- NOTIFICATIONS END -->
                 <!-- LOGOUT START -->
                 <li>
                     <div class="logout_box">
-                        <a class="d-block header-icon-box" href="javascript:;" onclick="event.preventDefault();
-							document.getElementById('logout-form').submit();">
+                        <a class="d-block header-icon-box"
+                            href="<?=ROOT?>/logout">
                             <i class="bi bi-power f-w-500 text-dark-grey f-20"></i>
                             <!-- <i class="fa fa-power-off f-16 text-dark-grey"></i> Font Awesome fontawesome.com -->
                         </a>
@@ -110,5 +110,6 @@
                 <!-- LOGOUT END -->
             </ul>
         </div>
-        <!-- NAVBAR RIGHT(SEARCH, ADD, NOTIFICATION, LOGOUT) START-->
+
     </header>
+    <?php endif; ?>

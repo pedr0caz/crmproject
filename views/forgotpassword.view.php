@@ -1,0 +1,98 @@
+<?php require_once("views/layout/header.php"); ?>
+<section class="bg-grey py-5 login_section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <div class="login_box mx-auto rounded bg-white text-center">
+                    <form method="POST" id="save-employee-data-form">
+                        <h3 class="text-capitalize mb-4 f-w-500">Recover Password</h3>
+
+                        <div class="alert alert-success m-t-10 d-none" id="success-msg"></div>
+
+                        <div class="form-group text-left">
+                            <label for="email" class="f-w-500">Email Address</label>
+                            <input type="email" name="email" class="form-control height-50 f-15 light_text" autofocus=""
+                                placeholder="e.g. admin@example.com" id="email" autocomplete="off" required>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6">
+
+
+                                <img src="<?=ROOT?>/forgotpassword/captcha"
+                                    alt="captcha" id="captchaimg" />
+                                <div class=" form-group forgot_pswd mt-2 text-center">
+                                    <a href="javascript:void(0)"
+                                        onclick="document.getElementById('captchaimg').src='<?=ROOT?>/forgotpassword/captcha?'+Math.random();document.getElementById('captcha').focus();"
+                                        id=" change-image">Not readable?
+                                        Change text.</a>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <input type="text" name="captcha" id="captcha"
+                                    class="form-control f-27 light_text text-center" style="height: 78px;"
+                                    placeholder="Captcha" required />
+                            </div>
+
+                        </div>
+
+                        <button type="submit" id="submit-login"
+                            class="btn-primary f-w-500 rounded w-100 height-50 f-18">
+                            Send Reset Link <i class="bi bi-arrow-right-circle-fill"></i>
+                        </button>
+                        <div class="forgot_pswd mt-3">
+                            <a href="<?=ROOT?>/login"
+                                class="justify-content-center">Log In</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<?php require_once("views/layout/footer.php"); ?>
+
+<script>
+    $('#submit-login').click(function(e) {
+        e.preventDefault();
+        var url = "<?=ROOT?>/forgotpassword";
+        var form = $('#save-employee-data-form');
+        if (form[0].checkValidity()) {
+            var formData = new FormData(form[0]);
+
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    if (data.status == "success") {
+                        $('#success-msg').removeClass('d-none');
+                        $('#success-msg').html(data.message);
+                        $('#email').val('');
+                        $('#captcha').val('');
+                        document.getElementById('captchaimg').src =
+                            '<?=ROOT?>/forgotpassword/captcha?' +
+                            Math.random();
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: data.message,
+                        })
+                        $('#email').val('');
+                        $('#captcha').val('');
+                        document.getElementById('captchaimg').src =
+                            '<?=ROOT?>/forgotpassword/captcha?' +
+                            Math.random();
+                    }
+                }
+            });
+        } else {
+
+            form[0].reportValidity();
+
+        }
+    });
+</script>

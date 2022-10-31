@@ -19,13 +19,14 @@ $controllers = [
     "client",
     "project",
     "employee",
-    "addemployee",
+
     "task",
-    "employeedetails",
+
     "logout",
     "messages",
     "notice",
     "event",
+    "forgotpassword",
 
 ];
 

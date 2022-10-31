@@ -17,7 +17,9 @@
                     <div class="mb-0 position-relative pro-name">
                         <span class="bg-light-green rounded-circle"></span>
                         <p class="f-13 text-lightest mb-0" data-placement="bottom" data-toggle="tooltip"
-                            data-original-title="Pedro">Pedro</p>
+                            data-original-title="<?=$_SESSION['user_name'];?>">
+                            <?=$_SESSION['user_name'];?>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -28,7 +30,7 @@
                     <div class="profileInfo d-flex align-items-center mr-1 flex-wrap">
                         <div class="profileImg mr-2">
                             <img class="h-100"
-                                src="https://www.gravatar.com/avatar/7fcefe645acaa3363d8f10bdfba33c0d.png?s=200&amp;d=mp"
+                                src="<?=$_SESSION['user_image'] ? $_SESSION['user_image'] : ROOT.'/images/avatar.png'?>"
                                 alt="Pedro">
                         </div>
                         <div class="ProfileData">
@@ -41,23 +43,9 @@
                         <i class="side-icon bi bi-pencil-square"></i>
                     </a>
                 </div>
-                <a class="dropdown-item d-flex justify-content-between align-items-center f-15 text-dark invite-member"
-                    href="javascript:;">
-                    <span>Invite member to Flag Project</span>
-                    <i class="side-icon bi bi-person-plus"></i>
-                </a>
+
                 <a class="dropdown-item d-flex justify-content-between align-items-center f-15 text-dark"
-                    href="javascript:;">
-                    <label for="dark-theme-toggle">Dark Theme</label>
-                    <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" id="dark-theme-toggle" autocomplete="off"
-                            data-np-invisible="1" data-np-checked="1">
-                        <label class="custom-control-label f-14" for="dark-theme-toggle"></label>
-                    </div>
-                </a>
-                <a class="dropdown-item d-flex justify-content-between align-items-center f-15 text-dark" href=""
-                    onclick="event.preventDefault();
-					document.getElementById('logout-form').submit();">
+                    href="<?=ROOT;?>/logout">
                     Logout <i class="side-icon bi bi-power"></i>
                 </a>
             </div>

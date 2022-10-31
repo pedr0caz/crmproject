@@ -22,13 +22,12 @@ class Client extends Base
                 c.office,
                 c.website,
                 c.note,
-                s.category_name,
-                b.category_name AS business_category
+                s.category_name
+               
         
             FROM client_details c
             INNER JOIN users u ON c.user_id = u.id
             LEFT JOIN client_categories s ON c.category_id = s.id
-            LEFT JOIN client_sub_categories b ON c.sub_category_id = b.id
      
         ");
         $query->execute();
@@ -63,13 +62,11 @@ class Client extends Base
                 c.office,
                 c.website,
                 c.note,
-                s.category_name,
-                b.category_name AS business_category
+                s.category_name
         
             FROM client_details c
             INNER JOIN users u ON c.user_id = u.id
             LEFT JOIN client_categories s ON c.category_id = s.id
-            LEFT JOIN client_sub_categories b ON c.sub_category_id = b.id
             WHERE c.id = ?
         ");
         $query->execute([$id]);
@@ -394,5 +391,55 @@ class Client extends Base
                 'message' => $sucessfullEntries . ' entries added successfully and ' . $entries . ' entries already exists'
             ];
         }
+    }
+
+    public function newClientNote($id, $data, $user_id)
+    {
+        $query = $this->db->prepare("
+            INSERT INTO client_notes (client_id, details, title, type,  added_by)
+            VALUES (?, ?, ?, ?, ?)
+        ");
+        $result = $query->execute([$id, $data['notedetail'], $data['title'], $data['type'], $user_id]);
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function removeClientNote($id, $user_id)
+    {
+        $query = $this->db->prepare("
+            DELETE FROM client_notes
+            WHERE id = ? AND added_by = ?
+        ");
+        $result = $query->execute([$id, $user_id]);
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function getClientNotes($id, $user_id)
+    {
+        $query = $this->db->prepare("
+            SELECT id, details, title, type, added_by
+            FROM client_notes
+            WHERE (client_id = ? AND type = 0 ) OR (client_id = ? AND type = 1 AND added_by = ?)
+        ");
+        $query->execute([$id, $id, $user_id]);
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getClientNoteById($id, $user_id, $client_id)
+    {
+        $query = $this->db->prepare("
+            SELECT id, details, title, type, added_by
+            FROM client_notes
+            WHERE (id = ? AND type = 0 AND client_id = ? ) OR (id = ? AND type = 1 AND added_by = ? AND client_id = ?)
+        ");
+        $query->execute([$id, $client_id, $id, $user_id, $client_id]);
+        return $query->fetch(PDO::FETCH_ASSOC);
     }
 }

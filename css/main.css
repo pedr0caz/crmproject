@@ -24162,7 +24162,7 @@ input[type=number] {
 }
 
 .login_section {
-    min-height: calc(100vh - 56px);
+    min-height: 100%;
 }
 
 .login_header {
