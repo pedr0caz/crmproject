@@ -91,17 +91,24 @@
                                     for (var i = 0; i < test.length; i++) {
                                         // ﻿name <- dá print a invisible character - LEL
                                         var trueIndex = i + 1;
-                                        $('#columnName_' + trueIndex).selectpicker('val',
-                                            test[i]);
-                                        $('#box_' + i).removeClass('unmatched');
-                                        $('#box_' + i).addClass('matched');
-
+                                        $('#columnName_' + trueIndex)
+                                            .selectpicker('val',
+                                                test[i]);
+                                        $('.selectpicker').selectpicker('refresh');
+                                        if ($('#columnName_' + trueIndex).selectpicker(
+                                                'val') != null) {
+                                            $('#box_' + i).removeClass('unmatched');
+                                            $('#box_' + i).addClass('matched');
+                                        }
                                     }
 
                                 }
 
                                 $('.selectpicker').selectpicker('refresh');
-                                $('#process-client-form').prop('disabled', false);
+                                if ($('#process-client-data-form').find('.unmatched')
+                                    .length == 0) {
+                                    $('#process-client-form').prop('disabled', false);
+                                }
 
 
                             } else {

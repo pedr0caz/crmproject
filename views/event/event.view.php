@@ -52,7 +52,16 @@
             calendar.unselect()
         },
         eventClick: function(arg) {
-            getEventDetail(arg.event.id);
+            var type = arg.event.extendedProps.type;
+            var id = arg.event.extendedProps.idEvent;
+
+            if (type == 'Project') {
+                window.location.href = "<?=ROOT ?>/project/" + id;
+            } else if (type == 'Task') {
+                window.location.href = "<?=ROOT ?>/task/" + id;
+            } else if (type == 'Birthday') {
+                window.location.href = "<?=ROOT ?>/employee/" + id;
+            }
         },
         editable: false,
         dayMaxEvents: true, // allow "more" link when too many events

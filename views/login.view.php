@@ -56,7 +56,7 @@
 									your password?</a>
 							</div>
 							<div class="form-group text-left">
-								<input id="checkbox-signup" type="checkbox" name="remember" data-np-checked="1">
+								<input id="checkbox-signup" type="checkbox" name="remember">
 								<label for="checkbox-signup">Stay logged in</label>
 							</div>
 
@@ -95,7 +95,7 @@
 			var email = $('#email').val();
 			var password = $('#password').val();
 			var captcha = $('#captcha').val();
-			var remember = $('#checkbox-signup').val();
+			var remember = $('#checkbox-signup').is(':checked') ? 1 : 0;
 			var submit = $('#submit-login').val();
 			$.ajax({
 				url: '<?=ROOT?>/login',

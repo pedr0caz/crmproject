@@ -26,7 +26,7 @@ if (!isset($_SESSION["user_id"])) {
 
         foreach ($projects as $key => $project) {
             $eventsCalendar[] = array(
-                "id" => $project["project_id"],
+                "idEvent" => $project["project_id"],
                 "type" => "Project",
                 "title" => "📝 ".$project["project_name"],
                 "start" => $project["start_date"],
@@ -39,7 +39,7 @@ if (!isset($_SESSION["user_id"])) {
         }
         foreach ($tasks as $key => $task) {
             $eventsCalendar[] = array(
-                "id" => $task["task_id"],
+                "idEvent" => $task["task_id"],
                 "type" => "Task",
                 "title" => "✍️ ".$task["heading"],
                 "start" => $task["start_date"],
@@ -53,7 +53,7 @@ if (!isset($_SESSION["user_id"])) {
         if (isset($users)) {
             foreach ($users as $key => $user) {
                 $eventsCalendar[] = array(
-                    "id" => $user["id"],
+                    "idEvent" => $user["id"],
                     "type" => "Birthday",
                     "title" => "🎂 ".$user["name"],
                     "start" => $user["date_of_birth"],

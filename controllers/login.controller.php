@@ -4,8 +4,6 @@ require("models/users.model.php");
 $captcha = new Captcha();
 
 
-
-
 if (isset($_POST["submit"]) && !isset($_SESSION["user_id"]) && $_SERVER["REQUEST_METHOD"] == "POST") {
     if ($captcha->checkCaptcha()) {
         if (!empty($_POST["email"]) &&
@@ -18,12 +16,14 @@ if (isset($_POST["submit"]) && !isset($_SESSION["user_id"]) && $_SERVER["REQUEST
             $user = $model->login($_POST);
           
             if (!empty($user)) {
-                if ($_POST["remember"] == "on") {
+                if (isset($_POST["remember"]) &&  $_POST["remember"] == 1) {
+                    $ip = isset($_SERVER['HTTP_CLIENT_IP']) ? $_SERVER['HTTP_CLIENT_IP'] : (isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR']);
+                  
                     $baseUser = base64_encode($user["email"]);
                     setcookie("member_login", $baseUser, time() + (30 * 24 * 60 * 60));
-                    $random_password_key = hash('sha512', uniqid(mt_rand(1, mt_getrandmax()), true));
+                    $random_password_key = hash('sha256', uniqid(mt_rand(1, mt_getrandmax()), true));
                     setcookie("random_password", $random_password_key, time() + (30 * 24 * 60 * 60));
-                    $result = $model->updateRememberToken($user["id"], $random_password_key);
+                    $result = $model->updateRememberToken($user["id"], $random_password_key, $ip);
                 }
                 $getUser = $model->getUser($user["id"]);
                 $_SESSION["user_id"] = $user["id"];
@@ -57,7 +57,9 @@ if (isset($_POST["submit"]) && !isset($_SESSION["user_id"]) && $_SERVER["REQUEST
     if (isset($_COOKIE["member_login"]) && isset($_COOKIE["random_password"])) {
         $model = new User();
         $unbase64 = base64_decode($_COOKIE["member_login"]);
-        $user = $model->getUserByRememberToken($_COOKIE["random_password"], $unbase64);
+        $ip = isset($_SERVER['HTTP_CLIENT_IP']) ? $_SERVER['HTTP_CLIENT_IP'] : (isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR']);
+                    
+        $user = $model->getUserByRememberToken($_COOKIE["random_password"], $unbase64, $ip);
         if (!empty($user)) {
             $getUser = $model->getUser($user["id"]);
             $_SESSION["user_id"] = $user["id"];
@@ -71,8 +73,10 @@ if (isset($_POST["submit"]) && !isset($_SESSION["user_id"]) && $_SERVER["REQUEST
             header("Location: " . ROOT . "/home");
             exit;
         } else {
-            unset($_COOKIE["member_login"]);
-            unset($_COOKIE["random_password"]);
+            setcookie("member_login", '', 1);
+            setcookie("member_login", '', 1, '/');
+            setcookie("random_password", '', 1);
+            setcookie("random_password", '', 1, '/');
         }
     }
     require("views/login.view.php");

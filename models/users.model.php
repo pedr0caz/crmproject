@@ -235,29 +235,41 @@ class User extends Base
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function updateRememberToken($id, $token)
+    public function updateRememberToken($id, $token, $ip)
     {
         $query = $this->db->prepare("
             UPDATE users
-            SET remember_token = ?
+            SET remember_token = ?, 
+            IP = ?
             WHERE id = ?
         ");
-        $result = $query->execute([$token, $id]);
+        $result = $query->execute([$token, $ip , $id]);
         return $result;
     }
 
-    public function getUserByRememberToken($token, $email)
+    public function getUserByRememberToken($token, $email, $ip)
     {
         $query = $this->db->prepare("
             SELECT id, name, email
             FROM users
-            WHERE remember_token = ? AND email = ? AND status = 'active' and login = 'enable'
+            WHERE remember_token = ? AND email = ? AND status = 'active' and login = 'enable' AND IP = ?
         ");
-        $query->execute([$token, $email]);
+        $query->execute([$token, $email, $ip]);
         $user = $query->fetch(PDO::FETCH_ASSOC);
         if (!empty($user)) {
             return $user;
         }
         return [];
+    }
+
+    public function logout($id)
+    {
+        $query = $this->db->prepare("
+            UPDATE users
+            SET remember_token = NULL , IP = NULL
+            WHERE id = ?
+        ");
+        $result = $query->execute([$id]);
+        return $result;
     }
 }

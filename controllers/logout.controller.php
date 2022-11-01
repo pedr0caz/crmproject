@@ -1,7 +1,8 @@
 <?php
-
+require("models/users.model.php");
+$user = new User();
 if (isset($_SESSION["user_id"])) {
-    session_destroy();
+    $user->logout($_SESSION["user_id"]);
     if (isset($_COOKIE)) {
         foreach ($_COOKIE as $name => $value) {
             if ($name != "preservecookie") {
@@ -10,5 +11,6 @@ if (isset($_SESSION["user_id"])) {
             }
         }
     }
+    session_destroy();
     header("Location: " . ROOT . "/");
 }
