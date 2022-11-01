@@ -1,5 +1,5 @@
 <?php
-require_once("controllers/captcha.controller.php");
+require_once("lib/captcha.php");
 $captcha = new Captcha();
 
 

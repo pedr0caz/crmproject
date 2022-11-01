@@ -5,12 +5,10 @@ class Captcha
 {
     public function generateCaptcha()
     {
-        $letters = array_merge(range('A', 'Z'), range(2, 9));
-        unset($letters[array_search('O', $letters)]);
-        unset($letters[array_search('Q', $letters)]);
-        unset($letters[array_search('I', $letters)]);
-        unset($letters[array_search('5', $letters)]);
-        unset($letters[array_search('S', $letters)]);
+        $letters = array_merge(range('A', 'Z'), range(0, 9), range('a', 'z'));
+        for ($i = 0; $i < 5; $i++) {
+            unset($letters[rand(0, count($letters) - 1)]);
+        }
         shuffle($letters);
         $selected_letters = array_slice($letters, 0, 4);
         $secure_text = implode('', $selected_letters);

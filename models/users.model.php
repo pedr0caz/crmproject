@@ -40,7 +40,7 @@ class User extends Base
     public function forgotPassword($data)
     {
         $query = $this->db->prepare("
-            SELECT password, id, name
+            SELECT id, name, email
             FROM users
             WHERE email = ? and status = 'active' and login = 'enable'
         ");
@@ -50,6 +50,47 @@ class User extends Base
             return $user;
         }
         return [];
+    }
+
+    public function updateToken($id, $token)
+    {
+        $query = $this->db->prepare("
+            UPDATE users
+            SET token = ?
+            WHERE id = ?
+        ");
+        $query->execute([$token, $id]);
+    }
+
+    public function getUserByToken($token)
+    {
+        $query = $this->db->prepare("
+            SELECT id, name, email
+            FROM users
+            WHERE token = ? and status = 'active' and login = 'enable'
+        ");
+        $query->execute([$token]);
+        $user = $query->fetch(PDO::FETCH_ASSOC);
+        if (!empty($user)) {
+            return $user;
+        }
+        return [];
+    }
+
+    public function updatePassword($id, $password)
+    {
+        $query = $this->db->prepare("
+            UPDATE users
+            SET password = ?
+            WHERE id = ?
+        ");
+        $result = $query->execute([password_hash($password, PASSWORD_DEFAULT), $id]);
+
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function getUser($id)
