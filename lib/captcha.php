@@ -50,7 +50,7 @@ class Captcha
 
     public function checkCaptcha()
     {
-        if (strtolower($_POST["captcha"]) == strtolower($_SESSION['captcha'])) {
+        if ($_POST["captcha"] == $_SESSION['captcha']) {
             return true;
         } else {
             return false;
