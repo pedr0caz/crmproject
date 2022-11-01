@@ -8,9 +8,11 @@ if (!isset($_SESSION["user_id"])) {
         require("models/employee.model.php");
         require("models/users.model.php");
         require("models/task.model.php");
+        require("lib/mail.php");
         $user = new User();
         $employeeModel = new Employee();
         $taskModel = new Task();
+        $mail = new MailTemplate();
         $countries = $user->getCountries();
         $roles = $employeeModel->getRoles();
         $designations = $employeeModel->getDesignations();
@@ -59,6 +61,18 @@ if (!isset($_SESSION["user_id"])) {
                         } else {
                             $newFilepath = null;
                         }
+
+                        if (isset($_POST["login"]) && $_POST["login"] == "enable" && isset($_POST["password"]) && mb_strlen($_POST["password"]) > 8) {
+                            $body = "<p>Hi " . $_POST["name"] . ",</p>
+                            <p>Your account has been activated to login by an admin</p>
+                            <br>
+                            <p>Password is :</p>
+                            <p>" . $_POST["password"] . "</p>";
+                            $subject = "Account for access to CRM is activated";
+                            $to = $_POST["email"];
+                            $mail->sendMail($to, $subject, $body);
+                        }
+                       
     
                         $employee = $employeeModel->newEmployee($_POST, $newFilepath);
                   
@@ -305,12 +319,23 @@ if (!isset($_SESSION["user_id"])) {
                             } else {
                                 $_POST["password"] = $employee["password"];
                             }
+
+                            if ($_POST["login"] != $employee["login"] && $_POST["login"] == "enable") {
+                                $body = "<p>Hi " . $employee["name"] . ",</p>
+                                <p>Your account has been activated to login by an admin</p>
+                                <p>If this was a mistake, just ignore this email and nothing will happen.</p>
+                                <p>To finish this action ask for reset password, visit the following address:</p>
+                                <p><a href='http://localhost/".ROOT."/forgotpassword'>http://localhost/".ROOT."/forgotpassword</a></p>";
+                                $subject = "Account Activated";
+                                $to = $employee["email"];
+                                $mail->sendMail($to, $subject, $body);
+                            }
         
                             $employee = $employeeModel->editEmployee($id, $_POST, $newFilepath);
                            
                             if ($employee["status"]) {
                                 header('Content-Type: application/json; charset=utf-8');
-                                echo json_encode(['status' => 'success', 'message' => 'Employee added successfully']);
+                                echo json_encode(['status' => 'success', 'message' => 'Employee edited successfully']);
                             } else {
                                 header('Content-Type: application/json; charset=utf-8');
                                 echo json_encode(['status' => 'error', 'message' => $employee["message"]]);

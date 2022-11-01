@@ -878,8 +878,14 @@
         $('#save-employee-form').click(function(event) {
             event.preventDefault();
             var form = $('#save-employee-data-form');
+            var formData = new FormData(form[0]);
+            var button = $(this);
+            button.html(
+                `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+            );
+            button.attr('disabled', true);
             if (form[0].checkValidity()) {
-                var formData = new FormData(form[0]);
+
 
                 $.ajax({
                     url: '<?=ROOT;?>/employee/<?=$id?>?edit&submit',
@@ -913,6 +919,8 @@
                                 }
                             });
                         } else {
+                            button.attr('disabled', false);
+                            button.html('Save');
                             Swal.fire({
                                 title: 'Error',
                                 text: response.message,

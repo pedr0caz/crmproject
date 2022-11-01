@@ -19,7 +19,7 @@ class User extends Base
     public function login($data)
     {
         $query = $this->db->prepare("
-            SELECT password, id, name
+            SELECT password, id, name, email
             FROM users
             WHERE email = ? and status = 'active' and login = 'enable'
         ");
@@ -233,5 +233,31 @@ class User extends Base
         ");
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function updateRememberToken($id, $token)
+    {
+        $query = $this->db->prepare("
+            UPDATE users
+            SET remember_token = ?
+            WHERE id = ?
+        ");
+        $result = $query->execute([$token, $id]);
+        return $result;
+    }
+
+    public function getUserByRememberToken($token, $email)
+    {
+        $query = $this->db->prepare("
+            SELECT id, name, email
+            FROM users
+            WHERE remember_token = ? AND email = ? AND status = 'active' and login = 'enable'
+        ");
+        $query->execute([$token, $email]);
+        $user = $query->fetch(PDO::FETCH_ASSOC);
+        if (!empty($user)) {
+            return $user;
+        }
+        return [];
     }
 }

@@ -258,13 +258,9 @@
                                 <div class="form-group my-3">
                                     <label class="f-14 text-dark-grey mb-12" data-label="" for="tags">Skills
                                     </label>
-                                    <tags class="tagify  form-control height-35 f-14" tabindex="-1">
-                                        <span contenteditable="" data-placeholder="e.g. communication, ReactJS"
-                                            aria-placeholder="e.g. communication, ReactJS" class="tagify__input"
-                                            role="textbox" aria-autocomplete="both" aria-multiline="false"></span>
-                                    </tags>
+
                                     <input type="text" class="form-control height-35 f-14"
-                                        placeholder="e.g. communication, ReactJS" value="" name="tags" id="tags"
+                                        placeholder="e.g. communication, ReactJS" value="" name="skills" id="skills"
                                         autocomplete="off">
                                 </div>
                             </div>
@@ -851,6 +847,11 @@
         $('#save-employee-form').click(function(event) {
             event.preventDefault();
             var form = $('#save-employee-data-form');
+            var button = $(this);
+            button.html(
+                `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+            );
+            button.attr('disabled', true);
             if (form[0].checkValidity()) {
                 var formData = new FormData(form[0]);
 
@@ -860,7 +861,9 @@
                     data: formData,
                     contentType: false,
                     processData: false,
+                    timeout: 60000,
                     success: function(response) {
+                        console.log(response);
                         if (response.status == 'success') {
                             Swal.fire({
                                 title: 'Success',
@@ -885,6 +888,8 @@
                                 }
                             });
                         } else {
+                            button.attr('disabled', false);
+                            button.html('Save');
                             Swal.fire({
                                 title: 'Error',
                                 text: response.message,

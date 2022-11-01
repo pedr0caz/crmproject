@@ -34,7 +34,7 @@ class Employee extends Base
          "); */
 
         $query = $this->db->prepare("
-        SELECT
+        SELECT 
         u.id AS user_id,
          u.name,
          u.email,
@@ -46,8 +46,8 @@ class Employee extends Base
          r.role_id,
          c.name AS role_name,
          e.designation_id,
-            d.name AS designation_name,
-       GROUP_CONCAT(t.team_name SEPARATOR ',') as team_name
+         d.name AS designation_name,
+         GROUP_CONCAT(t.team_name) as team_name
         
         FROM users u
         INNER JOIN role_user r ON u.id = r.user_id
@@ -55,7 +55,8 @@ class Employee extends Base
         LEFT JOIN teams t ON et.team_id = t.id
         INNER JOIN roles c ON r.role_id = c.id
         INNER JOIN employee_details e ON u.id = e.user_id
-        LEFT JOIN designations d ON e.designation_id = d.id;
+        LEFT JOIN designations d ON e.designation_id = d.id
+        GROUP by u.id;
         ");
            
      
@@ -266,47 +267,45 @@ class Employee extends Base
 
         $id = $this->db->lastInsertId();
         
-        if ($result) {
-            $query = $this->db->prepare("
-                INSERT INTO employee_details (user_id, address, department_id, designation_id, date_of_birth, joining_date, skills, slack_username)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            ");
-            $query->execute([
-                $id,
-                $data["address"],
-                $data["department_id"][0],
-                $data["designation_id"],
-                $data["date_of_birth"],
-                $data["joining_date"],
-                $data["skills"],
-                $data["slack_username"]
+        if ($id) {
+            $address = isset($data['address']) ? $data['address'] : null;
+            $skills = isset($data['skills']) ? $data['skills'] : null;
+            $slack_username = isset($data['slack_username']) ? $data['slack_username'] : null;
+            $date_of_birth = isset($data['date_of_birth']) ? $data['date_of_birth'] : null;
+            $date_of_joining = isset($data['joining_date']) ? $data['joining_date'] : null;
+            $designation_id = isset($data['designation_id']) ? $data['designation_id'] : null;
 
-            ]);
 
-            $employeeid = $this->db->lastInsertId();
-            if ($employeeid) {
+            $queryEmployee = $this->db->prepare("
+                 INSERT INTO employee_details (user_id, address, designation_id, date_of_birth, joining_date, skills, slack_username)
+                 VALUES (?, ?, ? , ?, ?, ?, ?)
+             ");
+            $result = $queryEmployee->execute([$id, $address, $designation_id, $date_of_birth, $date_of_joining, $skills, $slack_username]);
+            if ($result) {
                 $query = $this->db->prepare("
                 INSERT INTO role_user (user_id, role_id)
                 VALUES (?, ?)
                 ");
-                $query->execute([
+                $result = $query->execute([
                     $id,
                     2
                 ]);
-                foreach ($data["department_id"] as $department_id) {
-                    $query = $this->db->prepare("
-                    INSERT INTO employee_teams (user_id, team_id)
-                    VALUES (?, ?)
-                    ");
-                    $query->execute([
-                        $id,
-                        $department_id
-                    ]);
+                if ($result) {
+                    foreach ($data["department_id"] as $department_id) {
+                        $query = $this->db->prepare("
+                        INSERT INTO employee_teams (user_id, team_id)
+                        VALUES (?, ?)
+                        ");
+                        $query->execute([
+                            $id,
+                            $department_id
+                        ]);
+                    }
+                    return [
+                        "status" => true,
+                        "message" => "Email already exists or user already exists"
+                    ];
                 }
-                return [
-                    "status" => true,
-                    "message" => "Email already exists or user already exists"
-                ];
             }
         } else {
             return [

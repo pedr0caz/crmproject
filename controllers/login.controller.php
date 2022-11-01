@@ -1,5 +1,6 @@
 <?php
 require_once("lib/captcha.php");
+require("models/users.model.php");
 $captcha = new Captcha();
 
 
@@ -13,11 +14,17 @@ if (isset($_POST["submit"]) && !isset($_SESSION["user_id"]) && $_SERVER["REQUEST
         mb_strlen($_POST["password"]) >= 8 &&
         mb_strlen($_POST["password"]) <= 1000
         ) {
-            require("models/users.model.php");
             $model = new User();
             $user = $model->login($_POST);
-       
+          
             if (!empty($user)) {
+                if ($_POST["remember"] == "on") {
+                    $baseUser = base64_encode($user["email"]);
+                    setcookie("member_login", $baseUser, time() + (30 * 24 * 60 * 60));
+                    $random_password_key = hash('sha512', uniqid(mt_rand(1, mt_getrandmax()), true));
+                    setcookie("random_password", $random_password_key, time() + (30 * 24 * 60 * 60));
+                    $result = $model->updateRememberToken($user["id"], $random_password_key);
+                }
                 $getUser = $model->getUser($user["id"]);
                 $_SESSION["user_id"] = $user["id"];
                 $_SESSION["user_name"] = $getUser["name"];
@@ -47,6 +54,27 @@ if (isset($_POST["submit"]) && !isset($_SESSION["user_id"]) && $_SERVER["REQUEST
     $generate_captcha = $captcha->generateCaptcha();
     $captcha->showCaptcha();
 } elseif (!isset($_SESSION["user_id"])) {
+    if (isset($_COOKIE["member_login"]) && isset($_COOKIE["random_password"])) {
+        $model = new User();
+        $unbase64 = base64_decode($_COOKIE["member_login"]);
+        $user = $model->getUserByRememberToken($_COOKIE["random_password"], $unbase64);
+        if (!empty($user)) {
+            $getUser = $model->getUser($user["id"]);
+            $_SESSION["user_id"] = $user["id"];
+            $_SESSION["user_name"] = $getUser["name"];
+            $_SESSION["user_email"] = $getUser["email"];
+            $_SESSION["user_image"] = $getUser["image"];
+            $_SESSION["user_role"] = $getUser["role_id"];
+            if ($getUser["role_id"] == 3) {
+                $_SESSION["user_client_id"] = $getUser["client_id"];
+            }
+            header("Location: " . ROOT . "/home");
+            exit;
+        } else {
+            unset($_COOKIE["member_login"]);
+            unset($_COOKIE["random_password"]);
+        }
+    }
     require("views/login.view.php");
 } else {
     header("Location: " . ROOT);

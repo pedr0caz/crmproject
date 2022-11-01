@@ -7,9 +7,11 @@ if (!isset($_SESSION["user_id"])) {
         require("models/client.model.php");
         require("models/project.model.php");
         require("models/employee.model.php");
+        require("lib/mail.php");
         $clientModel = new Client();
         $employeeModel = new Employee();
         $projectsModel = new Project();
+        $mail = new MailTemplate();
         $clientCategories = $clientModel->getCategories();
         $countries = $clientModel->getCountries();
         if (isset($id) && $id == null &&  $_SESSION["user_role"] == 1) {
@@ -53,9 +55,22 @@ if (!isset($_SESSION["user_id"])) {
                         } else {
                             $newFilepath = null;
                         }
+
+                        
+
                         $client = $clientModel->newClient($_POST, $newFilepath);
-                      
+                        
                         if ($client["status"]) {
+                            if (isset($_POST["login"]) && $_POST["login"] == "enable" && isset($_POST["password"]) && mb_strlen($_POST["password"]) > 8) {
+                                $body = "<p>Hi " . $_POST["name"] . ",</p>
+                                <p>Your account has been activated to login by an admin</p>
+                                <br>
+                                <p>Password is :</p>
+                                <p>" . $_POST["password"] . "</p>";
+                                $subject = "Account for access to CRM is activated";
+                                $to = $_POST["email"];
+                                $mail->sendMail($to, $subject, $body);
+                            }
                             header('Content-Type: application/json; charset=utf-8');
                             echo json_encode(['status' => 'success', 'message' => 'Client added successfully', 'id' => $client["id"]]);
                             exit;
@@ -366,6 +381,19 @@ if (!isset($_SESSION["user_id"])) {
                                 $newFilepath = $client["image"] ? $client["image"] : null;
                             }
                             $password = $_POST['password'] ? password_hash($_POST['password'], PASSWORD_DEFAULT) :  $client['password'];
+                            
+                            if ($_POST["login"] != $client["login"] && $_POST["login"] == "enable") {
+                                $body = "<p>Hi " . $client["name"] . ",</p>
+                                <p>Your account has been activated to login by an admin</p>
+                                <p>If this was a mistake, just ignore this email and nothing will happen.</p>
+                                <p>To finish this action ask for reset password, visit the following address:</p>
+                                <p><a href='http://localhost/".ROOT."/forgotpassword'>http://localhost/".ROOT."/forgotpassword</a></p>";
+                                $subject = "Account Activated";
+                                $to = $_POST["email"];
+                                $mail->sendMail($to, $subject, $body);
+                            }
+        
+
                             $client = $clientModel->editClient($_POST, $client["user_id"], $newFilepath, $password);
                           
                             if ($client["status"]) {
