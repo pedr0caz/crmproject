@@ -123,4 +123,29 @@ class Events extends Base
         $query->execute([$id]);
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getTasksOfProjectsClient($id)
+    {
+        $query = $this->db->prepare("
+        SELECT 
+        t.id AS task_id,
+        t.heading,
+        t.description,
+        t.due_date,
+        t.start_date,
+
+        t.project_id,
+        p.project_name
+        
+
+        FROM tasks t
+        INNER JOIN users u ON u.id = t.created_by
+        INNER JOIN taskboard_columns tc ON tc.id = t.board_column_id
+        INNER JOIN task_category tcat ON tcat.id = t.task_category_id
+        LEFT JOIN projects p ON t.project_id = p.id
+        WHERE t.board_column_id IN (1, 3) AND t.project_id IN (SELECT id FROM projects WHERE client_id = ?)
+        ");
+        $query->execute([$id]);
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

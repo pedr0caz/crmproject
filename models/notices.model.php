@@ -19,11 +19,11 @@ class Notices extends Base
             FROM notices n
             INNER JOIN roles r ON r.id = n.toGroup
             LEFT JOIN teams t ON t.id = n.department_id
-            WHERE toGroup = ? AND (n.department_id IN ( SELECT team_id FROM employee_teams WHERE user_id = ?) OR department_id IS NULL)
+            WHERE (toGroup = ? AND (n.department_id IN ( SELECT team_id FROM employee_teams WHERE user_id = ?) OR department_id IS NULL) OR toGroup = ?)
             ORDER BY n.created_at DESC;
 
         ");
-        $query->execute([$user_role, $user_id]);
+        $query->execute([$user_role, $user_id, $user_role]);
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -54,24 +54,24 @@ class Notices extends Base
     public function getNotice($user_role, $user_id, $id)
     {
         $query = $this->db->prepare("
-            SELECT 
-                n.id,
-                n.toGroup,
-                n.heading,
-                n.description,
-                n.created_at,
-                n.department_id,
-                n.added_by,
-                r.display_name,
-                t.team_name
-            FROM notices n
-            INNER JOIN roles r ON r.id = n.toGroup
-            INNER JOIN teams t ON t.id = n.department_id
-            WHERE toGroup = ? AND n.department_id IN ( SELECT team_id FROM employee_teams WHERE user_id = ? ) AND n.id = ?
+        SELECT 
+        n.id,
+        n.toGroup,
+        n.heading,
+        n.description,
+        n.created_at,
+        n.department_id,
+        n.added_by,
+        r.display_name,
+        t.team_name
+    FROM notices n
+    INNER JOIN roles r ON r.id = n.toGroup
+    LEFT JOIN teams t ON t.id = n.department_id
+    WHERE (toGroup = ? AND n.department_id IN ( SELECT team_id FROM employee_teams WHERE user_id = ? )) OR (n.toGroup = ? AND  n.id = ?);
         
 
         ");
-        $query->execute([$user_role, $user_id, $id]);
+        $query->execute([$user_role, $user_id, $user_role, $id]);
         return $query->fetch(PDO::FETCH_ASSOC);
     }
 

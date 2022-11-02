@@ -21,7 +21,9 @@ if (!isset($_SESSION["user_id"])) {
             $tasks = $eventsModel->getTasksOfEmployee($_SESSION["user_id"]);
             $users = $usersModel->getBirthdays();
         } elseif ($_SESSION["user_role"] == "3") {
-            $projects = $eventsModel->getProjectByClientID($_SESSION["user_id"]);
+            $projects = $eventsModel->getProjectByClientID($_SESSION["user_client_id"]);
+            $tasks = $eventsModel->getTasksOfProjectsClient($_SESSION["user_client_id"]);
+            $birthdays = null;
         }
 
         foreach ($projects as $key => $project) {

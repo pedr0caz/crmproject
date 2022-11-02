@@ -10,6 +10,7 @@
         $chats = $chat->getChats($_SESSION["user_id"], $id);
         if ($id === 'getUsers') {
             $users = $user->searchUser($_POST["key"], $_SESSION["user_id"]);
+            
             foreach ($users as $user) {
                 if ($user['user_id'] == $_SESSION['user_id']) {
                     continue;

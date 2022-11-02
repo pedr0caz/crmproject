@@ -71,6 +71,10 @@ class Messages extends Base
                     $from_id,
                     $to_id
                 ]);
+
+                $query = $this->db->prepare("
+                UPDATE users SET last_seen = ? WHERE id = ?");
+                $query->execute([$date, $from_id]);
             }
         }
     }
@@ -126,6 +130,12 @@ class Messages extends Base
                 "chat" => $chat
             ];
         }
+
+        $query = $this->db->prepare("
+        UPDATE users SET last_seen = ? WHERE id = ?");
+        $query->execute([
+            date("Y-m-d H:i:s"),
+            $user_id]);
 
         return $conversations;
     }

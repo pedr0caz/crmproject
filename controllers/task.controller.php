@@ -139,7 +139,8 @@ if (!isset($_SESSION["user_id"])) {
                 $task = $taskModel->getTask($id, $_SESSION["user_id"]);
                 $projects = $employeesModel->getProjectsOfEmployee($_SESSION["user_id"]);
             } else {
-                $task = $taskModel->getTaskOfClient($id, $_SESSION["user_id"]);
+                $task = $taskModel->getTasksOfProject($_SESSION["user_client_id"], $id);
+                $projects = $projectsModel->getProjectByClientID($_SESSION["user_client_id"]);
             }
 
             if (empty($task)) {

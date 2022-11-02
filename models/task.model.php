@@ -330,8 +330,53 @@ class Task extends Base
         WHERE p.client_id = ?
 
         ");
-        $query->execute([$user_id, $user_id]);
+        $query->execute([$user_id]);
         return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+    public function getTasksOfProject($user_id, $task_id)
+    {
+        $query = $this->db->prepare("
+        SELECT 
+        t.id AS task_id,
+        t.heading,
+        t.description,
+        t.due_date,
+        t.start_date,
+        t.board_column_id,
+        t.project_id,
+        p.project_name,
+        t.task_category_id,
+        t.priority AS task_priority,
+        t.status,
+   
+        t.created_by,
+        t.created_at,
+        t.updated_at,
+        t.added_by,
+        u.id AS user_id,
+        u.name AS user_name,
+        u.email AS user_email,
+        u.image AS user_image,
+        tc.id AS task_label_id,
+        tc.column_name,
+        tc.slug,
+        tc.label_color,
+        tc.priority,
+        tcat.id AS task_category_id,
+        tcat.category_name
+
+        FROM tasks t
+        INNER JOIN users u ON u.id = t.created_by
+        INNER JOIN taskboard_columns tc ON tc.id = t.board_column_id
+        INNER JOIN task_category tcat ON tcat.id = t.task_category_id
+        LEFT JOIN projects p ON t.project_id = p.id
+        WHERE t.id = ? AND p.client_id = ?
+
+        ");
+        $query->execute([$task_id, $user_id]);
+        return $query->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getEmployeeAssignedToTask($id)

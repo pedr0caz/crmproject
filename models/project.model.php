@@ -76,7 +76,7 @@ class Project extends Base
         return $query->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function getProjectIDClient($id)
+    public function getProjectIDClient($id, $user_id)
     {
         $query = $this->db->prepare("
         SELECT
@@ -107,7 +107,7 @@ class Project extends Base
     LEFT JOIN teams t ON pt.id = t.id
     WHERE p.id = ? AND p.client_id = ?;
         ");
-        $query->execute([$id]);
+        $query->execute([$id, $user_id]);
         return $query->fetch(PDO::FETCH_ASSOC);
     }
 

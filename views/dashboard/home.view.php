@@ -50,7 +50,9 @@
                                         alt="Card image">
                                 </div>
                                 <div class="card-body border-0 pl-0">
-                                    <h4 class="card-title f-18 f-w-500 mb-0">Pedro</h4>
+                                    <h4 class="card-title f-18 f-w-500 mb-0">
+                                        <?=$_SESSION['user_name'];?>
+                                    </h4>
                                     <p class="f-14 font-weight-normal text-dark-grey mb-2">
                                         --</p>
 
@@ -72,7 +74,8 @@
                                         <label class="f-12 text-dark-grey mb-12 text-capitalize" for="usr">
                                             Projects </label>
                                         <p class="mb-0 f-18 f-w-500">
-                                            <a href="" class="text-dark">1</a>
+                                            <a href=""
+                                                class="text-dark"><?=count($projects);?></a>
                                         </p>
                                     </span>
                                     <span>
@@ -110,14 +113,14 @@
                                                 </style>
 
                                                 <div class="media align-items-center mw-250">
-                                                    <a href="<?=ROOT;?>/employeedetails/<?=$birthday['id'];?>"
+                                                    <a href="<?=ROOT;?>/employee/<?=$birthday['id'];?>"
                                                         class="position-relative ">
                                                         <img src="<?=$birthday['image'] ? $birthday['image'] : 'https://www.gravatar.com/avatar/a456ed61bc3c5d05f3ad79d85069098a.png?s=200&d=mp';?>"
                                                             class="mr-2 taskEmployeeImg rounded-circle">
                                                     </a>
                                                     <div class="media-body">
                                                         <h5 class="mb-0 f-12">
-                                                            <a href="<?=ROOT;?>/employeedetails/<?=$birthday['id'];?>"
+                                                            <a href="<?=ROOT;?>/employee/<?=$birthday['id'];?>"
                                                                 class="text-darkest-grey "><?=$birthday['name'];?></a>
                                                         </h5>
                                                         <p class="mb-0 f-12 text-dark-grey">
@@ -213,12 +216,15 @@
                                 <div class="d-flex">
                                     <a href="">
                                         <p class="mb-0 f-21 font-weight-bold text-blue d-grid mr-5">
-                                            0<span class="f-12 font-weight-normal text-lightest">
-                                                Pending </span>
+
+                                            <?=$incompleteTasks;?>
+                                            <span class="f-12 font-weight-normal text-lightest">
+                                                Incompleted </span>
                                         </p>
                                     </a>
                                     <a href="">
-                                        <p class="mb-0 f-21 font-weight-bold text-red d-grid">0<span
+                                        <p class="mb-0 f-21 font-weight-bold text-red d-grid">
+                                            <?=$overdueTasks;?><span
                                                 class="f-12 font-weight-normal text-lightest">Overdue</span>
                                         </p>
                                     </a>
@@ -239,13 +245,15 @@
                                 <div class="d-flex">
                                     <a href="">
                                         <p class="mb-0 f-21 font-weight-bold text-blue d-grid mr-5">
-                                            1<span class="f-12 font-weight-normal text-lightest">In Progress</span>
+                                            <?=$incompleteProjects;?><span
+                                                class="f-12 font-weight-normal text-lightest">In Progress</span>
                                         </p>
                                     </a>
 
                                     <a href="">
                                         <p class="mb-0 f-21 font-weight-bold text-red d-grid">
-                                            0<span class="f-12 font-weight-normal text-lightest">Overdue</span>
+                                            <?=$overdueProjects;?><span
+                                                class="f-12 font-weight-normal text-lightest">Overdue</span>
                                         </p>
                                     </a>
                                 </div>
@@ -264,7 +272,13 @@
                             <div class="card bg-white border-0 b-shadow-4">
                                 <div
                                     class="card-header bg-white border-0 text-capitalize d-flex justify-content-between p-20">
-                                    <h4 class="f-18 f-w-500 mb-0">My Task</h4>
+                                    <h4 class="f-18 f-w-500 mb-0">
+                                        <?php if(isset($_SESSION['user_client_id'])) {
+                                            echo 'Tasks of My Projects';
+                                        } else {
+                                            echo 'My Tasks';
+                                        } ;?>
+                                    </h4>
 
 
 
@@ -285,13 +299,13 @@
                                             <?php foreach($tasks as $task):?>
                                             <tr>
                                                 <td class="pl-20">
-                                                    #<?=$task['id']?>
+                                                    #<?=$task['task_id']?>
                                                 </td>
                                                 <td>
                                                     <div class="media align-items-center">
                                                         <div class="media-body">
                                                             <h5 class="f-12 mb-1 text-darkest-grey"><a
-                                                                    href="<?=ROOT?>/taskdetails/<?=$task['id']?>"
+                                                                    href="<?=ROOT?>/task/<?=$task['task_id']?>"
                                                                     class="openRightModal"><?=$task['heading'];?></a>
                                                             </h5>
                                                             <p class="mb-0">
@@ -300,12 +314,12 @@
                                                     </div>
                                                 </td>
                                                 <td class="pr-20">
-                                                    <?php if($task['board_column_slug'] == 'inprogress') {?>
+                                                    <?php if($task['board_column_id'] == '3') {?>
                                                     <span class="badge badge-pill badge-primary">In Progress</span>
 
-                                                    <?php } elseif($task['board_column_slug'] == 'completed') {?>
+                                                    <?php } elseif($task['board_column_id'] == '2') {?>
                                                     <span class="badge badge-pill badge-success">Completed</span>
-                                                    <?php } elseif($task['board_column_slug'] == 'incomplete') {?>
+                                                    <?php } elseif($task['board_column_id'] == '1') {?>
                                                     <span class="badge badge-pill badge-warning">incomplete</span>
                                                     <?php } ?>
                                                 </td>

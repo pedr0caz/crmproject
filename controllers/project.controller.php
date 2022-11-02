@@ -32,7 +32,7 @@ if (!isset($_SESSION["user_id"])) {
                 $projects = $employeeModel->getProjectsOfEmployee($_SESSION["user_id"]);
                 $employees = $employeeModel->getEmployees();
             } elseif ($_SESSION["user_role"] == "3") {
-                $projects = $projectsModel->getProjectByClientID($_SESSION["user_id"]);
+                $projects = $projectsModel->getProjectByClientID($_SESSION["user_client_id"]);
             }
 
             $title = "Projects";
@@ -103,7 +103,7 @@ if (!isset($_SESSION["user_id"])) {
             } elseif ($_SESSION["user_role"] == "2") {
                 $project = $projectsModel->getProjectID($id, $_SESSION["user_id"]);
             } elseif ($_SESSION["user_role"] == "3") {
-                $project = $projectsModel->getProjectIDClient($_SESSION['user_id_client']);
+                $project = $projectsModel->getProjectIDClient($id, $_SESSION['user_client_id']);
             }
             if (empty($project)) {
                 http_response_code(404);

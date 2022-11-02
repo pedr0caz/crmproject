@@ -352,6 +352,11 @@ if (!isset($_SESSION["user_id"])) {
                     require("views/employee/editemployee.view.php");
                 }
             }
+        } else {
+            http_response_code(400);
+            $title = "Bad Request";
+            require("views/error400.view.php");
+            exit;
         }
     } else {
         header("Location: " . ROOT . "");
