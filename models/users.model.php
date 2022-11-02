@@ -101,11 +101,19 @@ class User extends Base
         u.name,
         u.email,
         u.image,
+        u.password,
+        u.mobile,
+        u.country_id,
         u.last_seen,
+        u.last_login,
+        u.status,
+        u.login,
         u.current_session,
         r.role_id,
+
         c.name AS role_name,
         cd.id AS client_id
+
     
     FROM users u
     LEFT JOIN role_user r ON u.id = r.user_id
@@ -123,7 +131,9 @@ class User extends Base
         $query = $this->db->prepare("
             SELECT
                 id,
-                nicename
+                nicename,
+                iso,
+                iso3
             FROM countries
         ");
         $query->execute();
@@ -271,5 +281,26 @@ class User extends Base
         ");
         $result = $query->execute([$id]);
         return $result;
+    }
+
+    public function updateUser($id, $name, $email, $mobile, $country_id, $image)
+    {
+        $query = $this->db->prepare("
+            UPDATE users
+            SET name = ?, email = ?, mobile = ?, country_id = ?, image = ?
+            WHERE id = ?
+        ");
+        $result = $query->execute([$name, $email, $mobile, $country_id, $image, $id]);
+        if ($result) {
+            return [
+                'status' => true,
+                'message' => 'Profile updated successfully'
+            ];
+        } else {
+            return [
+                'status' => false,
+                'message' => 'Profile update failed'
+            ];
+        }
     }
 }

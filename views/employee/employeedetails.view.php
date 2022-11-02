@@ -810,7 +810,7 @@
                         buttonsStyling: false
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            var url = "employee-docs/:id";
+                            var url = "";
                             url = url.replace(':id', id);
 
 

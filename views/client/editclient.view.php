@@ -114,9 +114,13 @@
                                             <select name="gender" class="form-control  selectpicker  height-35 f-14"
                                                 id="gender" required>
 
-                                                <option value="male">Male</option>
-                                                <option value="female">Female</option>
-                                                <option value="other">Other</option>
+
+                                                <option value="male" <?=$user['gender'] == 'male' ?: 'selected';?>>Male
+                                                </option>
+                                                <option value="female" <?=$user['gender'] == 'female' ?: 'selected';?>>Female
+                                                </option>
+                                                <option value="other" <?=$user['gender'] == 'other' ?: 'selected';?>>Other
+                                                </option>
                                             </select>
 
 
