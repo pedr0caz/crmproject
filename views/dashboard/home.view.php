@@ -10,7 +10,8 @@
         <div class="d-lg-flex d-md-flex d-block py-4">
             <!-- WELOCOME NAME START -->
             <div class="">
-                <h4 class=" mb-0 f-21 text-capitalize font-weight-bold">Welcome
+                <h4 class=" mb-0 f-21 text-capitalize font-weight-bold">
+                    <?=G_WELCOME?>
                     <?=$_SESSION['user_name'];?>
                 </h4>
             </div>
@@ -63,7 +64,8 @@
                                 <div class="d-flex flex-wrap justify-content-between">
                                     <span>
                                         <label class="f-12 text-dark-grey mb-12 text-capitalize" for="usr">
-                                            Open Tasks </label>
+                                            <?=DASHBOARD_OPEN_TASKS;?>
+                                        </label>
                                         <p class="mb-0 f-18 f-w-500">
                                             <a href="" class="text-dark">
                                                 <?=count($tasks);?>
@@ -72,7 +74,7 @@
                                     </span>
                                     <span>
                                         <label class="f-12 text-dark-grey mb-12 text-capitalize" for="usr">
-                                            Projects </label>
+                                            <?=G_PROJECTS?> </label>
                                         <p class="mb-0 f-18 f-w-500">
                                             <a href=""
                                                 class="text-dark"><?=count($projects);?></a>
@@ -94,7 +96,9 @@
                         <div class="card bg-white border-0 b-shadow-4 e-d-info mb-3">
                             <div
                                 class="card-header bg-white border-0 text-capitalize d-flex justify-content-between p-20">
-                                <h4 class="f-18 f-w-500 mb-0">Birthdays</h4>
+                                <h4 class="f-18 f-w-500 mb-0">
+                                    <?=DASHBOARD_BIRTHDAYS;?>
+                                </h4>
 
 
 
@@ -161,7 +165,9 @@
                         <div class="mb-3 b-shadow-4 rounded bg-white pb-2">
                             <!-- NOTICE HEADING START -->
                             <div class="d-flex align-items-center b-shadow-4 p-20">
-                                <p class="mb-0 f-18 f-w-500"> Notices </p>
+                                <p class="mb-0 f-18 f-w-500">
+                                    <?=G_NOTICES;?>
+                                </p>
                             </div>
                             <!-- NOTICE HEADING END -->
                             <!-- NOTICE DETAIL START -->
@@ -169,7 +175,9 @@
                                 data-menu-dropdown-timeout="500" id="empDashNotice" style="overflow: hidden;">
                                 <?php if(empty($notices)) : ?>
                                 <div class="p-20">
-                                    <p class="mb-0 f-14 f-w-500">No Notice Found</p>
+                                    <p class="mb-0 f-14 f-w-500">
+                                        <?=DASHBOARD_NO_NOTICES;?>
+                                    </p>
                                 </div>
                                 <?php endif; ?>
                                 <?php foreach($notices as $notice):
@@ -212,20 +220,23 @@
                         <div
                             class="bg-white p-20 rounded b-shadow-4 d-flex justify-content-between align-items-center mb-4 mb-md-0 mb-lg-0">
                             <div class="d-block text-capitalize">
-                                <h5 class="f-15 f-w-500 mb-20 text-darkest-grey">Tasks</h5>
+                                <h5 class="f-15 f-w-500 mb-20 text-darkest-grey">
+                                    <?=G_TASKS;?>
+                                </h5>
                                 <div class="d-flex">
                                     <a href="">
                                         <p class="mb-0 f-21 font-weight-bold text-blue d-grid mr-5">
 
                                             <?=$incompleteTasks;?>
                                             <span class="f-12 font-weight-normal text-lightest">
-                                                Incompleted </span>
+                                                <?=G_INCOMPLETE;?>
+                                            </span>
                                         </p>
                                     </a>
                                     <a href="">
                                         <p class="mb-0 f-21 font-weight-bold text-red d-grid">
                                             <?=$overdueTasks;?><span
-                                                class="f-12 font-weight-normal text-lightest">Overdue</span>
+                                                class="f-12 font-weight-normal text-lightest"><?=G_OVERDUE;?></span>
                                         </p>
                                     </a>
                                 </div>
@@ -241,19 +252,21 @@
                         <div
                             class="bg-white p-20 rounded b-shadow-4 d-flex justify-content-between align-items-center mt-3 mt-lg-0 mt-md-0">
                             <div class="d-block text-capitalize">
-                                <h5 class="f-15 f-w-500 mb-20 text-darkest-grey"> Projects </h5>
+                                <h5 class="f-15 f-w-500 mb-20 text-darkest-grey">
+                                    <?=G_PROJECTS;?>
+                                </h5>
                                 <div class="d-flex">
                                     <a href="">
                                         <p class="mb-0 f-21 font-weight-bold text-blue d-grid mr-5">
                                             <?=$incompleteProjects;?><span
-                                                class="f-12 font-weight-normal text-lightest">In Progress</span>
+                                                class="f-12 font-weight-normal text-lightest"><?=G_INPROGRESS;?></span>
                                         </p>
                                     </a>
 
                                     <a href="">
                                         <p class="mb-0 f-21 font-weight-bold text-red d-grid">
                                             <?=$overdueProjects;?><span
-                                                class="f-12 font-weight-normal text-lightest">Overdue</span>
+                                                class="f-12 font-weight-normal text-lightest"><?=G_OVERDUE;?></span>
                                         </p>
                                     </a>
                                 </div>
@@ -274,9 +287,9 @@
                                     class="card-header bg-white border-0 text-capitalize d-flex justify-content-between p-20">
                                     <h4 class="f-18 f-w-500 mb-0">
                                         <?php if(isset($_SESSION['user_client_id'])) {
-                                            echo 'Tasks of My Projects';
+                                            echo DASHBOARD_MY_TASKS_CLIENT;
                                         } else {
-                                            echo 'My Tasks';
+                                            echo DASHBOARD_MY_TASKS;
                                         } ;?>
                                     </h4>
 
@@ -288,10 +301,13 @@
                                     <table id="example" class="table">
                                         <thead class="">
                                             <tr>
-                                                <th>Task#</th>
-                                                <th>Task</th>
-                                                <th>Status</th>
-                                                <th class="text-right pr-20">Due Date</th>
+                                                <th><?=G_TASK?>#</th>
+                                                <th><?=G_TASK?></th>
+                                                <th><?=G_STATUS?>
+                                                </th>
+                                                <th class="text-right pr-20">
+                                                    <?=G_DUE_DATE?>
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -315,19 +331,22 @@
                                                 </td>
                                                 <td class="pr-20">
                                                     <?php if($task['board_column_id'] == '3') {?>
-                                                    <span class="badge badge-pill badge-primary">In Progress</span>
+                                                    <span
+                                                        class="badge badge-pill badge-primary"><?=G_INPROGRESS?></span>
 
                                                     <?php } elseif($task['board_column_id'] == '2') {?>
-                                                    <span class="badge badge-pill badge-success">Completed</span>
+                                                    <span
+                                                        class="badge badge-pill badge-success"><?=G_COMPLETED?></span>
                                                     <?php } elseif($task['board_column_id'] == '1') {?>
-                                                    <span class="badge badge-pill badge-warning">incomplete</span>
+                                                    <span
+                                                        class="badge badge-pill badge-warning"><?=G_INCOMPLETE?></span>
                                                     <?php } ?>
                                                 </td>
                                                 <td class="pr-20" align="right">
                                                     <?php if($task['due_date']) {
                                                         $diff = date_diff(date_create('now'), date_create($task['due_date']));
                                                         if($diff->format('%R%a') < 0) {
-                                                            echo '<span class="badge badge-pill badge-danger">Overdue</span>';
+                                                            echo '<span class="badge badge-pill badge-danger">'.G_OVERDUE.'</span>';
                                                         } else {
                                                             echo '<span class="badge badge-pill badge-primary">'.$diff->format('%a days left').'</span>';
                                                         }
@@ -342,7 +361,9 @@
                                                         class="align-items-center d-flex flex-column text-lightest p-20 w-100">
                                                         <i class="bi bi-exclamation-circle f-50"></i>
                                                         <div class="f-15 mt-4">
-                                                            - No record found. -
+                                                            -
+                                                            <?=G_NO_RECORDS_FOUND;?>.
+                                                            -
                                                         </div>
                                                     </div>
                                                 </td>

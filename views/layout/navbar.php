@@ -62,18 +62,18 @@
                         echo 'active';
                     }?>" title="Dashboard">
                         <i class="side-icon bi bi-house"></i>
-                        <span class="pl-3">Dashboard</span>
+                        <span
+                            class="pl-3"><?=MENU_DASHBOARD;?></span>
                     </a>
                     <div class="accordionItemContent pb-2 a">
                         <!-- COLLAPSE - INFORMATION -->
                         <a class="f-14 text-lightest"
                             href="<?=ROOT?>/adminhome"
-                            title="Admin Dashboard">Admin Dashboard</a>
+                            title="Admin Dashboard"><?=MENU_DASHBOARD;?></a>
                         <!-- COLLAPSE - INFORMATION -->
                         <a class="f-14 text-lightest"
                             href="<?=ROOT?>/home"
-                            title="Private Dashboard">Private
-                            Dashboard</a>
+                            title="Private Dashboard"><?=MENU_PRIVATE_DASHBOARD;?></a>
                     </div>
                 </li>
                 <?php if($_SESSION['user_role'] == 1): ?>
@@ -83,7 +83,7 @@
                     }?>" href="<?=ROOT?>/client"
                         title="Clients">
                         <i class="side-icon bi bi-people"></i>
-                        <span class="pl-3">Clients</span>
+                        <span class="pl-3"><?=MENU_CLIENTS;?></span>
                     </a>
                 </li>
                 <li class="accordionItem closeIt">
@@ -92,7 +92,8 @@
                     }?>"
                         href="<?=ROOT;?>/employee" title="Employees">
                         <i class="side-icon bi bi-person"></i>
-                        <span class="pl-3">Employees</span>
+                        <span
+                            class="pl-3"><?=MENU_EMPLOYEES;?></span>
                     </a>
                 </li>
                 <?php endif; ?>
@@ -102,17 +103,17 @@
                         echo 'active';
                     }?>" title="Work">
                         <i class="side-icon bi bi-briefcase"></i>
-                        <span class="pl-3">Work</span>
+                        <span class="pl-3"><?=MENU_WORK;?></span>
                     </a>
                     <div class="accordionItemContent pb-2">
                         <!-- COLLAPSE - INFORMATION -->
                         <a class="f-14 text-lightest"
                             href="<?=ROOT?>/project"
-                            title="Projects">Projects</a>
+                            title="Projects"><?=MENU_PROJECTS;?></a>
                         <!-- COLLAPSE - INFORMATION -->
                         <a class="f-14 text-lightest"
                             href="<?=ROOT?>/task"
-                            title="Tasks">Tasks</a>
+                            title="Tasks"><?=MENU_TASKS;?></a>
                         <!-- COLLAPSE - INFORMATION -->
                     </div>
                 </li>
@@ -124,7 +125,7 @@
                     }?>" href="<?=ROOT?>/event"
                         title="Events">
                         <i class="side-icon bi bi-calendar"></i>
-                        <span class="pl-3">Events</span>
+                        <span class="pl-3"><?=MENU_EVENTS;?></span>
                     </a>
                 </li>
                 <!-- NAV ITEM - MESSAGES -->
@@ -134,7 +135,7 @@
                     }?>"
                         href="<?=ROOT?>/messages" title="Messages">
                         <i class="side-icon bi bi-chat"></i>
-                        <span class="pl-3">Messages</span>
+                        <span class="pl-3"><?=MENU_MESSAGES;?></span>
                     </a>
                 </li>
                 <!-- NAV ITEM - GDPR -->
@@ -145,18 +146,19 @@
                     }?>" href="<?=ROOT?>/notice"
                         title="Notice Board">
                         <i class="side-icon bi bi-clipboard"></i>
-                        <span class="pl-3">Notice Board</span>
+                        <span
+                            class="pl-3"><?=MENU_NOTICE_BOARD;?></span>
                     </a>
                 </li>
 
                 <li class="accordionItem closeIt">
-                    <a class="nav-item text-lightest f-15 sidebar-text-color  <?php if (str_contains($controller, 'notice')) {
+                    <a class="nav-item text-lightest f-15 sidebar-text-color  <?php if (str_contains($controller, 'profile')) {
                         echo 'active';
                     }?>"
                         href="<?=ROOT?>/profile"
                         title="Notice Board">
                         <i class="side-icon bi bi-person-badge-fill"></i>
-                        <span class="pl-3">Profile</span>
+                        <span class="pl-3"><?=MENU_PROFILE;?></span>
                     </a>
                 </li>
             </ul>

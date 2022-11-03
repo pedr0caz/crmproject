@@ -37,9 +37,11 @@
                  </li>';
             }
         } elseif ($id === 'getMessages') {
-            $chats= $chat->getChatAjax($_SESSION["user_id"], $_POST["id_2"]);
+            $chats = $chat->getChatAjax($_SESSION["user_id"], $_POST["id_2"]);
+  
             if ($chats != null) {
-                return '<p class="ltext border rounded p-2 mb-1">'.$chats['message'].'<small class="d-block">'.$chat['created_at'].'</small></p>';
+                header("Content-Type: application/json");
+                echo json_encode($chats);
             }
         } elseif ($id === 'sendMessage') {
             $chat->insertMessage($_SESSION["user_id"], $_POST["to_id"], $_POST["message"]);
@@ -50,7 +52,7 @@
       <small class="d-block">'.$time.'</small>
   </p>';
         } else {
-            $title = "Add Project";
+            $title = G_MESSENGER;
             require("views/message/messages.view.php");
         }
     }

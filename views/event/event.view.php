@@ -5,9 +5,12 @@
         <!-- Add Task Export Buttons Start -->
         <div class="d-flex my-3">
             <div id="table-actions" class="flex-grow-1 align-items-center">
-                <i class="bi bi-circle-fill m-2" style="color: #3366ff;"></i> Project
-                <i class="bi bi-circle-fill m-2" style="color: #FF6600;"></i> Task
-                <i class="bi bi-circle-fill m-2" style="color: #FF0000;"></i> Birthday
+                <i class="bi bi-circle-fill m-2" style="color: #3366ff;"></i>
+                <?=G_PROJECT;?>
+                <i class="bi bi-circle-fill m-2" style="color: #FF6600;"></i>
+                <?=G_TASK;?>
+                <i class="bi bi-circle-fill m-2" style="color: #FF0000;"></i>
+                <?=G_BIRTHDAY;?>
             </div>
         </div>
 
@@ -29,7 +32,7 @@
 <script>
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
-        locale: 'en',
+        locale: '<?=LANG_ISO;?>',
         timeZone: 'Europe/Lisbon',
         headerToolbar: {
             left: 'prev,next today',

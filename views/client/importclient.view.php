@@ -7,13 +7,15 @@
                 <form method="POST" id="import-client-data-form" autocomplete="off">
                     <div class="add-client bg-white rounded">
                         <h4 class="mb-0 p-20 f-21 font-weight-normal text-capitalize border-bottom-grey">
-                            Import Client
+                            <?=CLIENT_IMPORT_UPLOAD;?>
                         </h4>
                         <div class="row py-20">
                             <div class="col-md-12">
                                 <div class="form-group my-3">
-                                    <label class="f-14 text-dark-grey mb-12" data-label="" for="client_import">Upload
-                                        File (file must be a file of type: xls, xlsx, csv)
+                                    <label class="f-14 text-dark-grey mb-12" data-label=""
+                                        for="client_import"><?=G_UPLOAD_FILE;?>
+                                        (<?=CLIENT_IMPORT_FILE_TYPE;?>:
+                                        xls, xlsx, csv)
                                     </label>
 
                                     <input type="file" id="input-file-now" data-allowed-file-extensions="xls xlsx csv"
@@ -22,8 +24,8 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group my-3 mr-0 mr-lg-12">
-                                    <label class="f-14 text-dark-grey mb-12" data-label="" for="heading">File Contains
-                                        Headings Row
+                                    <label class="f-14 text-dark-grey mb-12" data-label=""
+                                        for="heading"><?=CLIENT_IMPORT_FILE_HEADING_ROW;?>
                                     </label>
                                     <div class="custom-control custom-switch">
                                         <input type="checkbox" name="heading" class="custom-control-input" id="heading"
@@ -35,12 +37,12 @@
                         </div>
                         <div class="w-100 border-top-grey d-block d-lg-flex d-md-flex justify-content-start px-4 py-3">
                             <button type="button" class="btn-primary rounded f-14 p-2 mr-3" id="import-client-form">
-                                <i class="bi bi-arrow-90deg-right"></i> Import
-                                Upload and Move to Next Step
+                                <i
+                                    class="bi bi-arrow-90deg-right"></i><?=CLIENT_IMPORT_BUTTON_IMPORT;?>
                             </button>
 
                             <a href="" class="btn-cancel rounded f-14 p-2 border-0">
-                                Back
+                                <?=CLIENT_IMPORT_BACK;?>
                             </a>
                         </div>
                     </div>
@@ -49,7 +51,8 @@
         </div>
         <div class="bg-white rounded p-2" id="afterSubmitting" style="display:none">
             <div class="alert alert-warning" role="alert" id="process-warning">
-                Do not close or refresh this page until the import is complete </div>
+                <?=CLIENT_IMPORT_INFO;?>
+            </div>
             <div class="alert alert-success" role="alert" id="importSuccess" style="display:none">
             </div>
             <div class="alert alert-success" role="alert" id="progressSuccess" style="display:none">
@@ -58,7 +61,9 @@
             </div>
             <div id="progressError" style="display:none"></div>
             <div id="progress">
-                <p>Import in progress... <strong id="progressAmount">Please wait...</strong></p>
+                <p><?=CLIENT_IMPORT_PROGRESS;?><strong
+                        id="progressAmount"><?=CLIENT_IMPORT_PLEASEWAIT;?>.</strong>
+                </p>
 
             </div>
 

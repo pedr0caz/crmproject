@@ -12,7 +12,7 @@
 
                     <div class="add-client bg-white rounded">
                         <h4 class="mb-0 p-20 f-21 font-weight-normal text-capitalize border-bottom-grey">
-                            Account Details
+                            <?=CLIENTS_ADD;?>
                         </h4>
                         <div class="row p-20">
                             <div class="col-lg-9 col-xl-10">
@@ -20,8 +20,8 @@
 
                                     <div class="col-md-4">
                                         <div class="form-group my-3">
-                                            <label class="f-14 text-dark-grey mb-12" data-label="true" for="name">Client
-                                                Name
+                                            <label class="f-14 text-dark-grey mb-12" data-label="true" for="name">
+                                                <?=G_NAME;?>
                                                 <sup class="f-14 mr-1">*</sup>
                                             </label>
                                             <input type="text" class="form-control height-35 f-14"
@@ -32,10 +32,10 @@
                                     <div class="col-md-4">
                                         <div class="form-group my-3">
                                             <label class="f-14 text-dark-grey mb-12" data-label="" for="email">
-                                                Email
+                                                <?=G_EMAIL;?>
                                                 <i class="bi bi-question-circle-fill f-14 text-dark-grey ml-1"
                                                     data-toggle="tooltip" data-placement="top"
-                                                    title="Email address of the client"></i>
+                                                    title="<?=CLIENT_EMAIL?>"></i>
                                             </label>
                                             <input type="email" autocomplete="off" class="form-control height-35 f-14"
                                                 placeholder="e.g. johndoe@example.com" value="" name="email" id="email"
@@ -44,7 +44,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <label class="f-14 text-dark-grey mb-12 mt-3" data-label="" for="password">
-                                            Password
+                                            <?=G_PASSWORD;?>
                                             <i class="bi bi-question-circle-fill f-14 text-dark-grey ml-1"
                                                 data-toggle="tooltip" data-placement="top" title="Field required"></i>
                                         </label>
@@ -62,18 +62,19 @@
                                             </div>
                                             <div class="input-group-append">
                                                 <button id="random_password" type="button" data-toggle="tooltip"
-                                                    data-original-title="Generate Random Password"
+                                                    data-original-title="<?=G_GENERATE_PASSWORD;?>"
                                                     class="btn btn-outline-secondary border-grey height-35">
                                                     <i class="bi bi-shuffle font-weight-bolder"></i>
                                                     <!-- <i class="fa fa-random"></i> Font Awesome fontawesome.com -->
                                                 </button>
                                             </div>
                                         </div>
-                                        <small class="form-text text-muted">Must have at least 8 characters</small>
+                                        <small
+                                            class="form-text text-muted"><?=G_PASSWORD_LENGTH;?></small>
                                     </div>
                                     <div class="col-md-4">
                                         <label class="f-14 text-dark-grey mb-12 mt-3" data-label=""
-                                            for="country">Country
+                                            for="country"><?=G_COUNTRY;?>
                                             <sup class="f-14 mr-1">*</sup>
                                         </label>
                                         <div class="form-group mb-0">
@@ -92,7 +93,8 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group my-3">
-                                            <label class="f-14 text-dark-grey mb-12" data-label="" for="mobile">Mobile
+                                            <label class="f-14 text-dark-grey mb-12" data-label=""
+                                                for="mobile"><?=G_MOBILE;?>
                                             </label>
                                             <input type="tel" class="form-control height-35 f-14"
                                                 placeholder="e.g. 987654321" value="" name="mobile" id="mobile"
@@ -100,7 +102,8 @@
                                         </div>
                                     </div>
                                     <div class="col-md-3">
-                                        <label class="f-14 text-dark-grey mb-12 mt-3" data-label="" for="gender">Gender
+                                        <label class="f-14 text-dark-grey mb-12 mt-3" data-label=""
+                                            for="gender"><?=G_GENDER;?>
                                             <sup class="f-14 mr-1">*</sup>
                                         </label>
                                         <div class="input-group">
@@ -108,9 +111,15 @@
                                             <select name="gender" class="form-control  selectpicker  height-35 f-14"
                                                 id="gender" required>
 
-                                                <option value="male">Male</option>
-                                                <option value="female">Female</option>
-                                                <option value="other">Other</option>
+                                                <option value="male">
+                                                    <?=G_GENDER_MALE;?>
+                                                </option>
+                                                <option value="female">
+                                                    <?=G_GENDER_FEMALE;?>
+                                                </option>
+                                                <option value="other">
+                                                    <?=G_GENDER_OTHER;?>
+                                                </option>
                                             </select>
 
 
@@ -123,7 +132,7 @@
                             <div class="col-lg-3 col-xl-2">
                                 <div class="form-group my-3 mr-0 mr-lg-2 mr-md-2 cropper">
                                     <label class="f-14 text-dark-grey mb-12" data-label="" for="image">
-                                        Profile Picture
+                                        <?=G_PROFILE_PICTURE;?>
                                         <i class="bi bi-question-circle-fill f-14 text-dark-grey ml-1"
                                             data-toggle="tooltip" data-placement="top"
                                             title="Profile picture of the client"></i>
@@ -135,8 +144,8 @@
                             </div>
 
                             <div class="col-md-3">
-                                <label class="f-14 text-dark-grey mb-12 mt-3" data-label="" for="category">Client
-                                    Category
+                                <label class="f-14 text-dark-grey mb-12 mt-3" data-label=""
+                                    for="category"><?=CLIENT_CATEGORY;?>
                                 </label>
                                 <div class="input-group">
 
@@ -155,7 +164,7 @@
                                     <div class="input-group-append">
                                         <button id="designation-setting-add" type="button"
                                             class="btn btn-outline-secondary border-grey" data-toggle="modal"
-                                            data-target="#myModal2">Add</button>
+                                            data-target="#myModal2"><?=G_ADD;?></button>
                                     </div>
                                 </div>
                             </div>
@@ -163,21 +172,21 @@
                         </div>
                         <div class="col-md-3 ml-2">
                             <div class="form-group my-3">
-                                <label class="f-14 text-dark-grey mb-12 w-100" for="usr">Can user login to
-                                    app?</label>
+                                <label class="f-14 text-dark-grey mb-12 w-100"
+                                    for="usr"><?=G_USER_LOGIN_ALLOW;?></label>
                                 <div class="d-flex">
                                     <div class="form-check-inline custom-control custom-radio mt-2 mr-3">
                                         <input type="radio" value="enable" class="custom-control-input" id="login-yes"
                                             name="login" autocomplete="off" data-np-invisible="1" data-np-checked="1">
                                         <label class="custom-control-label pt-1 cursor-pointer"
-                                            for="login-yes">Yes</label>
+                                            for="login-yes"><?=G_YES;?></label>
                                     </div>
                                     <div class="form-check-inline custom-control custom-radio mt-2 mr-3">
                                         <input type="radio" value="disable" class="custom-control-input" id="login-no"
                                             name="login" checked="" autocomplete="off" data-np-invisible="1"
                                             data-np-checked="1">
                                         <label class="custom-control-label pt-1 cursor-pointer"
-                                            for="login-no">No</label>
+                                            for="login-no"><?=G_NO;?></label>
                                     </div>
                                 </div>
                             </div>
@@ -186,13 +195,13 @@
 
 
                         <h4 class="mb-0 p-20 f-21 font-weight-normal text-capitalize border-top-grey">
-                            Company Details
+                            <?=CLIENT_COMPANY_DETAILS;?>
                         </h4>
                         <div class="row p-20">
                             <div class="col-md-4">
                                 <div class="form-group my-3 mb-3 mt-3 mt-lg-0 mt-md-0">
-                                    <label class="f-14 text-dark-grey mb-12" data-label="" for="company_name">Company
-                                        Name
+                                    <label class="f-14 text-dark-grey mb-12" data-label=""
+                                        for="company_name"><?=CLIENT_COMPANY_NAME;?>
                                     </label>
                                     <input type="text" class="form-control height-35 f-14"
                                         placeholder="e.g. Acme Corporation" value="" name="company_name"
@@ -201,8 +210,8 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group my-3 mb-3 mt-3 mt-lg-0 mt-md-0">
-                                    <label class="f-14 text-dark-grey mb-12" data-label="" for="website">Official
-                                        Website
+                                    <label class="f-14 text-dark-grey mb-12" data-label=""
+                                        for="website"><?=G_WEBSITE;?>
                                     </label>
                                     <input type="text" class="form-control height-35 f-14"
                                         placeholder="e.g. https://www.spacex.com/" value="" name="website" id="website"
@@ -211,8 +220,8 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group my-3 mb-3 mt-3 mt-lg-0 mt-md-0">
-                                    <label class="f-14 text-dark-grey mb-12" data-label="" for="gst_number">GST/VAT
-                                        Number
+                                    <label class="f-14 text-dark-grey mb-12" data-label=""
+                                        for="gst_number"><?=CLIENT_COMPANY_VAT;?>
                                     </label>
                                     <input type="text" class="form-control height-35 f-14"
                                         placeholder="e.g. 18AABCU960XXXXX" value="" name="gst_number" id="gst_number"
@@ -221,8 +230,8 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group my-3">
-                                    <label class="f-14 text-dark-grey mb-12" data-label="" for="office">Office Phone
-                                        Number
+                                    <label class="f-14 text-dark-grey mb-12" data-label=""
+                                        for="office"><?=CLIENT_OFFICE_NUMBER;?>
                                     </label>
                                     <input type="text" class="form-control height-35 f-14" placeholder="e.g. +19876543"
                                         value="" name="office" id="office" autocomplete="off" data-np-checked="1">
@@ -230,7 +239,8 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group my-3">
-                                    <label class="f-14 text-dark-grey mb-12" data-label="" for="city">City
+                                    <label class="f-14 text-dark-grey mb-12" data-label=""
+                                        for="city"><?=G_CITY;?>
                                     </label>
                                     <input type="text" class="form-control height-35 f-14" placeholder="e.g. Hawthorne"
                                         value="" name="city" id="city" autocomplete="off" data-np-checked="1">
@@ -238,7 +248,8 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group my-3">
-                                    <label class="f-14 text-dark-grey mb-12" data-label="" for="state">State
+                                    <label class="f-14 text-dark-grey mb-12" data-label=""
+                                        for="state"><?=G_STATE;?>
                                     </label>
                                     <input type="text" class="form-control height-35 f-14" placeholder="e.g. California"
                                         value="" name="state" id="state" autocomplete="off" data-np-checked="1">
@@ -246,7 +257,8 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group my-3">
-                                    <label class="f-14 text-dark-grey mb-12" data-label="" for="postalCode">Postal code
+                                    <label class="f-14 text-dark-grey mb-12" data-label=""
+                                        for="postalCode"><?=G_ZIP;?>
                                     </label>
                                     <input type="text" class="form-control height-35 f-14" placeholder="e.g. 90250"
                                         value="" name="postal_code" id="postalCode" autocomplete="off"
@@ -256,8 +268,8 @@
                             <div class="col-md-6">
                                 <div class="form-group my-3">
                                     <div class="form-group my-3 mr-0 mr-lg-2 mr-md-2">
-                                        <label class="f-14 text-dark-grey mb-12" data-label="" for="address">Company
-                                            Address
+                                        <label class="f-14 text-dark-grey mb-12" data-label=""
+                                            for="address"><?=CLIENT_COMPANY_ADDRESS;?>
                                         </label>
                                         <textarea class="form-control f-14 pt-2" rows="3" placeholder="e.g. Rocket Road"
                                             name="address" id="address"></textarea>
@@ -268,7 +280,7 @@
                                 <div class="form-group my-3">
                                     <div class="form-group my-3 mr-0 mr-lg-2 mr-md-2">
                                         <label class="f-14 text-dark-grey mb-12" data-label=""
-                                            for="shipping_address">Shipping Address
+                                            for="shipping_address"><?=CLIENT_COMPANY_SHIPPING_ADDRESS;?>
                                         </label>
                                         <textarea class="form-control f-14 pt-2" rows="3" placeholder="e.g. Rocket Road"
                                             name="shipping_address" id="shipping_address"></textarea>
@@ -277,7 +289,8 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group my-3">
-                                    <label class="f-14 text-dark-grey mb-12 my-3" data-label="" for="note">Note
+                                    <label class="f-14 text-dark-grey mb-12 my-3" data-label=""
+                                        for="note"><?=G_NOTE;?>
                                     </label>
 
 
@@ -289,11 +302,11 @@
                             <button type="button" class="btn-primary rounded f-14 p-2 mr-3" id="save-client-form">
                                 <i class="bi bi-save mr-1"></i>
 
-                                Save
+                                <?=G_SAVE;?>
                             </button>
 
                             <a href="" class="btn-cancel rounded f-14 p-2 border-0">
-                                Cancel
+                                <?=G_CANCEL;?>
                             </a>
                         </div>
                     </div>
@@ -406,7 +419,9 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modelHeading">Client Category</h5>
+                <h5 class="modal-title" id="modelHeading">
+                    <?=CLIENT_CATEGORY;?>
+                </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">×</span></button>
             </div>
@@ -415,8 +430,9 @@
                     <thead class="thead-light">
                         <tr>
                             <th>#</th>
-                            <th>Category Name</th>
-                            <th class="text-right">Action</th>
+                            <th><?=G_CATEGORY_NAME;?></th>
+                            <th class="text-right"><?=G_ACTION;?>
+                            </th>
                         </tr>
                     </thead>
                     <tbody id="category_model">
@@ -433,7 +449,7 @@
                                 <button type="button" class="btn-secondary rounded f-14 p-2 delete-category"
                                     data-row-id="<?=$categories['id'];?>">
                                     <i class="bi bi-trash mr-1"></i>
-                                    Delete
+                                    <?=G_DELETE;?>
                                 </button>
                             </td>
                         </tr>
@@ -446,8 +462,8 @@
                     <div class="row border-top-grey ">
                         <div class="col-sm-12">
                             <div class="form-group my-3">
-                                <label class="f-14 text-dark-grey mb-12" data-label="true" for="category_name">Category
-                                    Name
+                                <label class="f-14 text-dark-grey mb-12" data-label="true"
+                                    for="category_name"><?=G_CATEGORY_NAME;?>
                                     <sup class="f-14 mr-1">*</sup>
                                 </label>
                                 <input type="text" class="form-control height-35 f-14"
@@ -460,12 +476,12 @@
             </div>
             <div class="modal-footer">
                 <a href="javascript:;" class="btn-cancel rounded f-14 p-2 border-0 mr-3" data-dismiss="modal">
-                    Close
+                    <?=G_CANCEL;?>
                 </a>
                 <button type="button" class="btn-primary rounded f-14 p-2" id="save-category">
                     <i class="bi bi-save mr-1"></i>
 
-                    Save
+                    <?=G_SAVE;?>
                 </button>
 
             </div>
@@ -475,13 +491,13 @@
 
                     var catId = $(this).data('row-id');
                     Swal.fire({
-                        title: "Are you sure?",
-                        text: "You will not be able to recover the deleted record!",
+                        title: "<?=SWAL_TITLE_DELETE;?>",
+                        text: "<?=SWAL_TEXT_DELETE;?>",
                         icon: 'warning',
                         showCancelButton: true,
                         focusConfirm: false,
-                        confirmButtonText: "Yes, delete it!",
-                        cancelButtonText: "Cancel",
+                        confirmButtonText: "<?=SWAL_CONFIRM_DELETE;?>",
+                        cancelButtonText: "<?=G_CANCEL;?>",
                         customClass: {
                             confirmButton: 'btn btn-primary mr-3',
                             cancelButton: 'btn btn-secondary'

@@ -7,6 +7,7 @@
         href="<?=ROOT?>/css/simple-line-icons.css">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="<?=ROOT?>/css/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css">
     <link rel="stylesheet" href="https://jeremyfagis.github.io/dropify/dist/css/dropify.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.css">
     <!-- Template CSS -->
@@ -52,29 +53,19 @@
                 <!-- START TIMER END -->
                 <!-- ADD START -->
                 <li>
-                    <div class="add_box dropdown">
-                        <a class="d-block dropdown-toggle header-icon-box" type="link" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                            <i class="bi bi-plus-circle f-w-500 mr-2 f-20 text-dark-grey"></i>
-                            <!-- <i class="fa fa-plus-circle f-16 text-dark-grey"></i> Font Awesome fontawesome.com -->
-                        </a>
-                        <!-- DROPDOWN - INFORMATION -->
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink" tabindex="0">
-                            <a class="dropdown-item f-14 text-dark openRightModal" href="">
-                                <i class="bi bi-plus-lg f-w-500 mr-2 f-11"></i>
-                                Add Project </a>
-                            <a class="dropdown-item f-14 text-dark openRightModal" href="">
-                                <i class="bi bi-plus-lg f-w-500 mr-2 f-11"></i>
-                                Add Task </a>
-                            <a class="dropdown-item f-14 text-dark openRightModal" href="">
-                                <i class="bi bi-plus-lg f-w-500 mr-2 f-11"></i>
-                                Add Client </a>
-                            <a class="dropdown-item f-14 text-dark openRightModal" href="e">
-                                <i class="bi bi-plus-lg f-w-500 mr-2 f-11"></i>
-                                Add Employee </a>
-                        </div>
+                    <div class="mr-2">
+                        <select class="selectpicker" id="flag" data-width="fit">
+                            <option data-width="fit" <?=$_SESSION["lang"] == "en" ? 'selected' : '';?>
+                                data-content='<span class="flag-icon flag-icon-gb"></span>'>
+                            </option>
+                            <option data-width="fit" <?=$_SESSION["lang"] == "pt" ? 'selected' : '';?>data-content='<span
+                                    class="flag-icon flag-icon-pt"></span>'>
+                            </option>
+                        </select>
                     </div>
                 </li>
+
+
 
                 <!-- <li>
                     <div class="notification_box dropdown">
@@ -99,7 +90,7 @@
                 <!-- NOTIFICATIONS END -->
                 <!-- LOGOUT START -->
                 <li>
-                    <div class="logout_box">
+                    <div class="logout_box" style="    margin-top: 5px;">
                         <a class="d-block header-icon-box"
                             href="<?=ROOT?>/logout">
                             <i class="bi bi-power f-w-500 text-dark-grey f-20"></i>

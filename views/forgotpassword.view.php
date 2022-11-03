@@ -6,12 +6,15 @@
                 <div class="login_box mx-auto rounded bg-white text-center">
                     <?php if(isset($id) && $id == null): ?>
                     <form method="POST" id="save-employee-data-form">
-                        <h3 class="text-capitalize mb-4 f-w-500">Recover Password</h3>
+                        <h3 class="text-capitalize mb-4 f-w-500">
+                            <?=FORGOT_RECOVER_PASSWORD;?>
+                        </h3>
 
                         <div class="alert alert-success m-t-10 d-none" id="success-msg"></div>
 
                         <div class="form-group text-left">
-                            <label for="email" class="f-w-500">Email Address</label>
+                            <label for="email"
+                                class="f-w-500"><?=G_EMAIL;?></label>
                             <input type="email" name="email" class="form-control height-50 f-15 light_text" autofocus=""
                                 placeholder="e.g. admin@example.com" id="email" autocomplete="off" required>
                         </div>
@@ -25,8 +28,7 @@
                                 <div class=" form-group forgot_pswd mt-2 text-center">
                                     <a href="javascript:void(0)"
                                         onclick="document.getElementById('captchaimg').src='<?=ROOT?>/forgotpassword/captcha?'+Math.random();document.getElementById('captcha').focus();"
-                                        id=" change-image">Not readable?
-                                        Change text.</a>
+                                        id=" change-image"><?=CAPTCHA_NOTREADBLE;?></a>
                                 </div>
                             </div>
                             <div class="col-6">
@@ -39,7 +41,8 @@
 
                         <button type="submit" id="submit-login"
                             class="btn-primary f-w-500 rounded w-100 height-50 f-18">
-                            Send Reset Link <i class="bi bi-arrow-right-circle-fill"></i>
+                            <?=FORGOT_SEND_LINK;?> <i
+                                class="bi bi-arrow-right-circle-fill"></i>
                         </button>
                         <div class="forgot_pswd mt-3">
                             <a href="<?=ROOT?>/login"
@@ -49,12 +52,15 @@
                     <?php endif; ?>
                     <?php if(isset($id) && $id == "reset" && isset($_GET['token']) && mb_strlen($_GET['token']) == 32): ?>
                     <form method="POST" id="edit-pw">
-                        <h3 class="text-capitalize mb-4 f-w-500">Recover Password</h3>
+                        <h3 class="text-capitalize mb-4 f-w-500">
+                            <?=FORGOT_PASSWORD;?>
+                        </h3>
 
                         <div class="alert alert-success m-t-10 d-none" id="success-msg"></div>
 
                         <div class="form-group text-left">
-                            <label for="password" class="f-w-500">Password</label>
+                            <label for="password"
+                                class="f-w-500"><?=G_PASSWORD;?></label>
                             <div class="input-group">
                                 <input type="password" name="password" id="password" class="form-control height-35 f-14"
                                     autocomplete="off" required>
@@ -73,7 +79,8 @@
                                     </button>
                                 </div>
                             </div>
-                            <small class="form-text text-muted">Must have at least 8 characters</small>
+                            <small
+                                class="form-text text-muted"><?=G_PASSWORD_LENGTH;?></small>
 
                         </div>
 
@@ -86,8 +93,7 @@
                                 <div class=" form-group forgot_pswd mt-2 text-center">
                                     <a href="javascript:void(0)"
                                         onclick="document.getElementById('captchaimg2').src='<?=ROOT?>/forgotpassword/captcha?'+Math.random();document.getElementById('captcha2').focus();"
-                                        id=" change-image">Not readable?
-                                        Change text.</a>
+                                        id=" change-image"><?=CAPTCHA_NOTREADBLE;?></a>
                                 </div>
                             </div>
                             <div class="col-6">
@@ -100,7 +106,8 @@
 
                         <button type="submit" id="submit-password"
                             class="btn-primary f-w-500 rounded w-100 height-50 f-18">
-                            Reset Password <i class="bi bi-arrow-right-circle-fill"></i>
+                            <?=FORGOT_RECOVER_PASSWORD;?><i
+                                class="bi bi-arrow-right-circle-fill"></i>
                         </button>
                         <div class="forgot_pswd mt-3">
                             <a href="<?=ROOT?>/login"

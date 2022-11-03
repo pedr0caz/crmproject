@@ -13,13 +13,15 @@
                     class="btn-primary rounded f-14 p-2 mr-3 openRightModal float-left mb-2 mb-lg-0 mb-md-0">
                     <i class="bi bi-plus-circle" style="font-size:16px;"></i>
                     <!-- <i class="fa fa-plus mr-1"></i> Font Awesome fontawesome.com -->
-                    Add Client
+                    <?=G_ADD;?>
+                    <?=G_CLIENT;?>
+
                 </a>
                 <a href="<?=ROOT;?>/client/import"
                     class="btn-secondary rounded f-14 p-2 mr-3 float-left mb-2 mb-lg-0 mb-md-0">
                     <i class="bi bi-upload" style="font-size:16px;"></i>
 
-                    Import
+                    <?=G_IMPORT;?>
                 </a>
 
             </div>
@@ -38,11 +40,11 @@
                                 <tr role="row">
 
                                     <th>Id</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Status</th>
-                                    <th>Created</th>
-                                    <th>Action</th>
+                                    <th><?=G_NAME;?></th>
+                                    <th><?=G_EMAIL;?></th>
+                                    <th><?=G_STATUS;?></th>
+                                    <th><?=G_CREATED;?></th>
+                                    <th><?=G_ACTION;?></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -80,9 +82,9 @@
                                     <td><?=$client['email'];?>
                                     </td>
                                     <td> <?php if ($client['status'] == "active") {
-                                        echo '<span class="badge badge-success">Active</span>';
+                                        echo '<span class="badge badge-success">'.G_ACTIVE.'</span>';
                                     } else {
-                                        echo '<span class="badge badge-danger">Inactive</span>';
+                                        echo '<span class="badge badge-danger">'.G_INACTIVE.'</span>';
                                     }?>
                                     </td>
                                     <td><?=$client['created_at'];?>
@@ -97,22 +99,24 @@
                                                     <i class="icon-options-vertical icons"></i>
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-right"
-                                                    aria-labelledby="dropdownMenuLink-5" tabindex="0"><a
-                                                        href="<?=ROOT;?>/client/<?=$client['client_id'];?>"
+                                                    aria-labelledby="dropdownMenuLink-5" tabindex="0">
+                                                    <a href="<?=ROOT;?>/client/<?=$client['client_id'];?>"
                                                         class="dropdown-item">
                                                         <i class="bi bi-eye-fill mr-1"></i>
-                                                        View</a><a class="dropdown-item openRightModal"
+                                                        <?=G_VIEW;?></a>
+                                                    <a class="dropdown-item openRightModal"
                                                         href="<?=ROOT;?>/client/<?=$client['client_id'];?>?edit">
                                                         <i class="bi bi-pencil-fill mr-1"></i>
                                                         <!-- <i class="fa fa-edit mr-2"></i> Font Awesome fontawesome.com -->
-                                                        Edit
+                                                        <?=G_EDIT;?>
                                                     </a><a class="dropdown-item delete-table-row" href="javascript:;"
                                                         data-user-id="<?=$client['user_id'];?>"
                                                         data-client-id="<?=$client['client_id'];?>">
                                                         <i class="bi bi-trash-fill mr-1"></i>
                                                         <!-- <i class="fa fa-trash mr-2"></i> Font Awesome fontawesome.com -->
-                                                        Delete
-                                                    </a></div>
+                                                        <?=G_DELETE;?>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </td>
@@ -137,7 +141,11 @@
 
 <script>
     $(document).ready(function() {
-        $('#clients-table').DataTable();
+        $('#clients-table').DataTable({
+            language: {
+                url: 'https://cdn.datatables.net/plug-ins/1.12.1/i18n/<?=LANG;?>.json'
+            }
+        });
 
         $('body').on('click', '.delete-table-row', function() {
             var user_id = $(this).data('user-id');

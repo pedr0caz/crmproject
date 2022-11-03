@@ -407,7 +407,8 @@ class Employee extends Base
         $query = $this->db->prepare("
             SELECT
                 id,
-                name
+                name,
+                display_name
             FROM roles
         ");
         $query->execute();

@@ -10,18 +10,22 @@
                 <a href="<?=ROOT;?>/employee/create"
                     class="btn-primary rounded f-14 p-2 mr-3 openRightModal">
                     <i class="bi bi-plus-circle mr-1"></i>
-                    Add Employee
+                    <?=G_ADD;?>
+                    <?=G_EMPLOYEE;?>
+
                 </a>
 
                 <button type="button" class="btn-secondary rounded f-14 p-2 mr-3 mb-2 mb-lg-0" id="designation-setting"
                     data-toggle="modal" data-target="#myModal">
                     <i class="bi bi-plus-circle mr-1"></i>
-                    Add Designation
+                    <?=G_ADD;?>
+                    <?=G_DESIGNATION;?>
                 </button>
                 <button type="button" class="btn-secondary rounded f-14 p-2 mr-3 department-setting mb-2 mb-lg-0"
                     data-toggle="modal" data-target="#myModal2">
                     <i class="bi bi-plus-circle mr-1"></i>
-                    Add Department
+                    <?=G_ADD;?>
+                    <?=G_DEPARTMENT;?>
                 </button>
 
             </div>
@@ -36,12 +40,18 @@
                         <thead>
                             <tr>
                                 <th title="Id">Id</th>
-                                <th title="Employee ID">Employee ID</th>
-                                <th title="Name">Name</th>
-                                <th title="Email">Email</th>
-                                <th width="20%" title="User Role">User Role</th>
-                                <th title="Status">Status</th>
-                                <th title="Action">Action</th>
+                                <th title="Employee ID">
+                                    <?=G_EMPLOYEE;?> ID
+                                </th>
+                                <th title="Name"><?=G_NAME;?></th>
+                                <th title="Email"><?=G_EMAIL;?></th>
+                                <th width="20%" title="User Role">
+                                    <?=G_USER_ROLE;?>
+                                </th>
+                                <th title="Status"><?=G_STATUS;?>
+                                </th>
+                                <th title="Action"><?=G_ACTION;?>
+                                </th>
                                 <th class="d-none">Teams</th>
                             </tr>
                         </thead>
@@ -58,7 +68,9 @@
                                         <a href="<?=ROOT;?>/employee/<?=$employee['user_id'];?>"
                                             class="position-relative ">
                                             <img src="<?=$employee['image'] ? ROOT."/".$employee['image'] : 'https://www.gravatar.com/avatar/a456ed61bc3c5d05f3ad79d85069098a.png?s=200&d=mp'?>"
-                                                class="mr-2 taskEmployeeImg rounded-circle" alt="Dassad" title="Dassad">
+                                                class="mr-2 taskEmployeeImg rounded-circle"
+                                                alt="<?=$employee['name']?>"
+                                                title="<?=$employee['name']?>">
                                         </a>
                                         <div class="media-body">
                                             <h5 class="mb-0 f-12">
@@ -76,6 +88,8 @@
                                 <td>
                                     <select class="form-control selectpicker" id="role_user">
                                         <?php foreach ($roles as $role):
+                                            $displayName = json_decode($role['display_name'], true);
+                                            
                                             if($role['id'] == 3) {
                                                 continue;
                                             }
@@ -85,16 +99,16 @@
                                             <?php if($role['id'] == $employee['role_id']) {
                                                 echo 'selected';
                                             }?>>
-                                            <?=ucfirst($role['name']);?>
+                                            <?=$displayName[LANG_ISO];?>
                                         </option>
                                         <?php endforeach;?>
                                     </select>
                                 </td>
                                 <td>
                                     <?php if($employee['status'] == "active") {
-                                        echo '<span class="badge badge-success">Active</span>';
+                                        echo '<span class="badge badge-success">'.G_ACTIVE.'</span>';
                                     } else {
-                                        echo '<span class="badge badge-danger">Inactive</span>';
+                                        echo '<span class="badge badge-danger">'.G_INACTIVE.'</span>';
                                     }?>
                                 </td>
                                 <td>
@@ -111,15 +125,17 @@
                                                     href="<?=ROOT?>/employee/<?=$employee['user_id'];?>"
                                                     class="dropdown-item">
                                                     <i class="bi bi-eye-fill mr-2"></i>
-                                                    View</a><a class="dropdown-item openRightModal"
+                                                    <?=G_VIEW;?></a>
+                                                <a class="dropdown-item openRightModal"
                                                     href="<?=ROOT?>/employee/<?=$employee['user_id'];?>?edit">
                                                     <i class="bi bi-pencil-fill mr-2"></i>
-                                                    Edit
+                                                    <?=G_EDIT;?>
                                                 </a><a class="dropdown-item delete-table-row" href="javascript:;"
                                                     data-user-id="6">
                                                     <i class="bi bi-trash-fill mr-2"></i>
-                                                    Delete
-                                                </a></div>
+                                                    <?=G_DELETE;?>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </td>
@@ -141,7 +157,11 @@
 </section>
 <script>
     $(document).ready(function() {
-        $('#example').DataTable();
+        $('#example').DataTable({
+            language: {
+                url: 'https://cdn.datatables.net/plug-ins/1.12.1/i18n/<?=LANG;?>.json'
+            }
+        });
         $('body').on('change', '#role_user', function() {
             var role_id = $(this).val();
             var user_id = $(this).closest('tr').data('id');
@@ -227,7 +247,9 @@
 
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modelHeading">Designation</h5>
+                <h5 class="modal-title" id="modelHeading">
+                    <?=G_DESIGNATION;?>
+                </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">×</span></button>
             </div>
@@ -236,8 +258,9 @@
                     <thead class="thead-light">
                         <tr>
                             <th>#</th>
-                            <th class="w-75">Designation</th>
-                            <th class="text-right">Action</th>
+                            <th class="w-75"><?=G_DESIGNATION;?></th>
+                            <th class="text-right"><?=G_ACTION;?>
+                            </th>
                         </tr>
                     </thead>
                     <tbody id="designation_model">
@@ -254,7 +277,7 @@
                                 <button type="button" class="btn-secondary rounded f-14 p-2 delete-row"
                                     data-row-id="<?=$designation['id'];?>">
                                     <i class="bi bi-trash2-fill"></i>
-                                    Delete
+                                    <?=G_DELETE;?>
                                 </button>
                             </td>
                         </tr>
@@ -269,7 +292,8 @@
                     <div class="row border-top-grey ">
                         <div class="col-sm-12">
                             <div class="form-group my-3">
-                                <label class="f-14 text-dark-grey mb-12" data-label="true" for="designation_name">Name
+                                <label class="f-14 text-dark-grey mb-12" data-label="true"
+                                    for="designation_name"><?=G_NAME;?>
                                     <sup class="f-14 mr-1">*</sup>
 
                                 </label>
@@ -285,11 +309,11 @@
             </div>
             <div class="modal-footer">
                 <a href="javascript:;" class="btn-cancel rounded f-14 p-2 border-0 mr-3" data-dismiss="modal">
-                    Close
+                    <?=G_CLOSE;?>
                 </a>
                 <button type="button" class="btn-primary rounded f-14 p-2" id="save-designation">
                     <i class="bi bi-save2-fill m-1"></i>
-                    Save
+                    <?=G_SAVE;?>
                 </button>
 
 
@@ -477,7 +501,9 @@
 
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modelHeading">Department</h5>
+                <h5 class="modal-title" id="modelHeading">
+                    <?=G_DEPARTMENT;?>
+                </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">×</span></button>
             </div>
@@ -486,8 +512,9 @@
                     <thead class="thead-light">
                         <tr>
                             <th>#</th>
-                            <th class="w-75">Department</th>
-                            <th class="text-right">Action</th>
+                            <th class="w-75"><?=G_DEPARTMENT;?></th>
+                            <th class="text-right"><?=G_ACTION;?>
+                            </th>
                         </tr>
                     </thead>
                     <tbody id="department_model">
@@ -504,7 +531,7 @@
                                 <button type="button" class="btn-secondary rounded f-14 p-2 delete-row"
                                     data-row-id="<?=$department['id'];?>">
                                     <i class="bi bi-trash2-fill mr-1"></i>
-                                    Delete
+                                    <?=G_DELETE;?>
                                 </button>
                             </td>
                         </tr>
@@ -519,7 +546,8 @@
                     <div class="row border-top-grey ">
                         <div class="col-sm-12">
                             <div class="form-group my-3">
-                                <label class="f-14 text-dark-grey mb-12" data-label="true" for="department_name">Name
+                                <label class="f-14 text-dark-grey mb-12" data-label="true"
+                                    for="department_name"><?=G_NAME;?>
                                     <sup class="f-14 mr-1">*</sup>
 
                                 </label>
@@ -535,11 +563,11 @@
             </div>
             <div class="modal-footer">
                 <a href="javascript:;" class="btn-cancel rounded f-14 p-2 border-0 mr-3" data-dismiss="modal">
-                    Close
+                    <?=G_CLOSE;?>
                 </a>
                 <button type="button" class="btn-primary rounded f-14 p-2" id="save-department">
                     <i class="bi bi-save mr-1"></i>
-                    Save
+                    <?=G_SAVE;?>
                 </button>
 
 

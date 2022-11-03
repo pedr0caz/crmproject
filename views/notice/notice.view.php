@@ -10,7 +10,7 @@
                 <a href="<?=ROOT;?>/notice/create"
                     class="btn-primary rounded f-14 p-2 mr-3 openRightModal float-left">
                     <i class="bi bi-plus-lg"></i>
-                    Add New Notice
+                    <?=NOTICE_ADD;?>
                 </a>
             </div>
         </div>
@@ -24,11 +24,11 @@
                             <thead>
                                 <tr role="row">
 
-                                    <th>Notice</th>
-                                    <th>Date
+                                    <th><?=G_NOTICE;?></th>
+                                    <th><?=G_DATE;?>
                                     </th>
-                                    <th>To</th>
-                                    <th>Action</th>
+                                    <th><?=G_TO;?></th>
+                                    <th><?=G_ACTION;?></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -43,7 +43,7 @@
                                     <td><?php   if ($notice['toGroup'] == 2) {
                                         echo $notice['team_name'] ? $notice['team_name'] : $notice['display_name'];
                                     } else {
-                                        echo "Client";
+                                        echo G_CLIENT;
                                     }?></td>
                                     <td>
                                         <div class="task_view">
@@ -58,18 +58,18 @@
                                                     <a href="<?=ROOT;?>/notice/<?=$notice['id'];?>"
                                                         class="dropdown-item openRightModal">
                                                         <i class="bi bi-eye-fill mr-2"></i>
-                                                        View
+                                                        <?=G_VIEW;?>
                                                     </a>
                                                     <?php if($_SESSION['user_role'] == 1): ?>
                                                     <a class="dropdown-item openRightModal"
                                                         href="<?=ROOT;?>/notice/<?=$notice['id'];?>?edit">
                                                         <i class="bi bi-pencil-fill mr-2"></i>
-                                                        Edit
+                                                        <?=G_EDIT;?>
                                                     </a>
                                                     <a class="dropdown-item delete-table-row" href="javascript:;"
                                                         data-notice-id="<?=$notice['id'];?>">
                                                         <i class="bi bi-trash-fill mr-2"></i>
-                                                        Delete
+                                                        <?=G_DELETE;?>
                                                     </a>
                                                     <?php endif; ?>
                                                 </div>
@@ -96,7 +96,10 @@
         $('#notice-board-table').DataTable({
             "order": [
                 [1, "desc"]
-            ]
+            ],
+            language: {
+                url: 'https://cdn.datatables.net/plug-ins/1.12.1/i18n/<?=LANG;?>.json'
+            }
         });
 
         $('.delete-table-row').click(function() {

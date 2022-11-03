@@ -12,25 +12,29 @@
                         <a href="<?=ROOT?>/employee/<?=$id?>"
                             class="text-dark-grey text-capitalize border-right-grey p-sub-menu ajax-tab profile <?php if(!isset($_GET['tab'])) {
                                 echo "active";
-                            } ?>" id="profile"><span>Profile</span></a>
+                            } ?>"
+                            id="profile"><span><?=G_PROFILE;?></span></a>
                     </li>
                     <li>
                         <a href="<?=ROOT?>/employee/<?=$id?>?tab=projects"
                             class="text-dark-grey text-capitalize border-right-grey p-sub-menu projects <?php if(isset($_GET['tab']) && $_GET['tab'] == "projects") {
                                 echo "active";
-                            }?>" id="projects"><span>Projects</span></a>
+                            }?>"
+                            id="projects"><span><?=G_PROJECTS;?></span></a>
                     </li>
                     <li>
                         <a href="<?=ROOT?>/employee/<?=$id?>?tab=tasks"
                             class="text-dark-grey text-capitalize border-right-grey p-sub-menu tasks <?php if(isset($_GET['tab']) && $_GET['tab'] == "tasks") {
                                 echo "active";
-                            }?>" id="tasks"><span>Tasks</span></a>
+                            }?>"
+                            id="tasks"><span><?=G_TASKS;?></span></a>
                     </li>
                     <li>
                         <a href=" <?=ROOT?>/employee/<?=$id?>?tab=documents"
                             class="text-dark-grey text-capitalize border-right-grey p-sub-menu ajax-tab documents <?php if(isset($_GET['tab']) && $_GET['tab'] == "documents") {
                                 echo "active";
-                            }?>" id="documents"><span>Documents</span></a>
+                            }?>"
+                            id="documents"><span><?=G_DOCUMENTS;?></span></a>
                     </li>
                 </ul>
             </nav>
@@ -75,7 +79,7 @@
                                                 <div class="col-2 text-right">
                                                     <button type="button" class="btn btn-primary btn-sm"
                                                         data-toggle="modal" data-target="#exampleModal">
-                                                        Edit
+                                                        <?=G_EDIT;?>
                                                 </div>
                                             </div>
                                             <p class="f-13 font-weight-normal text-dark-grey mb-0">
@@ -91,14 +95,14 @@
                                                 <div class="d-flex flex-wrap ">
                                                     <span class="pl-3">
                                                         <label class="f-11 text-dark-grey mb-12 text-capitalize"
-                                                            for="usr">Open Tasks</label>
+                                                            for="usr"><?=G_OPEN_TASKS;?></label>
                                                         <p class="mb-0 f-18 f-w-500">
                                                             <?=$NumberOfIncompleteTasks['task_count']?>
                                                         </p>
                                                     </span>
                                                     <span class="pl-3">
                                                         <label class="f-11 text-dark-grey mb-12 text-capitalize"
-                                                            for="usr">Projects</label>
+                                                            for="usr"><?=G_PROJECTS;?></label>
                                                         <p class="mb-0 f-18 f-w-500">
                                                             <?=$NumberOfProjects['project_count'];?>
                                                         </p>
@@ -121,51 +125,65 @@
                                             </p>
                                         </div>
                                         <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
-                                            <p class="mb-0 text-lightest f-14 w-30 text-capitalize">Full Name</p>
+                                            <p class="mb-0 text-lightest f-14 w-30 text-capitalize">
+                                                <?=G_NAME;?>
+                                            </p>
                                             <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">
                                                 <?=$employee['name']?>
                                             </p>
                                         </div>
                                         <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
-                                            <p class="mb-0 text-lightest f-14 w-30 text-capitalize">Email</p>
+                                            <p class="mb-0 text-lightest f-14 w-30 text-capitalize">
+                                                <?=G_EMAIL;?>
+                                            </p>
                                             <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">
                                                 <?=$employee['email']?>
                                             </p>
                                         </div>
                                         <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
-                                            <p class="mb-0 text-lightest f-14 w-30 text-capitalize">Mobile</p>
+                                            <p class="mb-0 text-lightest f-14 w-30 text-capitalize">
+                                                <?=G_MOBILE;?>
+                                            </p>
                                             <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">
                                                 <?=$employee['mobile']?>
                                             </p>
                                         </div>
                                         <div class="col-12 px-0 pb-3 d-block d-lg-flex d-md-flex">
                                             <p class="mb-0 text-lightest f-14 w-30 d-inline-block text-capitalize">
-                                                Gender
+                                                <?=G_GENDER;?>
                                             </p>
                                             <p class="mb-0 text-dark-grey f-14 w-70">
                                                 <?=$employee['gender']?>
                                             </p>
                                         </div>
                                         <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
-                                            <p class="mb-0 text-lightest f-14 w-30 text-capitalize">Date of Birth</p>
+                                            <p class="mb-0 text-lightest f-14 w-30 text-capitalize">
+                                                <?=G_DATE_OF_BIRTH;?>
+                                            </p>
                                             <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">
                                                 <?=$employee['date_of_birth']?>
                                             </p>
                                         </div>
                                         <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
-                                            <p class="mb-0 text-lightest f-14 w-30 text-capitalize">Slack Username</p>
+                                            <p class="mb-0 text-lightest f-14 w-30 text-capitalize">
+                                                <?=G_SLACK_USERNAME;?>
+                                            </p>
                                             <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">
                                                 <?=$employee['slack_username']?>
                                             </p>
                                         </div>
                                         <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
-                                            <p class="mb-0 text-lightest f-14 w-30 text-capitalize">Address</p>
+                                            <p class="mb-0 text-lightest f-14 w-30 text-capitalize">
+                                                <?=G_ADDRESS;?>
+                                            </p>
                                             <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">
                                                 <?=$employee['address']?>
                                             </p>
                                         </div>
                                         <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
-                                            <p class="mb-0 text-lightest f-14 w-30 text-capitalize">Skills</p>
+                                            <p class="mb-0 text-lightest f-14 w-30 text-capitalize">
+                                                <?=G_SKILLS;?>
+                                            </p>
                                             <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">
                                                 <?=$employee['skills']?>
                                             </p>
@@ -179,13 +197,15 @@
                                         <div class="card bg-white border-0 b-shadow-4">
                                             <div
                                                 class="card-header bg-white border-0 text-capitalize d-flex justify-content-between p-20">
-                                                <h4 class="f-18 f-w-500 mb-0">Tasks</h4>
+                                                <h4 class="f-18 f-w-500 mb-0">
+                                                    <?=G_TASKS;?>
+                                                </h4>
                                             </div>
                                             <div class="card-body p-0 ">
                                                 <div class="text-center text-lightest p-20" style="height: 250px">
                                                     <i class="side-icon f-21 bi bi-pie-chart"></i>
                                                     <div class="f-15 mt-4">
-                                                        - Not enough data -
+                                                        <?=G_NOT_ENOUGH_DATA;?>
                                                     </div>
                                                 </div>
                                             </div>
@@ -200,7 +220,8 @@
             <div class="project-right my-4 my-lg-0">
                 <div class="bg-white">
                     <div class="p-activity-heading d-flex align-items-center justify-content-between b-shadow-4 p-20">
-                        <p class="mb-0 f-18 f-w-500">Activity</p>
+                        <p class="mb-0 f-18 f-w-500"><?=G_ACTIVITY;?>
+                        </p>
                     </div>
                     <div class="p-activity-detail cal-info b-shadow-4" data-menu-vertical="1" data-menu-scroll="1"
                         data-menu-dropdown-timeout="500" id="projectActivityDetail">
@@ -239,13 +260,13 @@
                             <thead>
                                 <tr>
                                     <th>Id</th>
-                                    <th>Project Name</th>
-                                    <th>Members</th>
-                                    <th>Deadline</th>
-                                    <th>Client</th>
-                                    <th>Progress</th>
-                                    <th>Status</th>
-                                    <th>Action </th>
+                                    <th><?=G_PROJECT;?></th>
+                                    <th><?=G_MEMBERS;?></th>
+                                    <th><?=G_DEADLINE;?></th>
+                                    <th><?=G_CLIENT;?></th>
+                                    <th><?=G_PROGRESS;?></th>
+                                    <th><?=G_STATUS;?></th>
+                                    <th><?=G_ACTION;?> </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -299,7 +320,7 @@
                                  if($deadline > date('Y-m-d')) {
                                      echo $project['deadline'];
                                  } else {
-                                     echo ' <span class="badge badge-danger">Expired</span>';
+                                     echo ' <span class="badge badge-danger">'.G_EXPIRED.'</span>';
                                      echo '<br>';
                                      echo '<span class="text-danger">'.$project['deadline'].'</span>';
                                  }
@@ -368,19 +389,20 @@
                                                     <a href="<?=ROOT?>/project/<?=$project['project_id']?>"
                                                         class="dropdown-item">
                                                         <i class="bi bi-eye-fill mr-2"></i>
-                                                        View</a><a class="dropdown-item openRightModal"
+                                                        <?=G_VIEW?></a><a
+                                                        class="dropdown-item openRightModal"
                                                         href="<?=ROOT;?>/project/<?=$project['project_id']?>?edit">
                                                         <i class="bi bi-pencil-fill mr-2"></i>
-                                                        Edit
+                                                        <?=G_EDIT;?>
                                                     </a>
                                                     </a><a class="dropdown-item" target="_blank" href="">
                                                         <i class="bi bi-printer-fill mr-2"></i>
-                                                        Public Task Board
+                                                        <?=G_PUBLIC_TASKBOARD;?>
                                                     </a>
                                                     </a><a class="dropdown-item delete-table-row" href="javascript:;"
                                                         data-user-id="1">
                                                         <i class="bi bi-trash-fill mr-2"></i>
-                                                        Delete
+                                                        <?=G_DELETE;?>
                                                     </a>
                                                 </div>
                                             </div>
@@ -408,7 +430,7 @@
                             class="btn-primary rounded f-14 p-2 mr-3 openRightModal float-left"
                             data-redirect-url="<?=ROOT;?>/task/create?user=<?=$id;?>">
                             <i class="bi bi-plus-circle mr-2"></i>
-                            Add Task
+                            <?=G_ADD_TASK;?>
                         </a>
 
                     </div>
@@ -430,14 +452,14 @@
 
                                             <th>Id</th>
 
-                                            <th>Task</th>
-                                            <th>Project</th>
-                                            <th>Due Date</th>
+                                            <th><?=G_TASK;?></th>
+                                            <th><?=G_PROJECT;?></th>
+                                            <th><?=G_DUE_DATE;?></th>
 
-                                            <th>Assigned To
+                                            <th><?=G_ASSIGNED_TO;?>
                                             </th>
-                                            <th>Status</th>
-                                            <th>Action</th>
+                                            <th><?=G_STATUS;?></th>
+                                            <th><?=G_ACTION;?></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -473,7 +495,7 @@
                                             if($due_data > date('Y-m-d')) {
                                                 echo $due_data;
                                             } else {
-                                                echo ' <span class="badge badge-danger">Expired</span>';
+                                                echo ' <span class="badge badge-danger">'.G_EXPIRED.'</span>';
                                                 echo '<br>';
                                                 echo '<span class="text-danger">'.$due_data.'</span>';
                                             }
@@ -538,15 +560,16 @@
                                                             <a href="<?=ROOT?>/task/<?=$getEmployeeTask['task_id']?>"
                                                                 class="dropdown-item openRightModal">
                                                                 <i class="bi bi-eye-fill mr-2"></i>
-                                                                View</a><a class="dropdown-item openRightModal"
+                                                                <?=G_VIEW;?></a><a
+                                                                class="dropdown-item openRightModal"
                                                                 href="<?=ROOT?>/task/<?=$getEmployeeTask['task_id']?>?edit">
                                                                 <i class="bi bi-pencil-fill mr-2"></i>
-                                                                Edit
+                                                                <?=G_EDIT;?>
                                                             </a><a class="dropdown-item delete-table-row"
                                                                 href="javascript:;" data-user-id="1">
                                                                 <i class="bi bi-trash-fill mr-2"></i>
 
-                                                                Delete
+                                                                <?=G_DELETE;?>
                                                             </a>
                                                         </div>
                                                     </div>
@@ -582,7 +605,9 @@
             <div class="tab-pane fade show active mt-5" role="tabpanel" aria-labelledby="nav-email-tab">
                 <div class="card bg-white border-0 b-shadow-4">
                     <div class="card-header bg-white border-0 text-capitalize d-flex justify-content-between p-20">
-                        <h4 class="f-18 f-w-500 mb-0">Documents</h4>
+                        <h4 class="f-18 f-w-500 mb-0">
+                            <?=G_DOCUMENTS;?>
+                        </h4>
 
 
 
@@ -592,7 +617,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <a class="f-15 f-w-500" href="javascript:;" id="add-task-file"><i
-                                        class="icons icon-plus font-weight-bold mr-1"></i>Add Files</a>
+                                        class="icons icon-plus font-weight-bold mr-1"></i><?=G_ADD_FILES;?></a>
                             </div>
                         </div>
 
@@ -602,8 +627,8 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group my-3">
-                                        <label class="f-14 text-dark-grey mb-12" data-label="true" for="file_name">File
-                                            name
+                                        <label class="f-14 text-dark-grey mb-12" data-label="true"
+                                            for="file_name"><?=G_FILE_NAME;?>
                                             <sup class="f-14 mr-1">*</sup>
 
                                         </label>
@@ -617,7 +642,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group my-3">
                                         <label class="f-14 text-dark-grey mb-12" data-label="true"
-                                            for="employee_file">Upload File
+                                            for="employee_file"><?=G_UPLOAD_FILE;?>
                                             <sup class="f-14 mr-1">*</sup>
                                             <i class="bi bi-question-circle-fill" data-toggle="popover"
                                                 data-placement="top"
@@ -636,11 +661,11 @@
                                     <div class="w-100 justify-content-end d-flex mt-2">
                                         <a href="javascript:;" class="btn-cancel rounded f-14 p-2 border-0 mr-3"
                                             id="cancel-document">
-                                            Cancel
+                                            <?=G_CANCEL;?>
                                         </a>
                                         <button type="button" class="btn-primary rounded f-14 p-2" id="submit-document">
                                             <i class="bi bi-check mr-2"></i>
-                                            Submit
+                                            <?=G_SAVE;?>
                                         </button>
 
 
@@ -701,14 +726,15 @@
 
                                                     <a class="cursor-pointer d-block text-dark-grey f-13 pt-3 px-3 "
                                                         target="_blank"
-                                                        href="<?=ROOT?>/<?=$file['filename']?>">View</a>
+                                                        href="<?=ROOT?>/<?=$file['filename']?>"><?=G_VIEW;?></a>
 
                                                     <a class="cursor-pointer d-block text-dark-grey f-13 py-3 px-3 "
-                                                        href="<?=ROOT?>/<?=$file['filename']?>">Download</a>
+                                                        href="<?=ROOT?>/<?=$file['filename']?>"><?=G_DOWNLOAD;?></a>
 
 
                                                     <a class="cursor-pointer d-block text-dark-grey f-13 pb-3 px-3 delete-file"
-                                                        data-row-id="1" href="javascript:;">Delete</a>
+                                                        data-row-id="1"
+                                                        href="javascript:;"><?=G_DELETE;?></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -842,9 +868,17 @@
 
 <script>
     $(document).ready(function() {
-        var projects = $('#projects-table').DataTable();
+        var projects = $('#projects-table').DataTable({
+            language: {
+                url: 'https://cdn.datatables.net/plug-ins/1.12.1/i18n/<?=LANG;?>.json'
+            }
+        });
 
-        var tasks = $('#tasks-table').DataTable();
+        var tasks = $('#tasks-table').DataTable({
+            language: {
+                url: 'https://cdn.datatables.net/plug-ins/1.12.1/i18n/<?=LANG;?>.json'
+            }
+        });
 
         $('#statusTask').on('change', function() {
             if ($(this).val() == 'all') {

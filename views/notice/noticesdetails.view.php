@@ -15,7 +15,9 @@
                             class="card-header bg-white  border-bottom-grey text-capitalize justify-content-between p-20">
                             <div class="row">
                                 <div class="col-lg-10 col-10">
-                                    <h3 class="heading-h1 mb-3">Notice Details</h3>
+                                    <h3 class="heading-h1 mb-3">
+                                        <?=NOTICE_DETAILS;?>
+                                    </h3>
                                 </div>
                                 <div class="col-lg-2 col-2 text-right">
                                     <?php if ($_SESSION["user_role"] == "1") : ?>
@@ -31,8 +33,9 @@
                                             aria-labelledby="dropdownMenuLink" tabindex="0">
 
                                             <a class="dropdown-item openRightModal"
-                                                href="<?=ROOT?>/notice/<?=$id?>?edit">Edit</a>
-                                            <a class="dropdown-item delete-notice">Delete</a>
+                                                href="<?=ROOT?>/notice/<?=$id?>?edit"><?=G_EDIT;?></a>
+                                            <a
+                                                class="dropdown-item delete-notice"><?=G_DELETE;?></a>
                                         </div>
                                     </div>
                                     <?php endif; ?>
@@ -42,33 +45,40 @@
                         <div class="card-body">
 
                             <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
-                                <p class="mb-0 text-lightest f-14 w-30 text-capitalize">Notice Heading</p>
+                                <p class="mb-0 text-lightest f-14 w-30 text-capitalize">
+                                    <?=NOTICE_HEADING;?>
+                                </p>
                                 <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">
                                     <?=$notice['heading'];?>
                                 </p>
                             </div>
                             <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
-                                <p class="mb-0 text-lightest f-14 w-30 text-capitalize">Date</p>
+                                <p class="mb-0 text-lightest f-14 w-30 text-capitalize">
+                                    <?=G_DATE;?>
+                                </p>
                                 <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">
                                     <?=$notice['created_at'];?>
                                 </p>
                             </div>
 
                             <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
-                                <p class="mb-0 text-lightest f-14 w-30 text-capitalize">To</p>
+                                <p class="mb-0 text-lightest f-14 w-30 text-capitalize">
+                                    <?=G_TO;?>
+                                </p>
                                 <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">
                                     <?php
                                         if ($notice['toGroup'] == 2) {
                                             echo $notice['display_name'];
                                         } else {
-                                            echo "Client";
+                                            echo G_CLIENT;
                                         }
 ?>
                                 </p>
                             </div>
 
                             <div class="col-12 px-0 pb-3 ">
-                                <p class="mb-0 text-lightest f-14 w-30 text-capitalize">Description</p>
+                                <p class="mb-0 text-lightest f-14 w-30 text-capitalize">
+                                    <?=G_DESCRIPTION;?></p>
                                 <div class="mb-0 text-dark-grey f-14 w-70 text-wrap ql-editor p-0 mt-3">
                                     <?=$notice['description'];?>
                                 </div>

@@ -1,5 +1,11 @@
 <?php
 session_start();
+if (isset($_GET['lang'])) {
+    $_SESSION['lang'] = $_GET['lang'];
+} elseif (!$_SESSION['lang']) {
+    $_SESSION['lang'] = 'en';
+}
+include('lib/locale/pt.php');
 
 date_default_timezone_set('Europe/Lisbon');
 define("ENV", parse_ini_file(".env"));

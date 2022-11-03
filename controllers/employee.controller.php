@@ -15,6 +15,7 @@ if (!isset($_SESSION["user_id"])) {
         $mail = new MailTemplate();
         $countries = $user->getCountries();
         $roles = $employeeModel->getRoles();
+    
         $designations = $employeeModel->getDesignations();
         $departments = $employeeModel->getDepartments();
         $taskLabels = $taskModel->getLabels();

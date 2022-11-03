@@ -10,7 +10,7 @@
                         aria-controls="nav-profiles" aria-selected="true">Profile </a>
                     <a class="nav-item nav-link f-15 files <?=isset($_GET['files']) ? 'active' : '' ;?>"
                         href="profile/tab?files" role="tab" aria-controls="nav-profile" aria-selected="true"
-                        ajax="false">My Files </a>
+                        ajax="false"><?=PROFILE_MY_FILES;?> </a>
                 </div>
             </nav>
         </div>
@@ -25,7 +25,7 @@
                                     <div class="col-lg-12">
                                         <div class="form-group my-3 mr-0 mr-lg-2 mr-md-2 cropper">
                                             <label class="f-14 text-dark-grey mb-12" data-label="" for="profile-image">
-                                                Profile Picture
+                                                <?=G_PROFILE_PICTURE;?>
                                                 <i class="bi bi-question-circle-fill f-12 text-primary"
                                                     data-toggle="tooltip" data-placement="top"
                                                     title="This is the image that will be displayed on your profile."></i>
@@ -39,7 +39,8 @@
                                     <div class="col-lg-4">
 
                                         <div class="form-group my-3 mr-0 mr-lg-2 mr-md-2">
-                                            <label class="f-14 text-dark-grey mb-12" for="usr">Your Name</label>
+                                            <label class="f-14 text-dark-grey mb-12"
+                                                for="usr"><?=G_NAME;?></label>
                                             <input type="text" class="form-control height-35  f-14"
                                                 placeholder="e.g. John Doe" name="name" id="name"
                                                 value="<?=$user['name'];?>"
@@ -48,8 +49,8 @@
                                     </div>
                                     <div class=" col-lg-4">
                                         <div class="form-group my-3 mr-0 mr-lg-2 mr-md-2">
-                                            <label class="f-14 text-dark-grey mb-12" data-label="true" for="email">Your
-                                                Email
+                                            <label class="f-14 text-dark-grey mb-12" data-label="true"
+                                                for="email"><?=G_EMAIL;?>
                                                 <sup class="f-14 mr-1">*</sup>
                                             </label>
                                             <input type="text" class="form-control height-35 f-14"
@@ -59,46 +60,56 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
-                                        <label class="f-14 text-dark-grey mb-12 mt-3" data-label="" for="password">Your
-                                            Password
+                                        <label class="f-14 text-dark-grey mb-12 mt-3" data-label=""
+                                            for="password"><?=G_PASSWORD;?>
+
                                         </label>
                                         <div class="input-group">
-                                            <input type="password" name="password" id="password" autocomplete="off"
-                                                placeholder="Must have at least 8 characters"
-                                                class="form-control height-35 f-14" data-np-checked="1">
+                                            <input type="password" name="password" id="password"
+                                                class="form-control height-35 f-14" autocomplete="off"
+                                                data-np-checked="1">
                                             <div class="input-group-append">
                                                 <button type="button" data-toggle="tooltip"
                                                     data-original-title="Show/Hide Value"
                                                     class="btn btn-outline-secondary border-grey height-35 toggle-password">
-                                                    <i class="bi bi-eye-fill"></i>
+                                                    <i class="bi bi-eye-slash"></i>
+                                                    <!-- <i class="fa fa-eye"></i> Font Awesome fontawesome.com -->
                                                 </button>
                                             </div>
                                             <div class="input-group-append">
                                                 <button id="random_password" type="button" data-toggle="tooltip"
-                                                    data-original-title="Generate Random Password"
+                                                    data-original-title="<?=G_GENERATE_PASSWORD;?>"
                                                     class="btn btn-outline-secondary border-grey height-35">
-                                                    <i class="bi bi-shuffle"></i>
+                                                    <i class="bi bi-shuffle font-weight-bolder"></i>
+                                                    <!-- <i class="fa fa-random"></i> Font Awesome fontawesome.com -->
                                                 </button>
                                             </div>
                                         </div>
-                                        <small class="form-text text-muted">Leave blank to keep current
-                                            password.</small>
+                                        <small
+                                            class="form-text text-muted"><?=G_PASSWORD_LEAVE_BLANK;?></small>
                                     </div>
                                     <div class="col-md-4">
-                                        <label class="f-14 text-dark-grey mb-12 mt-3" data-label="" for="gender">Gender
+                                        <label class="f-14 text-dark-grey mb-12 mt-3" data-label=""
+                                            for="gender"><?=G_GENDER;?>
                                         </label>
                                         <div class="form-group mb-0">
                                             <select name="gender" id="gender" data-live-search="true"
                                                 class="form-control selectpicker" data-size="8">
-                                                <option value="male">Male</option>
-                                                <option value="female">Female</option>
-                                                <option value="others">Others</option>
+                                                <option value="male">
+                                                    <?=G_GENDER_MALE;?>
+                                                </option>
+                                                <option value="female">
+                                                    <?=G_GENDER_FEMALE;?>
+                                                </option>
+                                                <option value="others">
+                                                    <?=G_GENDER_OTHER;?>
+                                                </option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <label class="f-14 text-dark-grey mb-12 mt-3" data-label=""
-                                            for="phone_code">Country
+                                            for="phone_code"><?=G_COUNTRY;?>
                                         </label>
                                         <div class="form-group mb-0">
                                             <select name="country_id" id="phone_code" data-live-search="true"
@@ -118,7 +129,8 @@
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group my-3">
-                                            <label class="f-14 text-dark-grey mb-12" data-label="" for="mobile">Mobile
+                                            <label class="f-14 text-dark-grey mb-12" data-label=""
+                                                for="mobile"><?=G_MOBILE;?>
                                             </label>
                                             <input type="tel" class="form-control height-35 f-14"
                                                 placeholder="e.g. 1234567890"
@@ -152,7 +164,7 @@
                                 <div class="settings-btns py-3 d-flex justify-content-start px-4">
                                     <button type="button" class="btn-primary rounded f-14 p-2 mr-3" id="save-form">
                                         <i class="bi bi-check-circle mr-2"></i>
-                                        Save
+                                        <?=G_SAVE;?>
                                     </button>
 
                                 </div>
@@ -252,7 +264,9 @@
             <div class="tab-content" id="nav-tabContent" style="position: static; zoom: 1;">
                 <div class="card bg-white border-0 b-shadow-4">
                     <div class="card-header bg-white border-0 text-capitalize d-flex justify-content-between p-20">
-                        <h4 class="f-18 f-w-500 mb-0">Documents</h4>
+                        <h4 class="f-18 f-w-500 mb-0">
+                            <?=G_DOCUMENTS;?>
+                        </h4>
 
 
 
@@ -262,7 +276,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <a class="f-15 f-w-500" href="javascript:;" id="add-task-file"><i
-                                        class="icons icon-plus font-weight-bold mr-1"></i>Add Files</a>
+                                        class="icons icon-plus font-weight-bold mr-1"></i><?=G_ADD_FILES;?></a>
                             </div>
                         </div>
 
@@ -272,8 +286,8 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group my-3">
-                                        <label class="f-14 text-dark-grey mb-12" data-label="true" for="file_name">File
-                                            name
+                                        <label class="f-14 text-dark-grey mb-12" data-label="true"
+                                            for="file_name"><?=G_FILE_NAME;?>
                                             <sup class="f-14 mr-1">*</sup>
 
                                         </label>
@@ -287,7 +301,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group my-3">
                                         <label class="f-14 text-dark-grey mb-12" data-label="true"
-                                            for="employee_file">Upload File
+                                            for="employee_file"><?=G_UPLOAD_FILE;?>
                                             <sup class="f-14 mr-1">*</sup>
                                             <i class="bi bi-question-circle-fill" data-toggle="popover"
                                                 data-placement="top"
@@ -306,11 +320,11 @@
                                     <div class="w-100 justify-content-end d-flex mt-2">
                                         <a href="javascript:;" class="btn-cancel rounded f-14 p-2 border-0 mr-3"
                                             id="cancel-document">
-                                            Cancel
+                                            <?=G_CANCEL;?>
                                         </a>
                                         <button type="button" class="btn-primary rounded f-14 p-2" id="submit-document">
                                             <i class="bi bi-check mr-2"></i>
-                                            Submit
+                                            <?=G_SAVE;?>
                                         </button>
 
 
@@ -371,14 +385,15 @@
 
                                                     <a class="cursor-pointer d-block text-dark-grey f-13 pt-3 px-3 "
                                                         target="_blank"
-                                                        href="<?=ROOT?>/<?=$file['filename']?>">View</a>
+                                                        href="<?=ROOT?>/<?=$file['filename']?>"><?=G_VIEW;?></a>
 
                                                     <a class="cursor-pointer d-block text-dark-grey f-13 py-3 px-3 "
-                                                        href="<?=ROOT?>/<?=$file['filename']?>">Download</a>
+                                                        href="<?=ROOT?>/<?=$file['filename']?>"><?=G_DOWNLOAD;?></a>
 
 
                                                     <a class="cursor-pointer d-block text-dark-grey f-13 pb-3 px-3 delete-file"
-                                                        data-row-id="1" href="javascript:;">Delete</a>
+                                                        data-row-id="1"
+                                                        href="javascript:;"><?=G_DELETE;?></a>
                                                 </div>
                                             </div>
                                         </div>

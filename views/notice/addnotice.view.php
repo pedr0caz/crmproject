@@ -10,7 +10,8 @@
 
                     <div class="add-client bg-white rounded">
                         <h4 class="mb-0 p-20 f-21 font-weight-normal text-capitalize border-bottom-grey">
-                            Notice Details</h4>
+                            <?=NOTICE_DETAILS;?>
+                        </h4>
                         <div class="row p-20">
                             <div class="col-lg-12">
                                 <div class="row">
@@ -22,7 +23,7 @@
                                                         id="toEmployee" name="to" checked="" autocomplete="off"
                                                         data-np-invisible="1" data-np-checked="1">
                                                     <label class="custom-control-label pt-1 cursor-pointer"
-                                                        for="toEmployee">To Employees</label>
+                                                        for="toEmployee"><?=NOTICE_TO_EMPLOYEE;?></label>
                                                 </div>
 
                                                 <div class="form-check-inline custom-control custom-radio mt-2 mr-3">
@@ -30,7 +31,7 @@
                                                         id="toClient" name="to" autocomplete="off" data-np-invisible="1"
                                                         data-np-checked="1">
                                                     <label class="custom-control-label pt-1 cursor-pointer"
-                                                        for="toClient">To Clients</label>
+                                                        for="toClient"><?=NOTICE_TO_CLIENT;?></label>
                                                 </div>
 
                                             </div>
@@ -40,7 +41,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group my-3">
                                             <label class="f-14 text-dark-grey mb-12" data-label="true"
-                                                for="heading">Notice Heading
+                                                for="heading"><?=NOTICE_HEADING;?>
                                                 <sup class="f-14 mr-1">*</sup>
 
                                             </label>
@@ -54,7 +55,7 @@
 
                                     <div class="col-md-6 department">
                                         <label class="f-14 text-dark-grey mb-12 mt-3" data-label=""
-                                            for="team_id">Department
+                                            for="team_id"><?=G_DEPARTMENT;?>
 
                                         </label>
                                         <div class="form-group mb-0">
@@ -77,7 +78,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group my-3">
                                             <label class="f-14 text-dark-grey mb-12 my-3" data-label=""
-                                                for="description-textt">Notice Details
+                                                for="description-textt"><?=NOTICE_DETAILS;?>
 
                                             </label>
 
@@ -93,12 +94,12 @@
                         <div class="w-100 border-top-grey d-block d-lg-flex d-md-flex justify-content-start px-4 py-3">
                             <button type="button" class="btn-primary rounded f-14 p-2 mr-3" id="save-notice">
                                 <i class="bi bi-check-lg mr-2 "></i>
-                                Save
+                                <?=G_SAVE;?>
                             </button>
 
 
                             <a href="" class="btn-cancel rounded f-14 p-2 border-0">
-                                Cancel
+                                <?=G_CANCEL;?>
                             </a>
                         </div>
 
@@ -112,7 +113,9 @@
             $(document).ready(function() {
 
                 ClassicEditor
-                    .create(document.querySelector('#description-text')).then(editor => {
+                    .create(document.querySelector('#description-text'), {
+                        language: '<?=LANG_ISO;?>',
+                    }).then(editor => {
                         noticeDetails = editor;
 
                     })
