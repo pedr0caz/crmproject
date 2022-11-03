@@ -25,6 +25,31 @@
     $(function() {
         $('[data-toggle="tooltip"]').tooltip()
     });
+
+    $(document).ready(function() {
+        $('#flag').selectpicker('val',
+            '<?=$_SESSION['lang']?>'
+        );
+        $('#flag').selectpicker('refresh');
+
+        $('#flag').on('change', function() {
+            var flag = $(this).val();
+            $.ajax({
+                url: "<?=ROOT?>/home",
+                method: "POST",
+                data: {
+                    flag: flag
+                },
+                success: function(data) {
+                    console.log(data);
+                    if (data.status == 'success') {
+                        location.reload();
+                    }
+
+                }
+            });
+        });
+    });
 </script>
 
 </body>

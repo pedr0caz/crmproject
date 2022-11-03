@@ -115,8 +115,10 @@ require_once("views/layout/navbar.php");
                                 <div class="media align-items-center mw-250">
                                     <a href="<?=ROOT;?>/employee/<?=$task['user_id']?>"
                                         class="position-relative ">
-                                        <img src="<?=$task['user_image'] ? $task['user_image'] : 'https://www.gravatar.com/avatar/3ea58e77e21cabdfeabbfd844cbabbca.png?s=200&amp;d=mp';?>"
-                                            class="mr-2 taskEmployeeImg rounded-circle" alt="Pedro" title="Pedro">
+                                        <img src="<?=$task['user_image'] ? ROOT.'/'.$task['user_image'] : 'https://www.gravatar.com/avatar/3ea58e77e21cabdfeabbfd844cbabbca.png?s=200&amp;d=mp';?>"
+                                            class="mr-2 taskEmployeeImg rounded-circle"
+                                            alt="<?=$task['user_name']?>"
+                                            title="<?=$task['user_name']?>">
                                     </a>
                                     <div class="media-body">
                                         <h5 class="mb-0 f-12">
@@ -281,13 +283,13 @@ require_once("views/layout/navbar.php");
                                                     <?php foreach($taskFiles as $file):
                                                         $time = date_diff(date_create('now'), date_create($file['created_at']));
                                                         if ($time->format('%a') == 0 && $time->format('%h') == 0 && $time->format('%i') == 0) {
-                                                            $time = $time->format('%s seconds ago');
+                                                            $time = $time->format('%s '.G_SECONDS.' '.G_AGO);
                                                         } elseif ($time->format('%a') == 0 && $time->format('%h') == 0 && $time->format('%i') > 0) {
-                                                            $time = $time->format('%i minutes ago');
+                                                            $time = $time->format('%i '.G_MINUTES.' '.G_AGO);
                                                         } elseif ($time->format('%a') == 0 && $time->format('%h') > 0) {
-                                                            $time = $time->format('%h hours ago');
+                                                            $time = $time->format('%h '.G_HOURS.' '.G_AGO);
                                                         } else {
-                                                            $time = $time->format('%a days ago');
+                                                            $time = $time->format('%a '.G_DAYS.' '.G_AGO);
                                                         }
                                                         ?>
                                                     <div class="card bg-white border-grey file-card mr-3 mb-3"
@@ -373,7 +375,7 @@ require_once("views/layout/navbar.php");
                                             <div class="col-md-12 p-20 ">
                                                 <div class="media">
 
-                                                    <img src="<?=$_SESSION['user_image'] ? $_SESSION['user_image'] : 'https://www.gravatar.com/avatar/3ea58e77e21cabdfeabbfd844cbabbca.png?s=200&d=mp'; ?>"
+                                                    <img src="<?=$_SESSION['user_image'] ? ROOT.'/'.$_SESSION['user_image'] : 'https://www.gravatar.com/avatar/3ea58e77e21cabdfeabbfd844cbabbca.png?s=200&d=mp'; ?>"
                                                         class="align-self-start mr-3 taskEmployeeImg rounded"
                                                         alt="<?=$_SESSION['user_name']?>">
                                                     <div class="media-body bg-white">
@@ -405,7 +407,7 @@ require_once("views/layout/navbar.php");
                                             <div class="card w-100 rounded-0 border-0 comment">
                                                 <div class="card-horizontal">
                                                     <div class="card-img my-1 ml-0">
-                                                        <img src="<?=$comment['user_image'] ? $comment['user_image'] : 'https://www.gravatar.com/avatar/3ea58e77e21cabdfeabbfd844cbabbca.png?s=200&d=mp'; ?>"
+                                                        <img src="<?=$comment['user_image'] ? ROOT.'/'.$comment['user_image'] : 'https://www.gravatar.com/avatar/3ea58e77e21cabdfeabbfd844cbabbca.png?s=200&d=mp'; ?>"
                                                             alt="<?=$comment['user_name']?>">
                                                     </div>
                                                     <div class="card-body border-0 pl-0 py-1">
@@ -419,13 +421,13 @@ require_once("views/layout/navbar.php");
                                                                    
                                                 $time = date_diff(date_create('now'), date_create($comment['created_at']));
                                                 if ($time->format('%a') == 0 && $time->format('%h') == 0 && $time->format('%i') == 0) {
-                                                    $time = $time->format('%s seconds ago');
+                                                    $time = $time->format('%s '.G_SECONDS.' '.G_AGO);
                                                 } elseif ($time->format('%a') == 0 && $time->format('%h') == 0 && $time->format('%i') > 0) {
-                                                    $time = $time->format('%i minutes ago');
+                                                    $time = $time->format('%i '.G_MINUTES.' '.G_AGO);
                                                 } elseif ($time->format('%a') == 0 && $time->format('%h') > 0) {
-                                                    $time = $time->format('%h hours ago');
+                                                    $time = $time->format('%h '.G_HOURS.' '.G_AGO);
                                                 } else {
-                                                    $time = $time->format('%a days ago');
+                                                    $time = $time->format('%a '.G_DAYS.' '.G_AGO);
                                                 }
                                                 echo $time;
                                                 ?>
@@ -463,26 +465,29 @@ require_once("views/layout/navbar.php");
                                     </div>
                                     <div class="tab-pane fade" role="tabpanel" id="history">
                                         <div class="d-flex flex-wrap p-20">
-                                            <?php foreach($taskHistory as $history): ?>
+                                            <?php foreach($taskHistory as $history):
+                                                $historyJSON = json_decode($history['details'], true);
+                                                ?>
                                             <div class="card file-card w-100 rounded-0 border-0 comment">
                                                 <div class="card-horizontal">
                                                     <div class="card-img my-1 ml-0">
-                                                        <img src="<?=$history['user_image'] ? $history['user_image'] : 'https://www.gravatar.com/avatar/3ea58e77e21cabdfeabbfd844cbabbca.png?s=200&d=mp'; ?>"
+                                                        <img src="<?=$history['user_image'] ? ROOT.'/'.$history['user_image'] : 'https://www.gravatar.com/avatar/3ea58e77e21cabdfeabbfd844cbabbca.png?s=200&d=mp'; ?>"
                                                             alt="<?=$history['user_name']?>">
                                                     </div>
                                                     <div class="card-body border-0 pl-0 py-1 mb-2">
                                                         <div class="d-flex flex-grow-1">
                                                             <h4
                                                                 class="card-title f-12 font-weight-normal text-dark mr-3 mb-1">
-                                                                <?=$history['details']?>
+                                                                <?=$historyJSON[LANG_ISO]?>
                                                             </h4>
                                                             </h4>
                                                         </div>
                                                         <div class="card-text f-11 text-lightest text-justify">
                                                             <?php
                                                             if($history['board_column_name']) {
+                                                                $labelTranslate = json_decode($history['board_column_name'], true);
                                                                 echo '<span class="badge badge-primary"
-																style="background-color:'.$history['board_column_color'].'">'.$history['board_column_name'].'</span>';
+																style="background-color:'.$history['board_column_color'].'">'.$labelTranslate[LANG_ISO].'</span>';
                                                             }
                                                 ?>
 
@@ -491,13 +496,13 @@ require_once("views/layout/navbar.php");
                                                                    
                                                        $time = date_diff(date_create('now'), date_create($history['created_at']));
                                                 if ($time->format('%a') == 0 && $time->format('%h') == 0 && $time->format('%i') == 0) {
-                                                    $time = $time->format('%s seconds ago');
+                                                    $time = $time->format('%s '.G_SECONDS.' '.G_AGO);
                                                 } elseif ($time->format('%a') == 0 && $time->format('%h') == 0 && $time->format('%i') > 0) {
-                                                    $time = $time->format('%i minutes ago');
+                                                    $time = $time->format('%i '.G_MINUTES.' '.G_AGO);
                                                 } elseif ($time->format('%a') == 0 && $time->format('%h') > 0) {
-                                                    $time = $time->format('%h hours ago');
+                                                    $time = $time->format('%h '.G_HOURS.' '.G_AGO);
                                                 } else {
-                                                    $time = $time->format('%a days ago');
+                                                    $time = $time->format('%a '.G_DAYS.' '.G_AGO);
                                                 }
                                                 echo $time;
                                                 ?>
@@ -633,6 +638,7 @@ if($deadline > date('Y-m-d')) {
                                     $('#save-comment-data-form').addClass('d-none');
                                     $('#add-comment').closest('.row').removeClass('d-none');
                                     $('#comment-list').prepend(response.data);
+                                    location.reload();
 
                                 }
 
@@ -733,13 +739,13 @@ if($deadline > date('Y-m-d')) {
                     $('body').on('click', '.delete-comment', function() {
                         var id = $(this).data('row-id');
                         Swal.fire({
-                            title: "Are you sure?",
+                            title: "<?=SWAL_TITLE_DELETE;?>",
                             text: "You will not be able to recover the deleted record!",
                             icon: 'warning',
                             showCancelButton: true,
                             focusConfirm: false,
-                            confirmButtonText: "Yes, delete it!",
-                            cancelButtonText: "Cancel",
+                            confirmButtonText: "<?=SWAL_CONFIRM_DELETE;?>",
+                            cancelButtonText: "<?=G_CANCEL;?>",
                             customClass: {
                                 confirmButton: 'btn btn-primary mr-3',
                                 cancelButton: 'btn btn-secondary'
@@ -840,13 +846,13 @@ if($deadline > date('Y-m-d')) {
                     $('body').on('click', '.delete-file', function() {
                         var id = $(this).data('row-id');
                         Swal.fire({
-                            title: "Are you sure?",
+                            title: "<?=SWAL_TITLE_DELETE;?>",
                             text: "You will not be able to recover the deleted record!",
                             icon: 'warning',
                             showCancelButton: true,
                             focusConfirm: false,
-                            confirmButtonText: "Yes, delete it!",
-                            cancelButtonText: "Cancel",
+                            confirmButtonText: "<?=SWAL_CONFIRM_DELETE;?>",
+                            cancelButtonText: "<?=G_CANCEL;?>",
                             customClass: {
                                 confirmButton: 'btn btn-primary mr-3',
                                 cancelButton: 'btn btn-secondary'

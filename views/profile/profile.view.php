@@ -7,7 +7,8 @@
                 <div class="nav" id="nav-tab" role="tablist">
                     <a class="nav-item nav-link f-15 profile <?=!isset($_GET['files']) ? 'active' : '' ;?>"
                         href="<?=ROOT;?>/profile" role="tab"
-                        aria-controls="nav-profiles" aria-selected="true">Profile </a>
+                        aria-controls="nav-profiles"
+                        aria-selected="true"><?=G_PROFILE;?> </a>
                     <a class="nav-item nav-link f-15 files <?=isset($_GET['files']) ? 'active' : '' ;?>"
                         href="profile/tab?files" role="tab" aria-controls="nav-profile" aria-selected="true"
                         ajax="false"><?=PROFILE_MY_FILES;?> </a>
@@ -243,7 +244,7 @@
                                             })
                                         } else {
                                             Swal.fire({
-                                                title: 'Error!',
+                                                title: '<?=G_ERROR;?>',
                                                 text: response.message,
                                                 icon: 'error',
                                                 confirmButtonText: 'Ok'
@@ -339,13 +340,13 @@
                             <?php foreach($files as $file):
                                 $time = date_diff(date_create('now'), date_create($file['created_at']));
                                 if ($time->format('%a') == 0 && $time->format('%h') == 0 && $time->format('%i') == 0) {
-                                    $time = $time->format('%s seconds ago');
+                                    $time = $time->format('%s '.G_SECONDS.' '.G_AGO);
                                 } elseif ($time->format('%a') == 0 && $time->format('%h') == 0 && $time->format('%i') > 0) {
-                                    $time = $time->format('%i minutes ago');
+                                    $time = $time->format('%i '.G_MINUTES.' '.G_AGO);
                                 } elseif ($time->format('%a') == 0 && $time->format('%h') > 0) {
-                                    $time = $time->format('%h hours ago');
+                                    $time = $time->format('%h '.G_HOURS.' '.G_AGO);
                                 } else {
-                                    $time = $time->format('%a days ago');
+                                    $time = $time->format('%a '.G_DAYS.' '.G_AGO);
                                 }
                                 ?>
                             <div class="card bg-white border-grey file-card mr-3 mb-3">
@@ -451,13 +452,13 @@
     $('body').on('click', '.delete-file', function() {
         var id = $(this).data('row-id');
         Swal.fire({
-            title: "Are you sure?",
+            title: "<?=SWAL_TITLE_DELETE;?>",
             text: "You will not be able to recover the deleted record!",
             icon: 'warning',
             showCancelButton: true,
             focusConfirm: false,
-            confirmButtonText: "Yes, delete it!",
-            cancelButtonText: "Cancel",
+            confirmButtonText: "<?=SWAL_CONFIRM_DELETE;?> ",
+            cancelButtonText: "<?=G_CANCEL;?> ",
             customClass: {
                 confirmButton: 'btn btn-primary mr-3',
                 cancelButton: 'btn btn-secondary'

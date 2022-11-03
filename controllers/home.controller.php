@@ -3,7 +3,7 @@ if (!isset($_SESSION["user_id"])) {
     header("Location: " . ROOT . "/login");
     exit;
 } else {
-    $title = "Dashboard";
+    $title = MENU_DASHBOARD;
 
     require("models/users.model.php");
     require("models/task.model.php");
@@ -14,6 +14,10 @@ if (!isset($_SESSION["user_id"])) {
     $projectModel = new Project();
     $employeeModel = new Employee();
     $department = $usersModel->getDepartment($_SESSION["user_id"]);
+    $designation = $usersModel->getDesignation($_SESSION["user_id"]);
+
+    $designationD = !empty($designation["name"]) ? $designation["name"] : "No designation";
+
  
     $birthdays = $usersModel->getBirthdays();
     $notices = $usersModel->getNotices($_SESSION["user_id"], $_SESSION["user_role"]);
@@ -54,7 +58,14 @@ if (!isset($_SESSION["user_id"])) {
             }
         }
     }
-   
-
-    require("views/dashboard/home.view.php");
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if (isset($_POST['flag'])) {
+            $_SESSION['lang'] = $_POST['flag'];
+            header("content-type: application/json");
+            echo json_encode(array("status" => "success"));
+            exit;
+        }
+    } else {
+        require("views/dashboard/home.view.php");
+    }
 }

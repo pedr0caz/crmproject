@@ -56,6 +56,9 @@ if (!isset($_SESSION["user_id"])) {
                    
                     $result = $userModel->updateUser($_SESSION["user_id"], $_POST["name"], $_POST["email"], $_POST["mobile"], $_POST["country_id"], $newFilepath);
                     if ($result["status"]) {
+                        $_SESSION["user_name"] = $_POST["name"];
+                        $_SESSION["user_email"] = $_POST["email"];
+                        $_SESSION["user_image"] = $newFilepath;
                         header('Content-Type: application/json; charset=utf-8');
                         echo json_encode(['status' => 'success', 'message' => 'Details updated successfully']);
                         exit;
@@ -110,13 +113,13 @@ if (!isset($_SESSION["user_id"])) {
                 if ($data) {
                     $time = date_diff(date_create('now'), date_create($data['created_at']));
                     if ($time->format('%a') == 0 && $time->format('%h') == 0 && $time->format('%i') == 0) {
-                        $time = $time->format('%s seconds ago');
+                        $time = $time->format('%s '.G_SECONDS.' '.G_AGO);
                     } elseif ($time->format('%a') == 0 && $time->format('%h') == 0 && $time->format('%i') > 0) {
-                        $time = $time->format('%i minutes ago');
+                        $time = $time->format('%i '.G_MINUTES.' '.G_AGO);
                     } elseif ($time->format('%a') == 0 && $time->format('%h') > 0) {
-                        $time = $time->format('%h hours ago');
+                        $time = $time->format('%h '.G_HOURS.' '.G_AGO);
                     } else {
-                        $time = $time->format('%a days ago');
+                        $time = $time->format('%a '.G_DAYS.' '.G_AGO);
                     }
                     $data = '<div class="card bg-white border-grey file-card mr-3 mb-3">
                     <div class="card-horizontal">
@@ -150,7 +153,7 @@ if (!isset($_SESSION["user_id"])) {
     
                     
                     header('Content-Type: application/json; charset=utf-8');
-                    echo json_encode(['status' => 'success', 'message' => 'File uploaded successfully', 'data' => $data]);
+                    echo json_encode(['status' => 'success', 'message' => SWAL_FILE_ADDED, 'data' => $data]);
                 }
             }
         } else {
@@ -159,7 +162,7 @@ if (!isset($_SESSION["user_id"])) {
             } else {
                 $files = $clientModel->getFiles($_SESSION["user_id"]);
             }
-            $title = "Profile";
+            $title = G_PROFILE;
             require("views/profile/profile.view.php");
         }
     }

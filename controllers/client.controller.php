@@ -18,7 +18,7 @@ if (!isset($_SESSION["user_id"])) {
             if ($_SESSION["user_role"] == 1) {
                 $clients = $clientModel->getClients();
             }
-            $title = "Client List";
+            $title = G_CLIENTS;
             require("views/client/clients.view.php");
         } elseif ($_SESSION["user_role"] <= 1 && isset($id) && $id == "create") {
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -117,7 +117,7 @@ if (!isset($_SESSION["user_id"])) {
                     }
                 }
             } else {
-                $title = "Create Client";
+                $title = G_ADD . ' ' . G_CLIENT;
                 require("views/client/addclient.view.php");
             }
         } elseif ($_SESSION["user_role"] <= 1 && isset($id) && $id != null && $id == "import") {
@@ -244,11 +244,11 @@ if (!isset($_SESSION["user_id"])) {
                         }
                     } else {
                         header('Content-Type: application/json; charset=utf-8');
-                        echo json_encode(['status' => 'error', 'message' => 'Something went wrong, please try again']);
+                        echo json_encode(['status' => 'error', 'message' => G_SOMETHING_WENT_WRONG]);
                     }
                 }
             } else {
-                $title = "Import client";
+                $title = G_IMPORT . ' ' . G_CLIENT;
                 require("views/client/importclient.view.php");
             }
         } elseif ($_SESSION["user_role"] <= 1 && isset($id) && is_numeric($id)) {
@@ -344,7 +344,7 @@ if (!isset($_SESSION["user_id"])) {
                 } else {
                     $projects = $projectsModel->getProjectByClientID($id);
                     $notes = $clientModel->getClientNotes($id, $_SESSION['user_id']);
-                    $title = "Client Details &bull; ".$client["name"];
+                    $title = G_CLIENT . ' • ' . $client['name'];
                     require("views/client/clientdetails.view.php");
                 }
             } elseif (isset($_GET['edit']) && $_SESSION['user_role'] <= 1) {
@@ -409,7 +409,7 @@ if (!isset($_SESSION["user_id"])) {
                         }
                     }
                 } else {
-                    $title = "Edit Client &bull; ".$client["name"];
+                    $title = G_EDIT .' '.G_CLIENT." &bull; ".$client["name"];
                     require("views/client/editclient.view.php");
                 }
             }

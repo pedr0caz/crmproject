@@ -68,7 +68,8 @@
                                 <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">
                                     <?php
                                         if ($notice['toGroup'] == 2) {
-                                            echo $notice['display_name'];
+                                            $noticeToJSON = json_decode($notice['display_name'], true);
+                                            echo $notice['team_name']? $notice['team_name'] : $noticeToJSON[LANG_ISO];
                                         } else {
                                             echo G_CLIENT;
                                         }
@@ -78,7 +79,8 @@
 
                             <div class="col-12 px-0 pb-3 ">
                                 <p class="mb-0 text-lightest f-14 w-30 text-capitalize">
-                                    <?=G_DESCRIPTION;?></p>
+                                    <?=G_DESCRIPTION;?>
+                                </p>
                                 <div class="mb-0 text-dark-grey f-14 w-70 text-wrap ql-editor p-0 mt-3">
                                     <?=$notice['description'];?>
                                 </div>

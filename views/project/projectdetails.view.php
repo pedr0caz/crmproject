@@ -262,7 +262,8 @@
                                     data: {
                                         labels: [
                                             <?php foreach($myArray as $slug) {
-                                                echo '"'.$slug['column_name'].'",';
+                                                $labelTranslate = json_decode($slug['column_name'], true);
+                                                echo '"'.$labelTranslate[LANG_ISO].'",';
                                             } ?>
                                         ],
                                         datasets: [{
@@ -281,13 +282,11 @@
                                     },
                                     options: {
                                         responsive: true,
+                                        maintainAspectRatio: false,
+
                                         plugins: {
                                             legend: {
-                                                position: 'right',
-                                            },
-                                            title: {
-                                                display: false,
-                                                text: 'Chart.js Pie Chart'
+                                                position: 'bottom',
                                             }
                                         }
                                     },
@@ -337,7 +336,9 @@
                             </div>
                         </div>
                         <?php else: ?>
-                        <?php foreach($getProjectActivity as $activity):?>
+                        <?php foreach($getProjectActivity as $activity):
+                            $activityJSON = json_decode($activity['activity'], true);
+                            ?>
                         <div class="card border-0 b-shadow-4 p-20 rounded-0">
                             <div class="card-horizontal">
                                 <div class="card-header m-0 p-0 bg-white rounded">
@@ -348,7 +349,7 @@
                                 </div>
                                 <div class="card-body border-0 p-0 ml-3">
                                     <h4 class="card-title f-14 font-weight-normal text-capitalize">
-                                        <?=$activity['activity']?>
+                                        <?=$activityJSON[LANG_ISO]?>
                                     </h4>
                                     <p class="card-text f-12 text-dark-grey">
                                         <?=date('H:i', strtotime($activity['created_at']))?>
@@ -604,13 +605,13 @@
                         <?php foreach($getProjectFiles as $file):
                             $time = date_diff(date_create('now'), date_create($file['created_at']));
                             if ($time->format('%a') == 0 && $time->format('%h') == 0 && $time->format('%i') == 0) {
-                                $time = $time->format('%s seconds ago');
+                                $time = $time->format('%s '.G_SECONDS.' '.G_AGO);
                             } elseif ($time->format('%a') == 0 && $time->format('%h') == 0 && $time->format('%i') > 0) {
-                                $time = $time->format('%i minutes ago');
+                                $time = $time->format('%i '.G_MINUTES.' '.G_AGO);
                             } elseif ($time->format('%a') == 0 && $time->format('%h') > 0) {
-                                $time = $time->format('%h hours ago');
+                                $time = $time->format('%h '.G_HOURS.' '.G_AGO);
                             } else {
-                                $time = $time->format('%a days ago');
+                                $time = $time->format('%a '.G_DAYS.' '.G_AGO);
                             }
                             ?>
                         <div class="card bg-white border-grey file-card mr-3 mb-3"
@@ -720,13 +721,13 @@
             $('body').on('click', '.delete-file', function() {
                 var id = $(this).data('row-id');
                 Swal.fire({
-                    title: "Are you sure?",
+                    title: "<?=SWAL_TITLE_DELETE;?>",
                     text: "You will not be able to recover the deleted record!",
                     icon: 'warning',
                     showCancelButton: true,
                     focusConfirm: false,
-                    confirmButtonText: "Yes, delete it!",
-                    cancelButtonText: "Cancel",
+                    confirmButtonText: "<?=SWAL_CONFIRM_DELETE;?>",
+                    cancelButtonText: "<?=G_CANCEL;?>",
                     customClass: {
                         confirmButton: 'btn btn-primary mr-3',
                         cancelButton: 'btn btn-secondary'
@@ -1349,8 +1350,8 @@
                 icon: 'warning',
                 showCancelButton: true,
                 focusConfirm: false,
-                confirmButtonText: "Yes, delete it!",
-                cancelButtonText: "Cancel",
+                confirmButtonText: "<?=SWAL_CONFIRM_DELETE;?>",
+                cancelButtonText: "<?=G_CANCEL;?> ",
                 customClass: {
                     confirmButton: 'btn btn-primary mr-3',
                     cancelButton: 'btn btn-secondary'
@@ -1413,8 +1414,8 @@
                     console.log(response);
                     if (response.status == "success") {
                         Swal.fire({
-                            title: "Saved!",
-                            text: "Departments have been saved",
+                            title: <?=G_SAVED;?> ,
+                            text: response.message,
                             icon: 'success',
                             showCancelButton: false,
                             focusConfirm: false,
@@ -1463,7 +1464,7 @@
                     console.log(response);
                     if (response.status == "success") {
                         Swal.fire({
-                            title: "Success!",
+                            title: <?=G_SUCCESS;?> ,
                             text: response.message,
                             icon: 'success',
                             showCancelButton: false,
@@ -1503,7 +1504,7 @@
                 if (data.status == 'success') {
                     Swal.fire({
                         icon: 'success',
-                        title: 'Task Status Changed',
+                        title: data.message,
                         showConfirmButton: true,
                         timer: 1500
                     }).then((result) => {})
@@ -1521,13 +1522,13 @@
     $('body').on('click', '.delete-table-row', function() {
         var id = $(this).data('task-id');
         Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
+            title: '<?=SWAL_TITLE_DELETE;?>',
+            text: "<?=SWAL_YOU_WONT_BE_ABLE_REVERT;?>",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
+            confirmButtonText: '<?=SWAL_CONFIRM_DELETE;?>'
         }).then((result) => {
             if (result.value) {
                 $.ajax({

@@ -410,7 +410,10 @@ class Task extends Base
             ");
             $query->execute([
                 $id,
-                "Task status changed by " . $_SESSION["user_name"],
+                json_encode([
+                    "en" => "Task status changed by " . $_SESSION["user_name"],
+                    "pt" => "Estado da tarefa alterada por " . $_SESSION["user_name"],
+                ]),
                 date("Y-m-d H:i:s"),
                 $_SESSION["user_id"],
                 $status
@@ -456,7 +459,10 @@ class Task extends Base
             ");
             $query->execute([
                 $id,
-                "New file uploaded by " . $_SESSION["user_name"],
+                json_encode([
+                    "en" => "New file uploaded by " . $_SESSION["user_name"],
+                    "pt" => "Novo ficheiro carregado por " . $_SESSION["user_name"],
+                ]),
                 date("Y-m-d H:i:s"),
                 $user_id
             ]);
@@ -483,7 +489,10 @@ class Task extends Base
             ");
             $query->execute([
                 $taskid,
-                "File deleted by " . $_SESSION["user_name"],
+                json_encode([
+                    "en" => "File deleted by " . $_SESSION["user_name"],
+                    "pt" => "Ficheiro apagado por " . $_SESSION["user_name"],
+                ]),
                 date("Y-m-d H:i:s"),
                 $_SESSION["user_id"],
             ]);
@@ -507,7 +516,10 @@ class Task extends Base
             ");
             $query->execute([
                 $taskid,
-                "File deleted by " . $_SESSION["user_name"],
+                json_encode([
+                    "en" => "File deleted by " . $_SESSION["user_name"],
+                    "pt" => "Ficheiro apagado por " . $_SESSION["user_name"],
+                ]),
                 date("Y-m-d H:i:s"),
                 $_SESSION["user_id"],
             ]);
@@ -532,7 +544,10 @@ class Task extends Base
             ");
             $query->execute([
                 $id,
-                "New comment by " . $_SESSION["user_name"],
+                json_encode([
+                    "en" => "New comment by " . $_SESSION["user_name"],
+                    "pt" => "Novo comentário por " . $_SESSION["user_name"],
+                ]),
                 date("Y-m-d H:i:s"),
                 $user_id,
             ]);
@@ -633,7 +648,10 @@ class Task extends Base
             ");
             $query->execute([
                 $id,
-                "Task created by " . $_SESSION["user_name"],
+                json_encode([
+                    "en" => "Task created by " . $_SESSION["user_name"],
+                    "pt" => "Tarefa criada por " . $_SESSION["user_name"],
+                ]),
                 date("Y-m-d H:i:s"),
                 $added_by,
             ]);
@@ -645,7 +663,10 @@ class Task extends Base
                 ");
                 $query->execute([
                     $project_id,
-                    "Task Assigned to Project by " . $_SESSION["user_name"],
+                    json_encode([
+                        "en" => "Task created by " . $_SESSION["user_name"],
+                        "pt" => "Tarefa criada por " . $_SESSION["user_name"],
+                    ]),
                     date("Y-m-d H:i:s")
                 ]);
             }
@@ -686,7 +707,10 @@ class Task extends Base
             ");
             $query->execute([
                 $id,
-                "Task edited by " . $_SESSION["user_name"],
+                json_encode([
+                    "en" => "Task edited by " . $_SESSION["user_name"],
+                    "pt" => "Tarefa editada por " . $_SESSION["user_name"],
+                ]),
                 date("Y-m-d H:i:s"),
                 $added_by,
             ]);
@@ -727,7 +751,10 @@ class Task extends Base
             ");
             $query->execute([
                 $project_id["project_id"],
-                "Task deleted from Project by " . $_SESSION["user_name"],
+                json_encode([
+                    "en" => "Task deleted by " . $_SESSION["user_name"],
+                    "pt" => "Tarefa apagada por " . $_SESSION["user_name"],
+                ]),
                 date("Y-m-d H:i:s"),
         
             ]);
@@ -780,7 +807,10 @@ class Task extends Base
             ");
             $query->execute([
                 $project_id["project_id"],
-                "Task deleted from Project by " . $_SESSION["user_name"],
+                json_encode([
+                    "en" => "Task deleted by " . $_SESSION["user_name"],
+                    "pt" => "Tarefa apagada por " . $_SESSION["user_name"],
+                ]),
                 date("Y-m-d H:i:s"),
         
             ]);

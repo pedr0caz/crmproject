@@ -35,7 +35,7 @@ if (!isset($_SESSION["user_id"])) {
                 $projects = $projectsModel->getProjectByClientID($_SESSION["user_client_id"]);
             }
 
-            $title = "Projects";
+            $title = G_PROJECTS;
             require("views/project/projects.view.php");
         } elseif ($_SESSION["user_role"] <= 1 && isset($id) && $id == "create") {
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -51,7 +51,7 @@ if (!isset($_SESSION["user_id"])) {
                  
                         if ($project["status"]) {
                             header('Content-Type: application/json; charset=utf-8');
-                            echo json_encode(['status' => 'success', 'message' => 'Project added successfully', 'id' => $project["id"]]);
+                            echo json_encode(['status' => 'success', 'message' => SWAL_PROJECT_ADDED, 'id' => $project["id"]]);
                             exit;
                         } else {
                             header('Content-Type: application/json; charset=utf-8');
@@ -60,7 +60,7 @@ if (!isset($_SESSION["user_id"])) {
                         }
                     } else {
                         header('Content-Type: application/json; charset=utf-8');
-                        echo json_encode(['status' => 'error', 'message' => 'Please fill all the fields']);
+                        echo json_encode(['status' => 'error', 'message' => SWAL_FILL_ALL_FIELDS]);
                         exit;
                     }
                 } elseif (isset($_GET['projectCategory']) && $_GET['projectCategory'] == "edit") {
@@ -94,7 +94,7 @@ if (!isset($_SESSION["user_id"])) {
                     }
                 }
             } else {
-                $title = "Add Project";
+                $title = G_ADD . " " . G_PROJECT;
                 require("views/project/addproject.view.php");
             }
         } elseif (isset($id) && is_numeric($id)) {
@@ -152,13 +152,13 @@ if (!isset($_SESSION["user_id"])) {
                         if ($data) {
                             $time = date_diff(date_create('now'), date_create($data['created_at']));
                             if ($time->format('%a') == 0 && $time->format('%h') == 0 && $time->format('%i') == 0) {
-                                $time = $time->format('%s seconds ago');
+                                $time = $time->format('%s '.G_SECONDS.' '.G_AGO);
                             } elseif ($time->format('%a') == 0 && $time->format('%h') == 0 && $time->format('%i') > 0) {
-                                $time = $time->format('%i minutes ago');
+                                $time = $time->format('%i '.G_MINUTES.' '.G_AGO);
                             } elseif ($time->format('%a') == 0 && $time->format('%h') > 0) {
-                                $time = $time->format('%h hours ago');
+                                $time = $time->format('%h '.G_HOURS.' '.G_AGO);
                             } else {
-                                $time = $time->format('%a days ago');
+                                $time = $time->format('%a '.G_DAYS.' '.G_AGO);
                             }
                             $html = '<div class="card bg-white border-grey file-card mr-3 mb-3">
                             <div class="card-horizontal">
@@ -176,11 +176,11 @@ if (!isset($_SESSION["user_id"])) {
             
                                             <div class="dropdown-menu dropdown-menu-right border-grey rounded b-shadow-4 p-0" aria-labelledby="dropdownMenuLink" tabindex="0">
             
-                                                <a class="cursor-pointer d-block text-dark-grey f-13 pt-3 px-3 " target="_blank" href="'.ROOT."/".$data['filename'].'">View</a>
+                                                <a class="cursor-pointer d-block text-dark-grey f-13 pt-3 px-3 " target="_blank" href="'.ROOT."/".$data['filename'].'">'.G_VIEW.'</a>
             
                                                 <a class="cursor-pointer d-block text-dark-grey f-13 py-3 px-3 " href="'.ROOT."/".$data['filename'].'">Download</a>
             
-                                                <a class="cursor-pointer d-block text-dark-grey f-13 pb-3 px-3 delete-file" data-row-id="1" href="javascript:;">Delete</a>
+                                                <a class="cursor-pointer d-block text-dark-grey f-13 pb-3 px-3 delete-file" data-row-id="1" href="javascript:;">'.G_DELETE.'</a>
                                             </div>
                                         </div>
                                     </div>
@@ -193,7 +193,7 @@ if (!isset($_SESSION["user_id"])) {
             
                             
                             header('Content-Type: application/json; charset=utf-8');
-                            echo json_encode(['status' => 'success', 'message' => 'File uploaded successfully', 'data' => $html]);
+                            echo json_encode(['status' => 'success', 'message' => SWAL_FILE_ADDED, 'data' => $html]);
                         }
                     } elseif (isset($_GET['action']) && $_GET["action"] == "deletefile" && $_SESSION["user_role"] <= 2) {
                         if ($_SESSION["user_role"] == 1) {
@@ -203,20 +203,20 @@ if (!isset($_SESSION["user_id"])) {
                         }
                         if ($data) {
                             header('Content-Type: application/json; charset=utf-8');
-                            echo json_encode(['status' => 'success', 'message' => 'File deleted successfully']);
+                            echo json_encode(['status' => 'success', 'message' => SWAL_FILE_REMOVED]);
                         } else {
                             header('Content-Type: application/json; charset=utf-8');
-                            echo json_encode(['status' => 'error', 'message' => 'Error deleting file']);
+                            echo json_encode(['status' => 'error', 'message' => SWAL_FILE_ERROR]);
                         }
                     } elseif (isset($_GET['msg']) && $_GET["msg"] == "add") {
                         if (isset($_POST['message']) && mb_strlen($_POST['message'] > 0)) {
                             $newChat =  $chatModel->newChat($_POST['message'], $id, $_SESSION['user_id']);
                             if ($newChat) {
                                 header('Content-Type: application/json; charset=utf-8');
-                                echo json_encode(['status' => 'success', 'message' => 'Message sent successfully', 'data' => $newChat]);
+                                echo json_encode(['status' => 'success', 'message' => SWAL_MESSAGE_SENT, 'data' => $newChat]);
                             } else {
                                 header('Content-Type: application/json; charset=utf-8');
-                                echo json_encode(['status' => 'error', 'message' => 'Error sending message']);
+                                echo json_encode(['status' => 'error', 'message' => SWAL_MESSAGE_ERROR]);
                             }
                         }
                     } elseif (isset($_GET['msg']) && $_GET["msg"] == "fetch") {
@@ -225,19 +225,31 @@ if (!isset($_SESSION["user_id"])) {
                         
                             if ($fetchChat) {
                                 header('Content-Type: application/json; charset=utf-8');
-                                echo json_encode(['status' => 'success', 'message' => 'Message sent successfully', 'data' => $fetchChat]);
+                                echo json_encode(['status' => 'success', 'message' => SWAL_MESSAGE_SENT, 'data' => $fetchChat]);
                             }
                         }
                     } elseif (isset($_GET['action']) && $_GET["action"] == "change_status" && $_SESSION["user_role"] <= 1) {
                         if (isset($_POST['status']) && mb_strlen($_POST['status'] > 0)) {
-                            $status =  $projectsModel->changeProjectStatus($_POST['status'], $id);
+                            if ($_POST['status'] == "on hold") {
+                                $lang = PROJECT_ONHOLD;
+                            } elseif ($_POST['status'] == "in progress") {
+                                $lang = PROJECT_INPROGRESS;
+                            } elseif ($_POST['status'] == "completed") {
+                                $lang = PROJECT_FINISHED;
+                            } elseif ($_POST['status'] == "canceled") {
+                                $lang = PROJECT_CANCELLED;
+                            } else {
+                                $lang = PROJECT_NOTSTARTED;
+                            }
+
+                            $status =  $projectsModel->changeProjectStatus($_POST['status'], $id, $lang);
                          
                             if ($status['status']) {
                                 header('Content-Type: application/json; charset=utf-8');
-                                echo json_encode(['status' => 'success', 'message' => 'Project status changed successfully']);
+                                echo json_encode(['status' => 'success', 'message' => SWAL_PROJECT_STATUS]);
                             } else {
                                 header('Content-Type: application/json; charset=utf-8');
-                                echo json_encode(['status' => 'error', 'message' => 'Error changing project status']);
+                                echo json_encode(['status' => 'error', 'message' => SWAL_PROJECT_STATUS_ERROR]);
                             }
                         }
                     } elseif (isset($_GET['action']) && $_GET["action"] == "delete_member" && $_SESSION["user_role"] <= 1) {
@@ -247,10 +259,10 @@ if (!isset($_SESSION["user_id"])) {
                            
                             if ($deleteMember) {
                                 header('Content-Type: application/json; charset=utf-8');
-                                echo json_encode(['status' => 'success', 'message' => 'Member deleted successfully']);
+                                echo json_encode(['status' => 'success', 'message' => SWAL_PROJECT_DELETE_MEMBER]);
                             } else {
                                 header('Content-Type: application/json; charset=utf-8');
-                                echo json_encode(['status' => 'error', 'message' => 'Error deleting member']);
+                                echo json_encode(['status' => 'error', 'message' => SWAL_PROJECT_DELETE_ERROR]);
                             }
                         }
                     } elseif (isset($_GET['action']) && $_GET["action"] == "edit_departments" && $_SESSION["user_role"] <= 1) {
@@ -259,10 +271,10 @@ if (!isset($_SESSION["user_id"])) {
             
                             if ($editDepartments) {
                                 header('Content-Type: application/json; charset=utf-8');
-                                echo json_encode(['status' => 'success', 'message' => 'Departments edited successfully']);
+                                echo json_encode(['status' => 'success', 'message' => SWAL_PROJECT_DEPARTMENTS_EDITED]);
                             } else {
                                 header('Content-Type: application/json; charset=utf-8');
-                                echo json_encode(['status' => 'error', 'message' => 'Error editing departments']);
+                                echo json_encode(['status' => 'error', 'message' => SWAL_PROJECT_DEPARTMENTS_EDITED_ERROR]);
                             }
                         }
                     }
@@ -279,7 +291,7 @@ if (!isset($_SESSION["user_id"])) {
                     $getChatCount = $chatModel->getChatCount($id);
                     $teams = json_decode($project['teams_id'], true);
 
-                    $title = "Project - " . $project["project_name"];
+                    $title = G_PROJECT." - " . $project["project_name"];
                     require("views/project/projectdetails.view.php");
                 }
             } elseif (isset($_GET['edit']) && $_SESSION['user_role'] == 1) {
@@ -296,7 +308,7 @@ if (!isset($_SESSION["user_id"])) {
              
                             if ($project["status"]) {
                                 header('Content-Type: application/json; charset=utf-8');
-                                echo json_encode(['status' => 'success', 'message' => 'Project changed successfully', 'id' => $project["id"]]);
+                                echo json_encode(['status' => 'success', 'message' => SWAL_PROJECT_CHANGED, 'id' => $project["id"]]);
                                 exit;
                             } else {
                                 header('Content-Type: application/json; charset=utf-8');
@@ -305,13 +317,13 @@ if (!isset($_SESSION["user_id"])) {
                             }
                         } else {
                             header('Content-Type: application/json; charset=utf-8');
-                            echo json_encode(['status' => 'error', 'message' => 'Please fill all the fields']);
+                            echo json_encode(['status' => 'error', 'message' => SWAL_FILL_ALL_FIELDS]);
                             exit;
                         }
                     }
                 } else {
                     $teams = json_decode($project['teams_id'], true);
-                    $title = "Edit Project";
+                    $title = G_EDIT . " " . G_PROJECT;
                     require("views/project/editproject.view.php");
                 }
             }

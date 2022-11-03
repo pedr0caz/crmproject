@@ -27,7 +27,14 @@ class User extends Base
         $user = $query->fetch(PDO::FETCH_ASSOC);
         if (!empty($user) && password_verify($data["password"], $user["password"])) {
             $query = $this->db->prepare("INSERT user_activities(user_id, activity, created_at) VALUES(?, ?, ?)");
-            $query->execute([$user['id'], "Logged in", date("Y-m-d H:i:s")]);
+            $query->execute([
+                $user['id'],
+                json_encode([
+                    "en" => "Logged in",
+                    "pt" => "Fez login",
+                ]),
+                date("Y-m-d H:i:s")
+            ]);
             $query = $this->db->prepare("UPDATE users SET last_login = ? AND SET last_seen = ? WHERE id = ?");
             $query->execute([date("Y-m-d H:i:s"),date("Y-m-d H:i:s") ,$user['id']]);
 
@@ -222,6 +229,20 @@ class User extends Base
         $query->execute([$id]);
         $departments = $query->fetchAll(PDO::FETCH_ASSOC);
         return $departments;
+    }
+
+    public function getDesignation($id)
+    {
+        $query = $this->db->prepare("
+            SELECT 
+                d.name
+            FROM designations d
+            INNER JOIN employee_details ed ON d.id = ed.designation_id
+            WHERE ed.user_id = ?
+        ");
+        $query->execute([$id]);
+        $designations = $query->fetch(PDO::FETCH_ASSOC);
+        return $designations;
     }
 
     public function getBirthdays()

@@ -20,7 +20,7 @@ if (!isset($_SESSION["user_id"])) {
         $departments = $employeeModel->getDepartments();
         $taskLabels = $taskModel->getLabels();
         if (isset($id) && $id == null && $_SESSION['user_role'] <= 1) {
-            $title = "Employees";
+            $title = G_EMPLOYEES;
             $employees = $employeeModel->getEmployees();
             require_once("views/employee/employee.view.php");
         } elseif ($_SESSION["user_role"] <= 1 && isset($id) && $id == "create") {
@@ -86,7 +86,7 @@ if (!isset($_SESSION["user_id"])) {
                         }
                     } else {
                         header('Content-Type: application/json; charset=utf-8');
-                        echo json_encode(['status' => 'error', 'message' => 'Please fill all the fields']);
+                        echo json_encode(['status' => 'error', 'message' => SWAL_FILL_ALL_FIELDS]);
                         exit;
                     }
                 } elseif (isset($_GET['emplooyeDesignation']) &&  $_GET['emplooyeDesignation'] == 'edit') {
@@ -218,13 +218,13 @@ if (!isset($_SESSION["user_id"])) {
                         if ($data) {
                             $time = date_diff(date_create('now'), date_create($data['created_at']));
                             if ($time->format('%a') == 0 && $time->format('%h') == 0 && $time->format('%i') == 0) {
-                                $time = $time->format('%s seconds ago');
+                                $time = $time->format('%s '.G_SECONDS.' '.G_AGO);
                             } elseif ($time->format('%a') == 0 && $time->format('%h') == 0 && $time->format('%i') > 0) {
-                                $time = $time->format('%i minutes ago');
+                                $time = $time->format('%i '.G_MINUTES.' '.G_AGO);
                             } elseif ($time->format('%a') == 0 && $time->format('%h') > 0) {
-                                $time = $time->format('%h hours ago');
+                                $time = $time->format('%h '.G_HOURS.' '.G_AGO);
                             } else {
-                                $time = $time->format('%a days ago');
+                                $time = $time->format('%a '.G_DAYS.' '.G_AGO);
                             }
                             $data = '<div class="card bg-white border-grey file-card mr-3 mb-3">
                             <div class="card-horizontal">
@@ -258,7 +258,7 @@ if (!isset($_SESSION["user_id"])) {
             
                             
                             header('Content-Type: application/json; charset=utf-8');
-                            echo json_encode(['status' => 'success', 'message' => 'File uploaded successfully', 'data' => $data]);
+                            echo json_encode(['status' => 'success', 'message' => SWAL_FILE_ADDED, 'data' => $data]);
                         }
                     }
                 } else {
@@ -270,7 +270,7 @@ if (!isset($_SESSION["user_id"])) {
                     $employeeFiles = $employeeModel->getFiles($id);
                     $getEmployeeTasks = $employeeModel->getEmployeeTasks($id);
 
-                    $title = "Employee Details" . " - " . $employee["name"];
+                    $title =  G_EMPLOYEE ." - ". $employee["name"];
 
                     require("views/employee/employeedetails.view.php");
                 }
@@ -343,13 +343,13 @@ if (!isset($_SESSION["user_id"])) {
                             }
                         } else {
                             header('Content-Type: application/json; charset=utf-8');
-                            echo json_encode(['status' => 'error', 'message' => 'Please fill all the fields']);
+                            echo json_encode(['status' => 'error', 'message' => SWAL_FILL_ALL_FIELDS]);
                             exit;
                         }
                     }
                 } else {
                     /*  die(var_dump($employee)); */
-                    $title = "Edit Employee";
+                    $title = G_EDIT." ".G_EMPLOYEE;
                     require("views/employee/editemployee.view.php");
                 }
             }

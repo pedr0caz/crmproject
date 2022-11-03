@@ -323,7 +323,19 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <?=ucwords($project['status']);?>
+                                            <?php
+                                        if($project['status'] == 'in progress') {
+                                            echo "<i class='bi bi-circle-fill  mr-2  text-blue'></i> ".PROJECT_INPROGRESS;
+                                        } elseif($project['status'] == 'finished') {
+                                            echo "<i class='bi bi-circle-fill  mr-2  text-success'></i> ".PROJECT_FINISHED;
+                                        } elseif($project['status'] == 'on hold') {
+                                            echo "<i class='bi bi-circle-fill  mr-2  text-warning'></i> ".PROJECT_ONHOLD;
+                                        } elseif($project['status'] == 'canceled') {
+                                            echo "<i class='bi bi-circle-fill  mr-2  text-danger'></i> ".PROJECT_CANCELLED;
+                                        } else {
+                                            echo "<i class='bi bi-circle-fill  mr-2  text-dark-grey'></i> ".PROJECT_NOTSTARTED;
+                                        }
+                                        ?>
                                         </td>
                                         <td>
                                             <div class="task_view">
@@ -518,13 +530,13 @@
                     $('body').on('click', '.delete-file', function() {
                         var id = $(this).data('row-id');
                         Swal.fire({
-                            title: "Are you sure?",
+                            title: "<?=SWAL_TITLE_DELETE;?>",
                             text: "You will not be able to recover the deleted record!",
                             icon: 'warning',
                             showCancelButton: true,
                             focusConfirm: false,
-                            confirmButtonText: "Yes, delete it!",
-                            cancelButtonText: "Cancel",
+                            confirmButtonText: "<?=SWAL_CONFIRM_DELETE;?>",
+                            cancelButtonText: " <?=G_CANCEL;?>",
                             customClass: {
                                 confirmButton: 'btn btn-primary mr-3',
                                 cancelButton: 'btn btn-secondary'
@@ -663,13 +675,13 @@
                     $('body').on('click', '.delete-table-row', function() {
                         var id = $(this).data('note-id');
                         Swal.fire({
-                            title: "Are you sure?",
+                            title: "<?=SWAL_TITLE_DELETE;?>",
                             text: "You will not be able to recover the deleted record!",
                             icon: 'warning',
                             showCancelButton: true,
                             focusConfirm: false,
-                            confirmButtonText: "Yes, delete it!",
-                            cancelButtonText: "Cancel",
+                            confirmButtonText: "<?=SWAL_CONFIRM_DELETE;?>",
+                            cancelButtonText: "<?=G_CANCEL;?>",
                             customClass: {
                                 confirmButton: 'btn btn-primary mr-3',
                                 cancelButton: 'btn btn-secondary'

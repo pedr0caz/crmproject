@@ -41,7 +41,8 @@
                                         <?=$notice['created_at'];?>
                                     </td>
                                     <td><?php   if ($notice['toGroup'] == 2) {
-                                        echo $notice['team_name'] ? $notice['team_name'] : $notice['display_name'];
+                                        $noticeToJSON = json_decode($notice['display_name'], true);
+                                        echo $notice['team_name']? $notice['team_name'] : $noticeToJSON[LANG_ISO];
                                     } else {
                                         echo G_CLIENT;
                                     }?></td>
@@ -110,13 +111,13 @@
                 id: noticeId
             };
             Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                title: '<?=SWAL_TITLE_DELETE;?>',
+                text: "<?=SWAL_YOU_WONT_BE_ABLE_REVERT;?>",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: '<?=SWAL_CONFIRM_DELETE;?>'
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({

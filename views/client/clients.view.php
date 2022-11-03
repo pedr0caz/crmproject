@@ -155,13 +155,13 @@
             var url =
                 '<?=ROOT;?>/client/' + client_id + '?delete';
             Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                title: '<?=SWAL_TITLE_DELETE;?>',
+                text: "<?=SWAL_YOU_WONT_BE_ABLE_REVERT;?>",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: '"<?=SWAL_CONFIRM_DELETE;?>'
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
@@ -185,8 +185,8 @@
                             } else {
                                 console.log('error');
                                 Swal.fire({
-                                    title: 'Error!',
-                                    text: 'Something went wrong.',
+                                    title: '<?=G_ERROR;?>',
+                                    text: '<?=G_SOMETHING_WENT_WRONG;?>',
                                     icon: 'error',
                                     confirmButtonText: 'Ok'
                                 })

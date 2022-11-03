@@ -12,7 +12,7 @@
 
                     <div class="add-client bg-white rounded">
                         <h4 class="mb-0 p-20 f-21 font-weight-normal text-capitalize border-bottom-grey">
-                            <?=EMPLOYEE_ADD;?>
+                            <?=G_EDIT . " " . G_EMPLOYEE;?>
                         </h4>
                         <div class="row p-20">
                             <div class="col-lg-9 col-xl-10">
@@ -126,7 +126,7 @@
                                                 <button id="department-setting-add" type="button"
                                                     class="btn btn-outline-secondary border-grey" data-toggle="modal"
                                                     data-target="#myModal2">
-                                                    <<?=G_ADD;?>
+                                                    <?=G_ADD;?>
                                                 </button>
                                             </div>
                                         </div>
@@ -221,7 +221,7 @@
                             <div class="col-lg-3 col-md-6">
                                 <div class="form-group my-3" style="position: relative;">
                                     <label class="f-14 text-dark-grey mb-12" data-label=""
-                                        for="date_of_birth"><?=G_JOINING_DATE;?>
+                                        for="date_of_birth"><?=G_DATE_OF_BIRTH;?>
                                     </label>
                                     <input type="date" class="form-control  date-picker height-35 f-14"
                                         placeholder="Select Date"
@@ -406,13 +406,13 @@
 
                     var catId = $(this).data('row-id');
                     Swal.fire({
-                        title: "Are you sure?",
+                        title: "<?=SWAL_TITLE_DELETE;?>",
                         text: "You will not be able to recover the deleted record!",
                         icon: 'warning',
                         showCancelButton: true,
                         focusConfirm: false,
-                        confirmButtonText: "Yes, delete it!",
-                        cancelButtonText: "Cancel",
+                        confirmButtonText: "<?=SWAL_CONFIRM_DELETE;?>" ,
+                        cancelButtonText: "<?=G_CANCEL;?>" ,
                         customClass: {
                             confirmButton: 'btn btn-primary mr-3',
                             cancelButton: 'btn btn-secondary'
@@ -443,8 +443,8 @@
 
                                     } else {
                                         Swal.fire({
-                                            title: "Error!",
-                                            text: "Something went wrong!",
+                                            title: "<?=G_ERROR;?>",
+                                            text: '<?=G_SOMETHING_WENT_WRONG;?>',
                                             icon: 'error',
                                             showCancelButton: false,
                                             focusConfirm: false,
@@ -508,8 +508,8 @@
 
                             } else {
                                 Swal.fire({
-                                    title: "Error!",
-                                    text: "Something went wrong!",
+                                    title: "<?=G_ERROR;?>",
+                                    text: '<?=G_SOMETHING_WENT_WRONG;?>',
                                     icon: 'error',
                                     showCancelButton: false,
                                     focusConfirm: false,
@@ -562,8 +562,8 @@
 
                                 } else {
                                     Swal.fire({
-                                        title: "Error!",
-                                        text: "Something went wrong!",
+                                        title: "<?=G_ERROR;?>",
+                                        text: '<?=G_SOMETHING_WENT_WRONG;?>',
                                         icon: 'error',
                                         showCancelButton: false,
                                         focusConfirm: false,
@@ -671,13 +671,13 @@
 
                     var catId = $(this).data('row-id');
                     Swal.fire({
-                        title: "Are you sure?",
+                        title: "<?=SWAL_TITLE_DELETE;?>",
                         text: "You will not be able to recover the deleted record!",
                         icon: 'warning',
                         showCancelButton: true,
                         focusConfirm: false,
-                        confirmButtonText: "Yes, delete it!",
-                        cancelButtonText: "Cancel",
+                        confirmButtonText:" <?=SWAL_CONFIRM_DELETE;?>" ,
+                        cancelButtonText: "<?=G_CANCEL;?>" ,
                         customClass: {
                             confirmButton: 'btn btn-primary mr-3',
                             cancelButton: 'btn btn-secondary'
@@ -708,8 +708,8 @@
 
                                     } else {
                                         Swal.fire({
-                                            title: "Error!",
-                                            text: "Something went wrong!",
+                                            title: "<?=G_ERROR;?>",
+                                            text: '<?=G_SOMETHING_WENT_WRONG;?>',
                                             icon: 'error',
                                             showCancelButton: false,
                                             focusConfirm: false,
@@ -779,8 +779,8 @@
 
                             } else {
                                 Swal.fire({
-                                    title: "Error!",
-                                    text: "Something went wrong!",
+                                    title: "<?=G_ERROR;?>",
+                                    text: '<?=G_SOMETHING_WENT_WRONG;?>',
                                     icon: 'error',
                                     showCancelButton: false,
                                     focusConfirm: false,
@@ -833,8 +833,8 @@
 
                                 } else {
                                     Swal.fire({
-                                        title: "Error!",
-                                        text: "Something went wrong!",
+                                        title: "<?=G_ERROR;?>",
+                                        text: '<?=G_SOMETHING_WENT_WRONG;?>',
                                         icon: 'error',
                                         showCancelButton: false,
                                         focusConfirm: false,

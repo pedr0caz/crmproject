@@ -115,11 +115,15 @@
                                 <div class="card bg-white border-0 b-shadow-4  mt-4">
                                     <div
                                         class="card-header bg-white border-0 text-capitalize d-flex justify-content-between p-20">
-                                        <h4 class="f-18 f-w-500 mb-0">Profile Info</h4>
+                                        <h4 class="f-18 f-w-500 mb-0">
+                                            <?=G_PROFILE;?>
+                                        </h4>
                                     </div>
                                     <div class="card-body ">
                                         <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
-                                            <p class="mb-0 text-lightest f-14 w-30 text-capitalize">Employee ID</p>
+                                            <p class="mb-0 text-lightest f-14 w-30 text-capitalize">
+                                                <?=G_EMPLOYEE;?> ID
+                                            </p>
                                             <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">
                                                 <?=$employee['employee_id']?>
                                             </p>
@@ -153,7 +157,14 @@
                                                 <?=G_GENDER;?>
                                             </p>
                                             <p class="mb-0 text-dark-grey f-14 w-70">
-                                                <?=$employee['gender']?>
+                                                <?php if($employee['gender'] == "male") {
+                                                    echo G_GENDER_MALE;
+                                                } elseif($employee['gender'] == "female") {
+                                                    echo G_GENDER_FEMALE;
+                                                } else {
+                                                    echo G_GENDER_OTHER;
+                                                }
+            ?>
                                             </p>
                                         </div>
                                         <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
@@ -225,7 +236,9 @@
                     </div>
                     <div class="p-activity-detail cal-info b-shadow-4" data-menu-vertical="1" data-menu-scroll="1"
                         data-menu-dropdown-timeout="500" id="projectActivityDetail">
-                        <?php foreach($getUserActivity as $activity):?>
+                        <?php foreach($getUserActivity as $activity):
+                            $activityJSON = json_decode($activity['activity'], true);
+                            ?>
                         <div class="card border-0 b-shadow-4 p-20 rounded-0">
                             <div class="card-horizontal">
                                 <div class="card-header m-0 p-0 bg-white rounded">
@@ -236,7 +249,7 @@
                                 </div>
                                 <div class="card-body border-0 p-0 ml-3">
                                     <h4 class="card-title f-14 font-weight-normal text-capitalize">
-                                        <?=$activity['activity']?>
+                                        <?=$activityJSON[LANG_ISO]?>
                                     </h4>
                                     <p class="card-text f-12 text-dark-grey">
                                         <?=date('H:i', strtotime($activity['created_at']))?>
@@ -371,7 +384,19 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <?=ucwords($project['status']);?>
+                                        <?php
+                                        if($project['status'] == 'in progress') {
+                                            echo "<i class='bi bi-circle-fill  mr-2  text-blue'></i> ".PROJECT_INPROGRESS;
+                                        } elseif($project['status'] == 'finished') {
+                                            echo "<i class='bi bi-circle-fill  mr-2  text-success'></i> ".PROJECT_FINISHED;
+                                        } elseif($project['status'] == 'on hold') {
+                                            echo "<i class='bi bi-circle-fill  mr-2  text-warning'></i> ".PROJECT_ONHOLD;
+                                        } elseif($project['status'] == 'canceled') {
+                                            echo "<i class='bi bi-circle-fill  mr-2  text-danger'></i> ".PROJECT_CANCELLED;
+                                        } else {
+                                            echo "<i class='bi bi-circle-fill  mr-2  text-dark-grey'></i> ".PROJECT_NOTSTARTED;
+                                        }
+                                 ?>
                                     </td>
                                     <td>
                                         <div class="task_view">
@@ -531,14 +556,15 @@
                                             </td>
                                             <td>
                                                 <select class="selectpicker">
-                                                    <?php foreach($taskLabels as $taskLabel): ?>
+                                                    <?php foreach($taskLabels as $taskLabel):
+                                                        $labelTranslate = json_decode($taskLabel['column_name'], true);?>
                                                     <option
-                                                        data-content="<i class='bi bi-circle-fill  mr-2'  style='color:<?=$taskLabel['label_color']?>'></i>  <?=$taskLabel['column_name']?>"
+                                                        data-content="<i class='bi bi-circle-fill  mr-2'  style='color:<?=$taskLabel['label_color']?>'></i>  <?=$labelTranslate[LANG_ISO]?>"
                                                         value=" <?=$taskLabel['id']?>"
                                                         <?php if($taskLabel['id'] == $getEmployeeTask['board_column_id']) {
                                                             echo 'selected';
                                                         } ?>>
-                                                        <?=$taskLabel['column_name']?>
+                                                        <?=$labelTranslate[LANG_ISO]?>
                                                     </option>
                                                     <?php endforeach; ?>
                                                 </select>
@@ -680,13 +706,13 @@
                             <?php foreach($employeeFiles as $file):
                                 $time = date_diff(date_create('now'), date_create($file['created_at']));
                                 if ($time->format('%a') == 0 && $time->format('%h') == 0 && $time->format('%i') == 0) {
-                                    $time = $time->format('%s seconds ago');
+                                    $time = $time->format('%s '.G_SECONDS.' '.G_AGO);
                                 } elseif ($time->format('%a') == 0 && $time->format('%h') == 0 && $time->format('%i') > 0) {
-                                    $time = $time->format('%i minutes ago');
+                                    $time = $time->format('%i '.G_MINUTES.' '.G_AGO);
                                 } elseif ($time->format('%a') == 0 && $time->format('%h') > 0) {
-                                    $time = $time->format('%h hours ago');
+                                    $time = $time->format('%h '.G_HOURS.' '.G_AGO);
                                 } else {
-                                    $time = $time->format('%a days ago');
+                                    $time = $time->format('%a '.G_DAYS.' '.G_AGO);
                                 }
                                 ?>
                             <div class="card bg-white border-grey file-card mr-3 mb-3">
@@ -818,13 +844,13 @@
                 $('body').on('click', '.delete-file', function() {
                     var id = $(this).data('row-id');
                     Swal.fire({
-                        title: "Are you sure?",
+                        title: "<?=SWAL_TITLE_DELETE;?>",
                         text: "You will not be able to recover the deleted record!",
                         icon: 'warning',
                         showCancelButton: true,
                         focusConfirm: false,
-                        confirmButtonText: "Yes, delete it!",
-                        cancelButtonText: "Cancel",
+                        confirmButtonText: "<?=SWAL_CONFIRM_DELETE;?>",
+                        cancelButtonText: "<?=G_CANCEL;?>",
                         customClass: {
                             confirmButton: 'btn btn-primary mr-3',
                             cancelButton: 'btn btn-secondary'

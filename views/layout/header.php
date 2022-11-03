@@ -37,14 +37,7 @@
                     </h2>
                 </div>
             </div>
-            <!-- PAGE TITLE END -->
-            <div class="d-block d-lg-none menu-collapse cursor-pointer position-relative" onclick="openMobileMenu()">
-                <div class="mc-wrap">
-                    <div class="mcw-line"></div>
-                    <div class="mcw-line center"></div>
-                    <div class="mcw-line"></div>
-                </div>
-            </div>
+
         </div>
         <!-- NAVBAR LEFT(MOBILE MENU COLLAPSE) END-->
         <!-- NAVBAR RIGHT(SEARCH, ADD, NOTIFICATION, LOGOUT) START-->
@@ -55,10 +48,10 @@
                 <li>
                     <div class="mr-2">
                         <select class="selectpicker" id="flag" data-width="fit">
-                            <option data-width="fit" <?=$_SESSION["lang"] == "en" ? 'selected' : '';?>
+                            <option value="en" data-width="fit"
                                 data-content='<span class="flag-icon flag-icon-gb"></span>'>
                             </option>
-                            <option data-width="fit" <?=$_SESSION["lang"] == "pt" ? 'selected' : '';?>data-content='<span
+                            <option value="pt" data-width="fit" data-content='<span
                                     class="flag-icon flag-icon-pt"></span>'>
                             </option>
                         </select>

@@ -391,13 +391,13 @@ class Employee extends Base
             } else {
                 return [
                     "status" => false,
-                    "message" => "Something went wrong"
+                    "message" => G_SOMETHING_WENT_WRONG
                 ];
             }
         } else {
             return [
                 "status" => false,
-                "message" => "Something went wrong"
+                "message" => G_SOMETHING_WENT_WRONG
             ];
         }
     }
@@ -431,7 +431,7 @@ class Employee extends Base
         } else {
             return [
                 "status" => false,
-                "message" => "Something went wrong"
+                "message" => G_SOMETHING_WENT_WRONG
             ];
         }
     }
@@ -584,7 +584,10 @@ class Employee extends Base
             ");
             $query->execute([
                 $id,
-                "New file uploaded",
+                json_encode([
+                    "en" => "New file added by ".$_SESSION['user_name'],
+                    "pt" => "Novo ficheiro adicionado por ".$_SESSION['user_name']
+                ]),
                 date("Y-m-d H:i:s")
             ]);
 

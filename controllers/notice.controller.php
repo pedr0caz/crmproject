@@ -17,11 +17,11 @@ if (!isset($_SESSION["user_id"])) {
                 $notices = $noticeModel->getNotices($_SESSION["user_role"], $_SESSION["user_id"]);
             }
             
-            $title = "Notices";
+            $title = G_NOTICES;
             require_once("views/notice/notice.view.php");
         } elseif ($_SESSION["user_role"] == "1" && isset($id) && $id == "create") {
             $teams = $employeeModel->getDepartments();
-            $title = "Create Notice";
+            $title = G_ADD." ".G_NOTICE;
             require_once("views/notice/addnotice.view.php");
         } elseif ($_SESSION["user_role"] == "1" && isset($id) && $id == "save") {
             if (isset($_POST["to"]) && isset($_POST["heading"]) && !empty($_POST["heading"]) && mb_strlen($_POST["heading"]) >= 3) {
@@ -58,7 +58,7 @@ if (!isset($_SESSION["user_id"])) {
             } else {
                 $notice = $noticeModel->getNoticeAdmin($id);
                 $teams = $employeeModel->getDepartments();
-                $title = "Edit Notice";
+                $title = G_EDIT." ".G_NOTICE;
                 require_once("views/notice/editnotice.view.php");
             }
         } elseif ($_SESSION["user_role"] == "1" && isset($id) && is_numeric($id) && isset($_GET['delete'])) {
@@ -77,7 +77,7 @@ if (!isset($_SESSION["user_id"])) {
                 }
             }
         } elseif (isset($id) && is_numeric($id) && !isset($_GET['edit'])) {
-            $title = "Notice Details";
+            $title = G_NOTICE;
             if ($_SESSION["user_role"] == "1") {
                 $notice = $noticeModel->getNoticeAdmin($id);
             } else {

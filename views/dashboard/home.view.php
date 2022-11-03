@@ -23,7 +23,7 @@
                 <p
                     class="mb-0 text-lg-right text-md-right f-18 font-weight-bold text-dark-grey d-grid align-items-center">
                     <?=date('H:i a')?><span
-                        class="f-10 font-weight-normal"><?=date("l")?></span>
+                        class="f-10 font-weight-normal"><?=strftime('%A')?></span>
 
 
                 </p>
@@ -55,7 +55,18 @@
                                         <?=$_SESSION['user_name'];?>
                                     </h4>
                                     <p class="f-14 font-weight-normal text-dark-grey mb-2">
-                                        --</p>
+                                        <?php
+if ($_SESSION['user_role'] <= 2) {
+    echo "<span class='badge badge-info'>" . $designationD . "</span> ";
+   
+    echo "<br>";
+    foreach ($department as $dept) {
+        echo "<span class='badge badge-primary'>" . $dept['team_name'] . "</span> ";
+    }
+} else {
+    echo G_CLIENT;
+}?>
+                                    </p>
 
                                 </div>
                             </div>
@@ -134,17 +145,17 @@
                                                 </div>
                                             </td>
                                             <td class="pr-20"><span class="badge badge-secondary p-2">
-                                                    <i class="bi bi-lightbulb"></i>
-                                                    <?=date('d', strtotime($birthday['date_of_birth']))?>
-                                                    <?=date('M', strtotime($birthday['date_of_birth']))?></span>
+                                                    🎂
+                                                    <?=strftime('%d', strtotime($birthday['date_of_birth']));?>
+                                                    <?=ucfirst(strftime('%b', strtotime($birthday['date_of_birth'])));?></span>
                                             </td>
                                             <td class="pr-20">
                                                 <span class="badge badge-light p-2"><?php if(date("d-m-Y", strtotime($birthday['date_of_birth'])) == date("d-m-Y")) {
                                                     echo "Today";
                                                 } elseif(date("d-m-Y", strtotime($birthday['date_of_birth'])) < strtotime(date("d-m-Y"))) {
-                                                    echo date_diff(date_create($birthday['date_of_birth']), date_create('today'))->format('in %a days');
+                                                    echo date_diff(date_create($birthday['date_of_birth']), date_create('today'))->format(G_IN.' %a '.G_DAYS);
                                                 } else {
-                                                    echo date_diff(date_create($birthday['date_of_birth']), date_create('today'))->format('%a days ago');
+                                                    echo date_diff(date_create($birthday['date_of_birth']), date_create('today'))->format('%a '.G_DAYS.' '.G_AGO);
                                                 } ?></span>
 
                                                 </span>
@@ -187,7 +198,7 @@
                                     <div class="card-horizontal">
                                         <div class="card-header m-0 p-0 bg-white rounded">
                                             <span class="f-12 p-1 ">
-                                                <?=date('M', strtotime($notice['created_at']))?></span>
+                                                <?=ucfirst(strftime('%b', strtotime($notice['created_at'])));?></span>
                                             <span
                                                 class="f-13 f-w-500 rounded-bottom"><?=date('d', strtotime($notice['created_at']))?></span>
                                         </div>
@@ -348,7 +359,7 @@
                                                         if($diff->format('%R%a') < 0) {
                                                             echo '<span class="badge badge-pill badge-danger">'.G_OVERDUE.'</span>';
                                                         } else {
-                                                            echo '<span class="badge badge-pill badge-primary">'.$diff->format('%a days left').'</span>';
+                                                            echo '<span class="badge badge-pill badge-primary">'.$diff->format('%a '.G_DAYS.' left').'</span>';
                                                         }
                                                     }?>
                                                 </td>

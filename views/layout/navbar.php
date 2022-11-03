@@ -30,7 +30,7 @@
                     <div class="profileInfo d-flex align-items-center mr-1 flex-wrap">
                         <div class="profileImg mr-2">
                             <img class="h-100"
-                                src="<?=$_SESSION['user_image'] ? $_SESSION['user_image'] : ROOT.'/images/avatar.png'?>"
+                                src="<?=$_SESSION['user_image'] ? ROOT."/".$_SESSION['user_image'] : ROOT.'/images/avatar.png'?>"
                                 alt="<?=$_SESSION['user_name'];?>">
                         </div>
                         <div class="ProfileData">
@@ -41,7 +41,7 @@
                             <p class="mb-0 f-12 text-dark-grey"></p>
                         </div>
                     </div>
-                    <a href="settings/profile-settings">
+                    <a href="<?=ROOT;?>/profile">
                         <i class="side-icon bi bi-pencil-square"></i>
                     </a>
                 </div>

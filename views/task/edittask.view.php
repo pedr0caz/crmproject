@@ -442,13 +442,13 @@ require_once("views/layout/footer.php");
 
                             var catId = $(this).data('cat-id');
                             Swal.fire({
-                                title: "Are you sure?",
+                                title: "<?=SWAL_TITLE_DELETE;?>",
                                 text: "You will not be able to recover the deleted record!",
                                 icon: 'warning',
                                 showCancelButton: true,
                                 focusConfirm: false,
-                                confirmButtonText: "Yes, delete it!",
-                                cancelButtonText: "Cancel",
+                                confirmButtonText: "<?=SWAL_CONFIRM_DELETE;?>" ,
+                                cancelButtonText: "<?=G_CANCEL;?>" ,
                                 customClass: {
                                     confirmButton: 'btn btn-primary mr-3',
                                     cancelButton: 'btn btn-secondary'

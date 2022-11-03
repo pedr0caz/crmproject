@@ -139,7 +139,7 @@ class Client extends Base
                 } else {
                     return [
                         'status' => false,
-                        'message' => 'Something went wrong'
+                        'message' => G_SOMETHING_WENT_WRONG
                     ];
                 }
             }
@@ -473,7 +473,10 @@ class Client extends Base
             ");
             $query->execute([
                 $id,
-                "New file uploaded",
+                json_encode([
+                    "en" => "New file added",
+                    "pt" => "Novo ficheiro adicionado"
+                ]),
                 date("Y-m-d H:i:s")
             ]);
 

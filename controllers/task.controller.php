@@ -25,7 +25,7 @@ if (!isset($_SESSION["user_id"])) {
             }
            
         
-            $title = "Task List";
+            $title = TASKS_TITLE;
             require("views/task/task.view.php");
         } elseif ($_SESSION["user_role"] <= 2 && isset($id) && $id == "create") {
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -94,7 +94,7 @@ if (!isset($_SESSION["user_id"])) {
                                 $employees = $employeesModel->getMembersOfMyProjects($project_id, $_SESSION["user_id"]);
                                 if (empty($employees)) {
                                     header('Content-Type: application/json; charset=utf-8');
-                                    echo json_encode(['status' => 'error', 'message' => 'You are not allowed to assign this task to this project']);
+                                    echo json_encode(['status' => 'error', 'message' => TASK_NOT_ALLOWED_TO_THIS_PROJECT]);
                                     die();
                                 }
                             }
@@ -112,7 +112,7 @@ if (!isset($_SESSION["user_id"])) {
                         $task = $taskModel->addTask($heading, $description, $due_date, $start_date, $project_id, $priority, $task_status, $added_by, $users_assigned, $task_cat_id);
                         if ($task) {
                             header('Content-Type: application/json; charset=utf-8');
-                            echo json_encode(['status' => 'success', 'task_id' => $task, 'message' => 'Task added successfully']);
+                            echo json_encode(['status' => 'success', 'task_id' => $task, 'message' => TASK_ADDED_SUCCESS]);
                             exit;
                         }
                     } else {
@@ -128,7 +128,7 @@ if (!isset($_SESSION["user_id"])) {
                     $projects = $employeesModel->getProjectsOfEmployee($_SESSION["user_id"]);
                 }
 
-                $title = "Add Task";
+                $title = G_ADD_TASK;
                 require("views/task/addtask.view.php");
             }
         } elseif (isset($id) && is_numeric($id)) {
@@ -157,10 +157,10 @@ if (!isset($_SESSION["user_id"])) {
                         $result = $taskModel->changeTaskStatus($id, $_POST["status"]);
                         if ($result) {
                             header('Content-Type: application/json; charset=utf-8');
-                            echo json_encode(['status' => 'success', 'message' => 'Status changed successfully']);
+                            echo json_encode(['status' => 'success', 'message' => TASK_STATUS_SUCESSS]);
                         } else {
                             header('Content-Type: application/json; charset=utf-8');
-                            echo json_encode(['status' => 'error', 'message' => 'Status could not be changed']);
+                            echo json_encode(['status' => 'error', 'message' => TASK_STATUS_ERROR]);
                         }
                     } elseif (isset($_GET["action"]) && $_GET["action"] == "uploadfile" && $_SESSION["user_role"] <= 2) {
                         if (!isset($_FILES["file"])) {
@@ -198,13 +198,13 @@ if (!isset($_SESSION["user_id"])) {
                         if ($data) {
                             $time = date_diff(date_create('now'), date_create($data['created_at']));
                             if ($time->format('%a') == 0 && $time->format('%h') == 0 && $time->format('%i') == 0) {
-                                $time = $time->format('%s seconds ago');
+                                $time = $time->format('%s '.G_SECONDS.' '.G_AGO);
                             } elseif ($time->format('%a') == 0 && $time->format('%h') == 0 && $time->format('%i') > 0) {
-                                $time = $time->format('%i minutes ago');
+                                $time = $time->format('%i '.G_MINUTES.' '.G_AGO);
                             } elseif ($time->format('%a') == 0 && $time->format('%h') > 0) {
-                                $time = $time->format('%h hours ago');
+                                $time = $time->format('%h '.G_HOURS.' '.G_AGO);
                             } else {
-                                $time = $time->format('%a days ago');
+                                $time = $time->format('%a '.G_DAYS.' '.G_AGO);
                             }
                             $data = '<div class="card bg-white border-grey file-card mr-3 mb-3" data-fileid="'.$data['id'].'">
                         <div class="card-horizontal">
@@ -242,7 +242,7 @@ if (!isset($_SESSION["user_id"])) {
         
         
                             header('Content-Type: application/json; charset=utf-8');
-                            echo json_encode(['status' => 'success', 'message' => 'File uploaded successfully', 'data' => $data]);
+                            echo json_encode(['status' => 'success', 'message' => SWAL_FILE_ADDED, 'data' => $data]);
                         }
                     } elseif (isset($_GET['action']) && $_GET["action"] == "deletefile" && $_SESSION["user_role"] <= 2) {
                         if (isset($_POST['id']) && !empty($_POST['id'])) {
@@ -253,10 +253,10 @@ if (!isset($_SESSION["user_id"])) {
                             }
                             if ($data) {
                                 header('Content-Type: application/json; charset=utf-8');
-                                echo json_encode(['status' => 'success', 'message' => 'File deleted successfully']);
+                                echo json_encode(['status' => 'success', 'message' => SWAL_FILE_REMOVED]);
                             } else {
                                 header('Content-Type: application/json; charset=utf-8');
-                                echo json_encode(['status' => 'error', 'message' => 'Error deleting file']);
+                                echo json_encode(['status' => 'error', 'message' => SWAL_FILE_ERROR]);
                             }
                         }
                     } elseif (isset($_GET['action']) && $_GET['action'] == "addcomment" && $_SESSION["user_role"] <= 2) {
@@ -264,16 +264,16 @@ if (!isset($_SESSION["user_id"])) {
                             $comment = $taskModel->addCommentTask($id, $_SESSION['user_id'], $_POST['comment']);
                       
                             if ($comment) {
-                                $image_user = $comment['user_image'] ? $comment['user_image'] : 'https://www.gravatar.com/avatar/3ea58e77e21cabdfeabbfd844cbabbca.png?s=200&d=mp';
+                                $image_user = $comment['user_image'] ? ROOT.'/'.$comment['user_image'] : 'https://www.gravatar.com/avatar/3ea58e77e21cabdfeabbfd844cbabbca.png?s=200&d=mp';
                                 $time = date_diff(date_create('now'), date_create($comment['created_at']));
                                 if ($time->format('%a') == 0 && $time->format('%h') == 0 && $time->format('%i') == 0) {
-                                    $time = $time->format('%s seconds ago');
+                                    $time = $time->format('%s '.G_SECONDS.' '.G_AGO);
                                 } elseif ($time->format('%a') == 0 && $time->format('%h') == 0 && $time->format('%i') > 0) {
-                                    $time = $time->format('%i minutes ago');
+                                    $time = $time->format('%i '.G_MINUTES.' '.G_AGO);
                                 } elseif ($time->format('%a') == 0 && $time->format('%h') > 0) {
-                                    $time = $time->format('%h hours ago');
+                                    $time = $time->format('%h '.G_HOURS.' '.G_AGO);
                                 } else {
-                                    $time = $time->format('%a days ago');
+                                    $time = $time->format('%a '.G_DAYS.' '.G_AGO);
                                 }
                          
                             
@@ -312,20 +312,20 @@ if (!isset($_SESSION["user_id"])) {
                         </div>';
                                 header('Content-Type: application/json; charset=utf-8');
         
-                                echo json_encode(['status' => 'success', 'message' => 'Comment added successfully' , 'data' =>  $dataMessage]);
+                                echo json_encode(['status' => 'success', 'message' => TASK_COMMENT_ADDED , 'data' =>  $dataMessage]);
                             } else {
                                 header('Content-Type: application/json; charset=utf-8');
-                                echo json_encode(['status' => 'error', 'message' => 'Error adding comment']);
+                                echo json_encode(['status' => 'error', 'message' => TASK_COMMENT_ERROR]);
                             }
                         }
                     } elseif (isset($_GET['action']) && $_GET['action'] == "deletecomment" && $_SESSION['user_role'] <= 2) {
                         $comment = $taskModel->deleteCommentTask($_POST['id']);
                         if ($comment) {
                             header('Content-Type: application/json; charset=utf-8');
-                            echo json_encode(['status' => 'success', 'message' => 'Comment deleted successfully']);
+                            echo json_encode(['status' => 'success', 'message' => TASK_COMMENT_DELETED]);
                         } else {
                             header('Content-Type: application/json; charset=utf-8');
-                            echo json_encode(['status' => 'error', 'message' => 'Error deleting comment']);
+                            echo json_encode(['status' => 'error', 'message' => TASK_COMMENT_DELETE_ERROR]);
                         }
                     } elseif (isset($_GET['action']) && $_GET['action'] == "delete_task" && $_SESSION['user_role'] <= 2) {
                         if ($_SESSION['user_role'] == 1) {
@@ -336,17 +336,17 @@ if (!isset($_SESSION["user_id"])) {
                    
                         if ($task) {
                             header('Content-Type: application/json; charset=utf-8');
-                            echo json_encode(['status' => 'success', 'message' => 'Task deleted successfully']);
+                            echo json_encode(['status' => 'success', 'message' => TASK_DELETED_SUCCESS]);
                         } else {
                             header('Content-Type: application/json; charset=utf-8');
-                            echo json_encode(['status' => 'error', 'message' => 'Error deleting task']);
+                            echo json_encode(['status' => 'error', 'message' => TASK_DELETE_ERROR]);
                         }
                     }
                 } else {
                     $taskFiles = $taskModel->getTaskFiles($id);
                     $taskComments = $taskModel->getCommentsTask($id);
                     $taskHistory = $taskModel->getTaskHistory($id);
-                    $title = "Task Details";
+                    $title = TASK_DETAILS;
                     require("views/task/taskdetails.view.php");
                 }
             } elseif (isset($_GET['edit']) && $_SESSION['user_role'] <= 2) {
@@ -381,7 +381,7 @@ if (!isset($_SESSION["user_id"])) {
                             $task = $taskModel->editTask($id, $heading, $description, $due_date, $start_date, $project_id, $priority, $task_status, $added_by, $users_assigned, $task_cat_id);
                             if ($task) {
                                 header('Content-Type: application/json; charset=utf-8');
-                                echo json_encode(['status' => 'success', 'task_id' => $id, 'message' => 'Task edit successfully']);
+                                echo json_encode(['status' => 'success', 'task_id' => $id, 'message' => TASK_EDITED_SUCCESS]);
                             }
                         } else {
                             header('Content-Type: application/json; charset=utf-8');
@@ -394,7 +394,7 @@ if (!isset($_SESSION["user_id"])) {
                         $taskEmployeesIds[] = $employee["user_id"];
                     }
                 
-                    $title  = "Edit Task";
+                    $title  = G_EDIT . ' ' . G_TASK;
                     require("views/task/edittask.view.php");
                 }
             }

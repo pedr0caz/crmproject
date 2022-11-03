@@ -67,7 +67,7 @@ if (!isset($_SESSION["user_id"])) {
             }
         }
        
-        $title = "Events";
+        $title = MENU_EVENTS;
         require("views/event/event.view.php");
     } else {
         header("Location: " . ROOT . "");

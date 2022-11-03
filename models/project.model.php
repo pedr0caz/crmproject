@@ -349,7 +349,10 @@ class Project extends Base
             ");
             $query->execute([
                 $project_id,
-                "Project Created"
+                json_encode([
+                    "en" => "Project Created",
+                    "pt" => "Projeto Criado"
+                ]),
             ]);
 
             return [
@@ -413,7 +416,10 @@ class Project extends Base
             ");
             $query->execute([
                 $project_id,
-                "Project Details Updated"
+                json_encode([
+                    "en" => "Project Updated",
+                    "pt" => "Projeto Atualizado"
+                ]),
             ]);
 
             return [
@@ -557,7 +563,10 @@ class Project extends Base
             ");
             $query->execute([
                 $id,
-                "New file uploaded by " . $_SESSION["user_name"],
+                json_encode([
+                    "en" => "New file added by ".$_SESSION['user_name'],
+                    "pt" => "Novo ficheiro adicionado por ".$_SESSION['user_name']
+                ]),
                 date("Y-m-d H:i:s")
             ]);
 
@@ -690,7 +699,10 @@ class Project extends Base
             ");
             $query->execute([
                 $id,
-                "File deleted by " . $_SESSION["user_name"],
+                json_encode([
+                    "en" => "File deleted by ".$_SESSION['user_name'],
+                    "pt" => "Ficheiro apagado por ".$_SESSION['user_name']
+                ]),
                 date("Y-m-d H:i:s")
             ]);
 
@@ -714,7 +726,10 @@ class Project extends Base
             ");
             $query->execute([
                 $id,
-                "File deleted by " . $_SESSION["user_name"],
+                json_encode([
+                    "en" => "File deleted by ".$_SESSION['user_name'],
+                    "pt" => "Ficheiro apagado por ".$_SESSION['user_name']
+                ]),
                 date("Y-m-d H:i:s")
             ]);
 
@@ -751,7 +766,7 @@ class Project extends Base
         return $query->rowCount();
     }
 
-    public function changeProjectStatus($name, $id)
+    public function changeProjectStatus($name, $id, $lang)
     {
         $query = $this->db->prepare("
         UPDATE projects SET status = ? WHERE id = ?
@@ -764,7 +779,10 @@ class Project extends Base
             ");
             $query->execute([
                 $id,
-                "Project status changed to " . ucwords($name),
+                json_encode([
+                    "en" =>  "Project status changed to " . $lang,
+                    "pt" => "Estado do projeto alterado para " . $lang
+                ]),
                 date("Y-m-d H:i:s")
             ]);
             return [
@@ -788,7 +806,10 @@ class Project extends Base
             ");
             $query->execute([
                 $id,
-                "Member removed from project",
+                json_encode([
+                    "en" =>  "Member removed from project",
+                    "pt" => "Membro removido do projeto"
+                ]),
                 date("Y-m-d H:i:s")
             ]);
             return [
@@ -819,7 +840,10 @@ class Project extends Base
             ");
             $query->execute([
                 $id,
-                "Teams updated on project",
+                json_encode([
+                    "en" =>  "Teams updated on project",
+                    "pt" => "Equipas atualizadas no projeto",
+                ]),
                 date("Y-m-d H:i:s")
             ]);
             return [
@@ -829,7 +853,7 @@ class Project extends Base
         } else {
             return [
                 "status" => false,
-                "message" => "Something went wrong"
+                "message" => G_SOMETHING_WENT_WRONG
             ];
         }
     }

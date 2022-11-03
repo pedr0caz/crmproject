@@ -256,13 +256,13 @@ require_once('views/layout/footer.php');
         $('body').on('click', '.delete-table-row', function() {
             var id = $(this).data('task-id');
             Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                title: '<?=SWAL_TITLE_DELETE;?>',
+                text: "<?=SWAL_YOU_WONT_BE_ABLE_REVERT;?>",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: '<?=SWAL_CONFIRM_DELETE;?>'
             }).then((result) => {
                 if (result.value) {
                     $.ajax({

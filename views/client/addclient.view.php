@@ -528,8 +528,8 @@
 
                                     } else {
                                         Swal.fire({
-                                            title: "Error!",
-                                            text: "Something went wrong!",
+                                            title: "<?=G_ERROR;?>",
+                                            text: '<?=G_SOMETHING_WENT_WRONG;?>',
                                             icon: 'error',
                                             showCancelButton: false,
                                             focusConfirm: false,
@@ -593,8 +593,8 @@
 
                             } else {
                                 Swal.fire({
-                                    title: "Error!",
-                                    text: "Something went wrong!",
+                                    title: "<?=G_ERROR;?>",
+                                    text: '<?=G_SOMETHING_WENT_WRONG;?>',
                                     icon: 'error',
                                     showCancelButton: false,
                                     focusConfirm: false,
@@ -645,8 +645,8 @@
 
                                 } else {
                                     Swal.fire({
-                                        title: "Error!",
-                                        text: "Something went wrong!",
+                                        title: "<?=G_ERROR;?>",
+                                        text: '<?=G_SOMETHING_WENT_WRONG;?>',
                                         icon: 'error',
                                         showCancelButton: false,
                                         focusConfirm: false,

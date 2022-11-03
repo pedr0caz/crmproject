@@ -120,7 +120,7 @@
 
                                 Swal.fire({
                                     icon: 'error',
-                                    title: 'Something went wrong',
+                                    title: '<?=G_SOMETHING_WENT_WRONG;?>',
                                     text: response.message,
                                 })
                             }

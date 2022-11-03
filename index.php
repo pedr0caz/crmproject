@@ -1,13 +1,18 @@
 <?php
+
+date_default_timezone_set('Europe/Lisbon');
+
+
 session_start();
 if (isset($_GET['lang'])) {
     $_SESSION['lang'] = $_GET['lang'];
 } elseif (!$_SESSION['lang']) {
     $_SESSION['lang'] = 'en';
 }
-include('lib/locale/pt.php');
+include('lib/locale/'.$_SESSION['lang'].'.php');
 
-date_default_timezone_set('Europe/Lisbon');
+
+setlocale(LC_ALL, LANG_ISO);
 define("ENV", parse_ini_file(".env"));
 
 define("ROOT", rtrim(str_replace("\\", "/", dirname($_SERVER["SCRIPT_NAME"])), "/"));
