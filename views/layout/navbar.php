@@ -56,7 +56,7 @@
         <!-- SIDEBAR MENU START -->
         <div class="sidebar-menu " id="sideMenuScroll">
             <ul>
-                <!-- NAV ITEM - DASHBOARD COLLAPSE MENU-->
+                <?php if($_SESSION['user_role'] == 1): ?>
                 <li class="accordionItem closeIt">
                     <a class="nav-item text-lightest f-15 sidebar-text-color accordionItemHeading  <?php if (str_contains($controller, 'home')) {
                         echo 'active';
@@ -76,6 +76,18 @@
                             title="Private Dashboard"><?=MENU_PRIVATE_DASHBOARD;?></a>
                     </div>
                 </li>
+                <?php else: ?>
+                <li class="accordionItem closeIt">
+                    <a class="nav-item text-lightest f-15 sidebar-text-color  <?php if (str_contains($controller, 'home')) {
+                        echo 'active';
+                    }?>" href="<?=ROOT?>/home"
+                        title="Events">
+                        <i class="side-icon bi bi-house"></i>
+                        <span
+                            class="pl-3"><?=MENU_DASHBOARD;?></span>
+                    </a>
+                </li>
+                <?php endif;?>
                 <?php if($_SESSION['user_role'] == 1): ?>
                 <li class="accordionItem openIt">
                     <a class="nav-item text-lightest f-15 sidebar-text-color <?php if (str_contains($controller, 'client')) {
@@ -166,3 +178,9 @@
         <!-- SIDEBAR MENU END -->
     </div>
 </aside>
+
+<div class="preloader-container justify-content-center align-items-center">
+    <div class="spinner-border" role="status" aria-hidden="true" style="position: fixed;
+    left: 56%;
+    top: 43%;"></div>
+</div>

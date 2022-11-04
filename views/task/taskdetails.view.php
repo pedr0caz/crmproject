@@ -336,7 +336,7 @@ require_once("views/layout/navbar.php");
 
                                                                             <a class="cursor-pointer d-block text-dark-grey f-13 py-3 px-3 "
                                                                                 href="<?=ROOT?>/<?=$file['filename']?>"><?=G_DOWNLOAD;?></a>
-                                                                            <?php if($file['added_by'] == $_SESSION['user_id'] || $_SESSION['user_role'] == 1): ?>
+                                                                            <?php if($file['user_id'] == $_SESSION['user_id'] || $_SESSION['user_role'] == 1): ?>
 
                                                                             <a class="cursor-pointer d-block text-dark-grey f-13 pb-3 px-3 delete-file"
                                                                                 data-row-id="<?=$file['id']?>"
@@ -547,7 +547,7 @@ require_once("views/layout/navbar.php");
                                     <?php endforeach; ?>
                                 </select>
                                 <?php else:
-                                    $labelTranslate = json_decode($taskLabel['column_name'], true);
+                                    $labelTranslate = json_decode($task['column_name'], true);
                                     ?>
                                 <i class='bi bi-circle-fill  mr-2'
                                     style='color:<?=$task['label_color']?>'></i><?=$labelTranslate[LANG_ISO];?>
@@ -560,7 +560,7 @@ require_once("views/layout/navbar.php");
                                     <?=G_START_DATE;?>
                                 </p>
                                 <p class="mb-0 text-dark-grey w-50 f-14">
-                                    <?=$task['start_date'];?>
+                                    <?=ucwords(strftime('%d %B %Y', strtotime($task['start_date'])));?>
                                 </p>
                             </div>
                             <div class="col-12 px-0 pb-3 d-lg-flex d-block">
@@ -571,11 +571,11 @@ require_once("views/layout/navbar.php");
                                     <?php
                                          $deadline = $task['due_date'];
 if($deadline > date('Y-m-d')) {
-    echo $deadline;
+    echo ucwords(strftime('%d %B %Y', strtotime($deadline)));
 } else {
     echo ' <span class="badge badge-danger">'.G_EXPIRED.'</span>';
     echo '<br>';
-    echo '<span class="text-danger">'.$deadline.'</span>';
+    echo '<span class="text-danger">'.ucwords(strftime('%d %B %Y', strtotime($deadline))).'</span>';
 }?>
 
                                 </p>

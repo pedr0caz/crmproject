@@ -115,7 +115,6 @@ class User extends Base
         u.last_login,
         u.status,
         u.login,
-        u.current_session,
         r.role_id,
 
         c.name AS role_name,
@@ -156,7 +155,6 @@ class User extends Base
                 u.email,
                 u.image,
                 u.online,
-                u.current_session,
                 r.role_id,
                 c.name AS role_name
             FROM users u
@@ -168,19 +166,34 @@ class User extends Base
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function searchUser($name, $id)
+    public function searchUser($name, $id, $role)
     {
-        $query = $this->db->prepare("
+        if ($role == 3) {
+            $query = $this->db->prepare("
             SELECT
-                id AS user_id,
-                name,
-                email,
-                image
-               
+                users.id AS user_id,
+                users.name,
+                users.email,
+                users.image,
+                role_user.user_id
+
               
             FROM users
-            WHERE name LIKE concat('%', ?, '%') AND id != ? AND status = 'active' AND login = 'enable'
+            INNER JOIN role_user ON users.id = role_user.user_id
+            WHERE name LIKE concat('%', ?, '%') AND id != ? AND status = 'active' AND login = 'enable' AND role_id IN (1,2)
         ");
+        } else {
+            $query = $this->db->prepare("
+            SELECT
+                users.id AS user_id,
+                users.name,
+                users.email,
+                users.image
+
+              
+            FROM users
+            WHERE name LIKE concat('%', ?, '%') AND id != ? AND status = 'active' AND login = 'enable'");
+        }
         $query->execute([$name, $id]);
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }

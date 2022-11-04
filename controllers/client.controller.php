@@ -133,14 +133,14 @@ if (!isset($_SESSION["user_id"])) {
                     if ($extension == 'csv') {
                         $file_data = fopen($_FILES['file']['tmp_name'], 'r');
                         $html = '<div class="col-sm-12">';
-                        $html .= '<form method="POST" id="process-client-data-form">';
+                        $html .= '<form method="POST" id="process-client-data-form" >';
                         $html .= '<div class="add-client bg-white rounded">';
-                        $html .= '<h4 class="mb-0 p-20 f-21 font-weight-normal text-capitalize border-bottom-grey">Import Clients</h4>';
+                        $html .= '<h4 class="mb-0 p-20 f-21 font-weight-normal text-capitalize border-bottom-grey">'.CLIENT_IMPORT_UPLOAD.'</h4>';
                         $html .= '<div class="col-12">';
-                        $html .= '<p class="mt-3"><p class="mt-3">Please sort the data you have uploaded by matching the columns in the CSV to the fields in the associated fields.</p>';
-                        $html .= '<div class="alert alert-warning" id="requiredColumnsUnmatched" style="">Following fields are required and must be matched: <strong>Client Name, Email</strong></div>';
+                        $html .= '<p class="mt-3"><p class="mt-3">'.CLIENT_IMPORT_UPLOAD_INFO.'</p>';
+                        $html .= '<div class="alert alert-warning" id="requiredColumnsUnmatched" style="">'.CLIENT_IMPORT_UPLOAD_INFO2.'</div>';
                         $html .= '</div>';
-                        $html .= '<div class="col-12">';
+                        $html .= '<div class="col-12" style="overflow-x: auto;">';
                         $html .= '<table>';
                         $html .= '<tbody>';
                         $html .= '<tr>';
@@ -161,22 +161,22 @@ if (!isset($_SESSION["user_id"])) {
                                     <div class="selectColumnNameBox" id="selectColumnNameBox_'.$count .'" style="">
                                         <div class="col-sm-12 p-0">
                                             <div class="form-group">
-                                                <label class="control-label">Column Name</label>
+                                                <label class="control-label">'.CLIENT_IMPORT_COLUMN_NAME.'</label>
                                                 <div id=selectOptionList_'.$count .'>
                                                     <select class="form-control selectpicker mb-2 dropup" name="columnName_'.($count + 1).'" title="Choose Column Name" data-size="5" data-live-search="true"  id="columnName_'.($count + 1).'">
                                                    
-                                                        <option value="name">Client Name</option>
+                                                        <option value="name">'.CLIENT_NAME.'</option>
                                                         <option value="email">Email</option>
-                                                        <option value="mobile">Mobile</option>
-                                                        <option value="gender">Gender</option>
-                                                        <option value="company_name">Company Name</option>
-                                                        <option value="address">Company Address</option>
-                                                        <option value="city">City</option>
-                                                        <option value="state">State</option>
-                                                        <option value="postal_code">Postal code</option>
-                                                        <option value="company_phone">Office Phone Number</option>
-                                                        <option value="company_website">Official Website</option>
-                                                        <option value="gst_number">GST/VAT Number</option>
+                                                        <option value="mobile">'.G_MOBILE.'</option>
+                                                        <option value="gender">'.G_GENDER.'</option>
+                                                        <option value="company_name">'.CLIENT_COMPANY_NAME.'</option>
+                                                        <option value="address">'.CLIENT_COMPANY_ADDRESS.'</option>
+                                                        <option value="city">'.G_CITY.'</option>
+                                                        <option value="state">'.G_STATE.'</option>
+                                                        <option value="postal_code">'.G_ZIP.'</option>
+                                                        <option value="company_phone">'.G_PHONE .'</option>
+                                                        <option value="company_website">'.CLIENT_COMPANY_WEB.'</option>
+                                                        <option value="gst_number">'.CLIENT_COMPANY_VAT.'</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -197,11 +197,11 @@ if (!isset($_SESSION["user_id"])) {
                         $html .= '<div class="w-100 border-top-grey d-block d-lg-flex d-md-flex justify-content-start px-4 py-3">
                         <button type="button" disabled="disabled" class="btn-primary rounded f-14 p-2 mr-3" id="process-client-form">
                             <i class="bi bi-check-circle mr-2"></i>
-                            Submit
+                            '.G_SAVE.'
                         </button>
                       
                         <a href="" class="btn-cancel rounded f-14 p-2 border-0">
-                        Cancel
+                        '.G_CANCEL.'
                         </a>
                     </div>';
                        

@@ -41,7 +41,7 @@
                                                 <?php foreach ($taskCategories as $category) : ?>
                                                 <option
                                                     value="<?=$category['id'];?>"
-                                                    <?php if ($category['id'] == $task['task_id']) : ?>
+                                                    <?php if ($category['id'] == $task['task_category_id']) : ?>
                                                     selected
                                                     <?php endif; ?>
                                                     >
@@ -145,15 +145,17 @@
                                 <div class="form-group mb-0">
                                     <select class="selectpicker form-control height-35 f-14" name="task_status"
                                         id="task_status">
-                                        <?php foreach($taskLabels as $taskLabel): ?>
+                                        <?php foreach($taskLabels as $taskLabel):
+                                            $labelTranslate = json_decode($taskLabel['column_name'], true);
+                                            ?>
                                         <option
-                                            data-content="<i class='bi bi-circle-fill  mr-2'  style='color:<?=$taskLabel['label_color']?>'></i>  <?=$taskLabel['column_name']?>"
+                                            data-content="<i class='bi bi-circle-fill  mr-2'  style='color:<?=$taskLabel['label_color']?>'></i>  <?=$labelTranslate[LANG_ISO]?>"
                                             value="<?php echo $taskLabel["id"]; ?>"
                                             <?php if ($taskLabel['id'] == $task['board_column_id']) : ?>
                                             selected
                                             <?php endif; ?>
                                             >
-                                            <?=$taskLabel['column_name']?>
+                                            <?=$labelTranslate[LANG_ISO]?>
                                             <?php endforeach; ?>
                                     </select>
                                 </div>
@@ -222,6 +224,8 @@
                 var
                     selectedEmployees = <?php echo json_encode($taskEmployeesIds); ?> ;
                 $('#selectAssignee').selectpicker('val', selectedEmployees);
+
+
 
                 $('#project_id').on('change', function() {
                     var project_id = parseInt($(this).val());
@@ -447,8 +451,8 @@ require_once("views/layout/footer.php");
                                 icon: 'warning',
                                 showCancelButton: true,
                                 focusConfirm: false,
-                                confirmButtonText: "<?=SWAL_CONFIRM_DELETE;?>" ,
-                                cancelButtonText: "<?=G_CANCEL;?>" ,
+                                confirmButtonText: "<?=SWAL_CONFIRM_DELETE;?>",
+                                cancelButtonText: "<?=G_CANCEL;?>",
                                 customClass: {
                                     confirmButton: 'btn btn-primary mr-3',
                                     cancelButton: 'btn btn-secondary'

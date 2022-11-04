@@ -71,11 +71,16 @@
                                                 class="mr-2 taskEmployeeImg rounded-circle"
                                                 alt="<?=$employee['name']?>"
                                                 title="<?=$employee['name']?>">
+
                                         </a>
                                         <div class="media-body">
                                             <h5 class="mb-0 f-12">
                                                 <a href="<?=ROOT;?>/employee/<?=$employee['user_id'];?>"
                                                     class="text-darkest-grey "><?=$employee['name']?></a>
+                                                <?php if ($employee['user_id'] == $_SESSION['user_id']) {?>
+                                                <span
+                                                    class="badge badge-secondary"><?=G_ITS_YOU;?></span>
+                                                <?php } ?>
                                             </h5>
                                             <p class="mb-0 f-12 text-dark-grey">
                                                 <?=$employee['designation_name']?>
@@ -85,7 +90,10 @@
                                 </td>
                                 <td><?=$employee['email'];?>
                                 </td>
-                                <td>
+                                <td><?php if($employee['user_id'] == $_SESSION['user_id']) {
+                                    echo "--";
+                                } else {
+                                    ?>
                                     <select class="form-control selectpicker" id="role_user">
                                         <?php foreach ($roles as $role):
                                             $displayName = json_decode($role['display_name'], true);
@@ -103,6 +111,7 @@
                                         </option>
                                         <?php endforeach;?>
                                     </select>
+                                    <?php  } ?>
                                 </td>
                                 <td>
                                     <?php if($employee['status'] == "active") {
@@ -410,7 +419,7 @@
                                     <button type="button" class="btn-secondary rounded f-14 p-2 delete-row"
                                     data-row-id="` + response.catId + `">
                                     <i class="bi bi-trash2-fill mr-1"></i>
-                                        Delete
+                                    <?=G_DELETE;?>
                                     </button>
                                 </td>
                             </tr>
@@ -584,8 +593,8 @@
                         icon: 'warning',
                         showCancelButton: true,
                         focusConfirm: false,
-                        confirmButtonText: "<?=SWAL_CONFIRM_DELETE;?>" ,
-                        cancelButtonText: "<?=G_CANCEL;?>" ,
+                        confirmButtonText: "<?=SWAL_CONFIRM_DELETE;?>",
+                        cancelButtonText: "<?=G_CANCEL;?>",
                         customClass: {
                             confirmButton: 'btn btn-primary mr-3',
                             cancelButton: 'btn btn-secondary'
@@ -664,7 +673,7 @@
                                     <button type="button" class="btn-secondary rounded f-14 p-2 delete-row"
                                     data-row-id="` + response.catId + `">
                                     <i class="bi bi-trash2-fill mr-1"></i>
-                                        Delete
+                                        <?=G_DELETE;?>
                                     </button>
                                 </td>
                             </tr>

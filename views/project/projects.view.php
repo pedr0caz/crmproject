@@ -82,11 +82,11 @@
                                             <?php
                                                 $deadline = $project['deadline'];
                                         if($deadline > date('Y-m-d')) {
-                                            echo $project['deadline'];
+                                            echo ucwords(strftime('%d %B %Y', strtotime($deadline)));
                                         } else {
                                             echo ' <span class="badge badge-danger">'.G_EXPIRED.'</span>';
                                             echo '<br>';
-                                            echo '<span class="text-danger">'.$project['deadline'].'</span>';
+                                            echo '<span class="text-danger">'.ucwords(strftime('%d %B %Y', strtotime($project['deadline']))).'</span>';
                                         }
                                         ?>
                                         </p>

@@ -89,7 +89,7 @@ if (!isset($_SESSION["user_id"])) {
                         $task_status = $_POST['task_status'];
                         $priority = $_POST['priority'];
                         $project_id = $_POST['project_id'] ? $_POST['project_id'] : null;
-                        if ($project != null) {
+                        if ($project_id != null) {
                             if ($_SESSION["user_role"] == 2) {
                                 $employees = $employeesModel->getMembersOfMyProjects($project_id, $_SESSION["user_id"]);
                                 if (empty($employees)) {
@@ -110,6 +110,7 @@ if (!isset($_SESSION["user_id"])) {
                         $users_assigned = $_POST['user_id'];
         
                         $task = $taskModel->addTask($heading, $description, $due_date, $start_date, $project_id, $priority, $task_status, $added_by, $users_assigned, $task_cat_id);
+                      
                         if ($task) {
                             header('Content-Type: application/json; charset=utf-8');
                             echo json_encode(['status' => 'success', 'task_id' => $task, 'message' => TASK_ADDED_SUCCESS]);
@@ -132,11 +133,16 @@ if (!isset($_SESSION["user_id"])) {
                 require("views/task/addtask.view.php");
             }
         } elseif (isset($id) && is_numeric($id)) {
+            $edit = false;
             if ($_SESSION["user_role"] == 1) {
+                $edit = true;
                 $task = $taskModel->getTaskAdmin($id);
                 $projects = $projectsModel->getProjects();
             } elseif ($_SESSION["user_role"] == 2) {
                 $task = $taskModel->getTask($id, $_SESSION["user_id"]);
+                if ($task['added_by'] == $_SESSION["user_id"]) {
+                    $edit = true;
+                }
                 $projects = $employeesModel->getProjectsOfEmployee($_SESSION["user_id"]);
             } else {
                 $task = $taskModel->getTasksOfProject($_SESSION["user_client_id"], $id);
@@ -350,6 +356,12 @@ if (!isset($_SESSION["user_id"])) {
                     require("views/task/taskdetails.view.php");
                 }
             } elseif (isset($_GET['edit']) && $_SESSION['user_role'] <= 2) {
+                if ($edit == false) {
+                    http_response_code(400);
+                    $title = "Bad Request";
+                    require("views/error400.view.php");
+                    exit;
+                }
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     if (isset($_GET['submit'])) {
                         if (isset($_POST['heading']) && !empty($_POST['heading']) &&
@@ -397,6 +409,11 @@ if (!isset($_SESSION["user_id"])) {
                     $title  = G_EDIT . ' ' . G_TASK;
                     require("views/task/edittask.view.php");
                 }
+            } else {
+                http_response_code(400);
+                $title = "Bad Request";
+                require("views/error400.view.php");
+                exit;
             }
         } else {
             http_response_code(400);

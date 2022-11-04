@@ -38,7 +38,7 @@
                                             href="<?=ROOT;?>/notice/<?=$notice['id'];?>"><?=$notice['heading'];?></a>
                                     </td>
                                     <td>
-                                        <?=$notice['created_at'];?>
+                                        <?=ucwords(strftime('%d %B %Y %H:%M', strtotime($notice['created_at'])))?>
                                     </td>
                                     <td><?php   if ($notice['toGroup'] == 2) {
                                         $noticeToJSON = json_decode($notice['display_name'], true);

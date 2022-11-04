@@ -26,6 +26,7 @@ if (!isset($_SESSION["user_id"])) {
         } elseif ($_SESSION["user_role"] == "1" && isset($id) && $id == "save") {
             if (isset($_POST["to"]) && isset($_POST["heading"]) && !empty($_POST["heading"]) && mb_strlen($_POST["heading"]) >= 3) {
                 $_POST['to'] = $_POST['to'] == "employee" ? 2 : 3;
+           
                 $result = $noticeModel->newNotice($_POST, $_SESSION["user_id"]);
 
                 if ($result) {

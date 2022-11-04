@@ -94,8 +94,8 @@ class Employee extends Base
         INNER JOIN role_user r ON u.id = r.user_id
         INNER JOIN roles c ON r.role_id = c.id
         INNER JOIN employee_details e ON u.id = e.user_id
-        INNER JOIN designations d ON e.designation_id = d.id
-        INNER JOIN employee_teams et ON u.id = et.user_id
+        LEFT JOIN designations d ON e.designation_id = d.id
+        LEFT JOIN employee_teams et ON u.id = et.user_id
         WHERE u.id = ?;
         ");
         $query->execute([$id]);
@@ -466,7 +466,7 @@ class Employee extends Base
     {
         $query = $this->db->prepare("
         
-        SELECT 
+        SELECT DISTINCT
         p.id AS project_id,
         p.project_name,
         p.deadline,
@@ -485,8 +485,8 @@ class Employee extends Base
     LEFT JOIN client_details c ON p.client_id = c.id
     LEFT JOIN users u ON c.user_id = u.id
 
-    WHERE pt.team_id IN ( SELECT team_id FROM employee_teams WHERE user_id = ? );
-
+    WHERE pt.team_id IN ( SELECT team_id FROM employee_teams WHERE user_id = ? )
+    GROUP BY p.id
         
        
         ");
@@ -511,6 +511,7 @@ class Employee extends Base
         INNER JOIN employee_teams et ON t.id = et.team_id
         LEFT JOIN users u ON et.user_id = u.id
         WHERE pt.project_id = ?
+        GROUP BY u.id
         ");
         $query->execute([$id]);
 
@@ -618,6 +619,8 @@ class Employee extends Base
         t.due_date,
         t.added_by,
         t.board_column_id,
+        tbc.slug,
+        tbc.column_name,
         p.id AS project_id,
         p.project_name,
         u.id AS user_id,
@@ -630,6 +633,7 @@ class Employee extends Base
     INNER JOIN users u ON tu.user_id = u.id
     INNER JOIN users ut ON t.added_by = ut.id
     INNER JOIN projects p ON t.project_id = p.id
+    INNER JOIN taskboard_columns tbc ON t.board_column_id = tbc.id
 
     WHERE tu.user_id = ?;
 

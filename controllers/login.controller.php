@@ -9,7 +9,7 @@ if (isset($_POST["submit"]) && !isset($_SESSION["user_id"]) && $_SERVER["REQUEST
         if (!empty($_POST["email"]) &&
         !empty($_POST["password"]) &&
         filter_var($_POST["email"], FILTER_VALIDATE_EMAIL) &&
-        mb_strlen($_POST["password"]) >= 8 &&
+        mb_strlen($_POST["password"]) >= 3 &&
         mb_strlen($_POST["password"]) <= 1000
         ) {
             $model = new User();

@@ -286,6 +286,54 @@ class Task extends Base
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getTasksNotFinished($user_id)
+    {
+        $query = $this->db->prepare("
+        SELECT 
+        t.id AS task_id,
+        t.heading,
+        t.description,
+        t.due_date,
+        t.start_date,
+        t.board_column_id,
+        t.project_id,
+        p.project_name,
+        t.task_category_id,
+        t.priority AS task_priority,
+        t.status,
+   
+        t.created_by,
+        t.created_at,
+        t.updated_at,
+        t.added_by,
+        
+        u.id AS user_id,
+        u.name AS user_name,
+        u.email AS user_email,
+        u.image AS user_image,
+        tc.id AS task_label_id,
+        tc.column_name,
+        tc.slug,
+        tc.label_color,
+        tc.priority,
+        tcat.id AS task_category_id,
+        tcat.category_name
+
+        FROM tasks t
+        LEFT JOIN users u ON u.id = t.created_by
+        LEFT JOIN taskboard_columns tc ON tc.id = t.board_column_id
+        LEFT JOIN task_category tcat ON tcat.id = t.task_category_id
+        LEFT JOIN task_users tu ON tu.task_id = t.id
+        LEFT JOIN projects p ON t.project_id = p.id 
+        WHERE (t.created_by = ? OR tu.user_id = ?) AND t.board_column_id != 2 
+        GROUP BY t.id 
+        ORDER BY t.due_date ASC
+
+        ");
+        $query->execute([$user_id, $user_id]);
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 
     public function getTasksOfProjects($user_id)
     {
@@ -327,8 +375,10 @@ class Task extends Base
         LEFT JOIN task_category tcat ON tcat.id = t.task_category_id
         LEFT JOIN task_users tu ON tu.task_id = t.id
         LEFT JOIN projects p ON t.project_id = p.id 
-        WHERE p.client_id = ?
-
+        WHERE p.client_id = ? AND t.board_column_id != 2
+      
+        GROUP BY t.id
+        ORDER BY t.due_date ASC
         ");
         $query->execute([$user_id]);
         return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -338,7 +388,7 @@ class Task extends Base
     public function getTasksOfProject($user_id, $task_id)
     {
         $query = $this->db->prepare("
-        SELECT 
+        SELECT DISTINCT
         t.id AS task_id,
         t.heading,
         t.description,
@@ -373,6 +423,7 @@ class Task extends Base
         INNER JOIN task_category tcat ON tcat.id = t.task_category_id
         LEFT JOIN projects p ON t.project_id = p.id
         WHERE t.id = ? AND p.client_id = ?
+        GROUP BY t.id
 
         ");
         $query->execute([$task_id, $user_id]);

@@ -241,8 +241,8 @@
                         icon: 'warning',
                         showCancelButton: true,
                         focusConfirm: false,
-                        confirmButtonText: "<?=SWAL_CONFIRM_DELETE;?>" ,
-                        cancelButtonText: "<?=G_CANCEL;?>" ,
+                        confirmButtonText: "<?=SWAL_CONFIRM_DELETE;?>",
+                        cancelButtonText: "<?=G_CANCEL;?>",
                         customClass: {
                             confirmButton: 'btn btn-primary mr-3',
                             cancelButton: 'btn btn-secondary'
@@ -440,7 +440,7 @@
         });
     ClassicEditor
         .create(document.querySelector('#editor2'), {
-            language: <?=LANG_ISO;?>
+            language: "<?=LANG_ISO;?>"
         }).then(editor => {
             notes = editor;
             notes.setData(
@@ -461,7 +461,7 @@
             formData.append('notes', notes.getData());
 
             $.ajax({
-                url: '<?=ROOT;?>/project/<?=$id;?>?submit',
+                url: '<?=ROOT;?>/project/<?=$id;?>?submit&edit',
                 type: 'POST',
                 data: formData,
                 contentType: false,

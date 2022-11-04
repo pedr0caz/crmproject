@@ -134,11 +134,13 @@
                                 <div class="form-group mb-0">
                                     <select class="selectpicker form-control height-35 f-14" name="task_status"
                                         id="task_status">
-                                        <?php foreach($taskLabels as $taskLabel): ?>
+                                        <?php foreach($taskLabels as $taskLabel):
+                                            $labelTranslate = json_decode($taskLabel['column_name'], true);
+                                            ?>
                                         <option
-                                            data-content="<i class='bi bi-circle-fill  mr-2'  style='color:<?=$taskLabel['label_color']?>'></i>  <?=$taskLabel['column_name']?>"
+                                            data-content="<i class='bi bi-circle-fill  mr-2'  style='color:<?=$taskLabel['label_color']?>'></i>     <?=$labelTranslate[LANG_ISO]?>"
                                             value="<?=$taskLabel['id']?>">
-                                            <?=$taskLabel['column_name']?>
+                                            <?=$labelTranslate[LANG_ISO]?>
                                         </option>
                                         <?php endforeach; ?>
                                     </select>
@@ -427,8 +429,8 @@ require_once("views/layout/footer.php");
                                 icon: 'warning',
                                 showCancelButton: true,
                                 focusConfirm: false,
-                                confirmButtonText: "<?=SWAL_CONFIRM_DELETE;?>" ,
-                                cancelButtonText: "<?=G_CANCEL;?>" ,
+                                confirmButtonText: "<?=SWAL_CONFIRM_DELETE;?>",
+                                cancelButtonText: "<?=G_CANCEL;?>",
                                 customClass: {
                                     confirmButton: 'btn btn-primary mr-3',
                                     cancelButton: 'btn btn-secondary'

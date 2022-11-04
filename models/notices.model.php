@@ -41,8 +41,8 @@ class Notices extends Base
         r.display_name,
         t.team_name
             FROM notices n
-            INNER JOIN roles r ON r.id = n.toGroup
-            INNER JOIN teams t ON t.id = n.department_id
+            LEFT JOIN roles r ON r.id = n.toGroup
+            LEFT JOIN teams t ON t.id = n.department_id
         
             ORDER BY n.created_at DESC
 
@@ -100,6 +100,7 @@ class Notices extends Base
 
     public function newNotice($data, $user_id)
     {
+        $data['team_id'] = $data['team_id'] == "" ? null : $data['team_id'];
         $query = $this->db->prepare("
             INSERT INTO notices (toGroup, heading, description, department_id, added_by)
             VALUES (?, ?, ?, ?, ?)

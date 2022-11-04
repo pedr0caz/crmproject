@@ -5,7 +5,7 @@ if (isset($_SESSION["user_id"])) {
     $user->logout($_SESSION["user_id"]);
     if (isset($_COOKIE)) {
         foreach ($_COOKIE as $name => $value) {
-            if ($name != "preservecookie") {
+            if ($name != "lang") {
                 setcookie($name, '', 1);
                 setcookie($name, '', 1, '/');
             }

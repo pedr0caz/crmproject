@@ -57,8 +57,7 @@
     <!-- PAGE TITLE END -->
     <div class="content-wrapper pt-0 border-top-0 client-detail-wrapper">
         <?php if(!isset($_GET['tab'])) { ?>
-        <script src="<?=ROOT?>/js/Chart.min.js"></script>
-        <script src="<?=ROOT?>/js/gauge.js"></script>
+
         <div class="d-lg-flex">
             <div class="project-left w-100 py-0 py-lg-5 py-md-0 ">
                 <!-- PROJECT PROGRESS AND CLIENT START -->
@@ -111,30 +110,14 @@
                                     <div
                                         class="card-body d-flex d-xl-flex d-lg-block d-md-flex  justify-content-between align-items-center">
                                         <div id="progressGauge"></div>
-                                        <script>
-                                            // Element inside which you want to see the chart
-                                            // Element inside which you want to see the chart
-                                            var elementGauge = document.querySelector("#progressGauge")
-                                            // Properties of the gauge
-                                            var gaugeOptions = {
-                                                hasNeedle: false,
-                                                needleColor: 'gray',
-                                                needleUpdateSpeed: 1000,
-                                                arcColors: ['rgb(44, 177, 0)', 'rgb(232, 238, 243)'],
-                                                arcDelimiters: [ <?=$getProjectProgress >= 99.99 ? 99.99 : $getProjectProgress + 0.01;?> ],
-                                                rangeLabel: ['0', '100'],
-                                                centralLabel: '<?=$getProjectProgress?>%'
-                                            }
-                                            // Drawing and updating the chart
-                                            GaugeChart.gaugeChart(elementGauge, 150, gaugeOptions)
-                                        </script>
+
                                         <!-- PROGRESS START DATE START -->
                                         <div class="p-start-date mb-xl-0 mb-lg-3">
                                             <h5 class="text-lightest f-14 font-weight-normal">
                                                 <?=PROJECT_START_DATE;?>
                                             </h5>
                                             <p class="f-15 mb-0">
-                                                <?=$project['start_date'];?>
+                                                <?=ucwords(strftime('%d %B %Y', strtotime($project['start_date'])));?>
                                             </p>
                                         </div>
                                         <!-- PROGRESS START DATE END -->
@@ -147,7 +130,7 @@
                                                 <?php
                                                 $deadline = $project['deadline'];
             if($deadline > date('Y-m-d')) {
-                echo $project['deadline'];
+                echo ucwords(strftime('%d %B %Y', strtotime($deadline)));
             } else {
                 echo ' <span class="badge badge-danger">'.G_EXPIRED.'</span>';
                 echo '<br>';
@@ -250,48 +233,7 @@
                                     echo '</div>';
                                     echo '</div>';
                                 }?>
-                            <script>
-                                <?php
-                                    $myArray = array();
-            foreach($taskStatus as $status) {
-                $myArray[$status['slug']] = $status;
-            } ?>
-                                var ctx = document.getElementById("task-chart");
-                                var myChart = new Chart(ctx, {
-                                    type: 'pie',
-                                    data: {
-                                        labels: [
-                                            <?php foreach($myArray as $slug) {
-                                                $labelTranslate = json_decode($slug['column_name'], true);
-                                                echo '"'.$labelTranslate[LANG_ISO].'",';
-                                            } ?>
-                                        ],
-                                        datasets: [{
-                                            label: 'Dataset 1',
-                                            data: [
-                                                <?php foreach($myArray as $slug) {
-                                                    echo $slug['status_count'].',';
-                                                } ?>
-                                            ],
-                                            backgroundColor: [
-                                                <?php foreach($myArray as $slug) {
-                                                    echo '"'.$slug['label_color'].'",';
-                                                } ?>
-                                            ],
-                                        }]
-                                    },
-                                    options: {
-                                        responsive: true,
-                                        maintainAspectRatio: false,
 
-                                        plugins: {
-                                            legend: {
-                                                position: 'bottom',
-                                            }
-                                        }
-                                    },
-                                });
-                            </script>
                         </div>
                     </div>
                     <!-- CLIENT END -->
@@ -429,11 +371,11 @@
                                             <?php
                                             $due_date = $projectTasks['due_date'];
                                         if($due_date > date('Y-m-d')) {
-                                            echo $due_date;
+                                            echo ucwords(strftime('%d %B %Y', strtotime($due_date)));
                                         } else {
                                             echo ' <span class="badge badge-danger">'.G_EXPIRED.'</span>';
                                             echo '<br>';
-                                            echo '<span class="text-danger">'.$due_date.'</span>';
+                                            echo '<span class="text-danger">'.ucwords(strftime('%d %B %Y', strtotime($project['deadline']))).'</span>';
                                         }
                                         ?>
                                         </td>
@@ -843,7 +785,7 @@
                                                 if($diff->format('%R%a') < 0) {
                                                     echo '<span class="badge badge-pill badge-danger">'.G_OVERDUE.'</span>';
                                                 } else {
-                                                    echo '<span class="badge badge-pill badge-primary">'.$diff->format('%a days left').'</span>';
+                                                    echo '<span class="badge badge-pill badge-primary">'.$diff->format('%a '.G_DAYS.' '.G_LEFT).'</span>';
                                                 }
                                             }?></span>
                                         </div>
@@ -1004,7 +946,7 @@
 
             .msg_time_send {
                 position: absolute;
-                right: 0;
+                right: -37px;
                 bottom: -15px;
                 color: rgba(255, 255, 255, 0.5);
                 font-size: 10px;
@@ -1041,7 +983,7 @@
                                         $date = date_format(date_create($chat['created_at']), 'd M Y');
                                         $time = date_format(date_create($chat['created_at']), 'h:i A');
                                         if($date == date('d M Y')) {
-                                            echo 'Today, '.$time;
+                                            echo G_TODAY.', '.$time;
                                         } else {
                                             echo $date.', '.$time;
                                         }
@@ -1157,7 +1099,8 @@
                                         var today = new Date();
                                         var time = date.getHours() + ":" + date
                                             .getMinutes();
-                                        var formatdate = date <= today ? 'Today ' +
+                                        var formatdate = date <= today ?
+                                            '<?=G_TODAY;?> ' +
                                             time :
                                             date.toDateString();
                                         var session_id =
@@ -1201,7 +1144,7 @@
                     });
                 }
                 fechData();
-                setInterval(fechData, 1000);
+                setInterval(fechData, 500);
             });
         </script>
     </div>
@@ -1231,18 +1174,28 @@
                                 </th>
                                 <th><?=G_NAME;?></th>
                                 <?php if($_SESSION['user_role'] == 1): ?>
-                                <th class="text-right pr-20">
-                                    <?=G_ACTION;?>
-                                </th>
+
                                 <?php endif; ?>
                             </tr>
                         </thead>
                         <tbody>
                             <?php  $i = 0;
-        foreach($getProjectMembers as $employeeProject): ?>
+        foreach ($memberPerTeam as $user_id => $membert) : ?>
                             <tr id="row-<?=$i;?>">
                                 <td class="pl-20">
-                                    <?=$employeeProject['team_name'];?>
+                                    <?php foreach($membert['teams'] as $team): ?>
+                                    <span class="badge badge-pill badge-primary">
+                                        <?php if($_SESSION['user_role'] == 1): ?>
+                                        <button type=" button" class="deleteT delete-row"
+                                            data-row-id="<?=$user_id;?>"
+                                            data-row-teamid="<?=$team['team_id'];?>">
+                                            <i class="bi bi-x mr-1 text-white"></i>
+
+                                        </button>
+                                        <?php endif;?>
+                                        <?=$team['team_name'];?>
+                                    </span>
+                                    <?php endforeach; ?>
                                 </td>
                                 <td>
                                     <style>
@@ -1251,35 +1204,25 @@
                                         }
                                     </style>
                                     <div class="media align-items-center mw-250">
-                                        <a href="<?=ROOT?>/employee/<?=$employeeProject['user_id'];?>"
+                                        <a href="<?=ROOT?>/employee/<?=$user_id;?>"
                                             class="position-relative">
-                                            <img src="<?=$employeeProject['image'] ? ROOT.'/'.$employeeProject['image'] : 'https://www.gravatar.com/avatar/b4dda2fb5d3ab52705af21229f9b4b93.png?s=200&amp;d=mp';?>"
+                                            <img src="<?=$membert['image'] ? ROOT.'/'.$membert['image'] : 'https://www.gravatar.com/avatar/b4dda2fb5d3ab52705af21229f9b4b93.png?s=200&amp;d=mp';?>"
                                                 class="mr-2 taskEmployeeImg rounded-circle"
-                                                alt="<?=$employeeProject['name'];?>"
-                                                title="<?=$employeeProject['name'];?>">
+                                                alt="<?=$membert['name'];?>"
+                                                title="<?=$membert['name'];?>">
                                         </a>
                                         <div class="media-body">
                                             <h5 class="mb-0 f-12">
-                                                <a href="<?=ROOT?>/employee/<?=$employeeProject['user_id'];?>"
-                                                    class="text-darkest-grey "><?=$employeeProject['name'];?></a>
+                                                <a href="<?=ROOT?>/employee/<?=$user_id;?>"
+                                                    class="text-darkest-grey "><?=$membert['name'];?></a>
                                             </h5>
                                             <p class="mb-0 f-12 text-dark-grey">
-                                                <?=$employeeProject['employee_designation'];?>
+                                                <?=$membert['employee_designation'];?>
                                             </p>
                                         </div>
                                     </div>
                                 </td>
-                                <?php if($_SESSION['user_role'] == 1): ?>
-                                <td class="text-right pr-20">
-                                    <button type="button" class="btn-secondary rounded f-14 p-2 delete-row"
-                                        data-row-id="<?=$employeeProject['user_id'];?>"
-                                        data-row-teamid="<?=$employeeProject['team_id'];?>">
-                                        <i class="bi bi-trash" style="font-size: 16px;"></i>
-                                        <!-- <i class="fa fa-trash mr-1"></i> Font Awesome fontawesome.com -->
-                                        <?=G_DELETE;?>
-                                    </button>
-                                </td>
-                                <?php endif; ?>
+
                             </tr>
                             <?php $i++; endforeach; ?>
                         </tbody>
@@ -1373,7 +1316,7 @@
                         success: function(response) {
                             console.log(response);
                             if (response.status == "success") {
-                                tr.remove();
+
                                 Swal.fire({
                                     title: "Deleted!",
                                     text: "<?=SWAL_CONFIRMATION_TEAM_DELETE;?>",
@@ -1565,4 +1508,63 @@
     });
     selectedDepartments = <?php echo json_encode($teams); ?> ;
     $('#department_list_id').selectpicker('val', selectedDepartments);
+</script>
+<script>
+    // Element inside which you want to see the chart
+    // Element inside which you want to see the chart
+    var elementGauge = document.querySelector("#progressGauge")
+    // Properties of the gauge
+    var gaugeOptions = {
+        hasNeedle: false,
+        needleColor: 'gray',
+        needleUpdateSpeed: 1000,
+        arcColors: ['rgb(44, 177, 0)', 'rgb(232, 238, 243)'],
+        arcDelimiters: [ <?=$getProjectProgress >= 99.99 ? 99.99 : $getProjectProgress + 0.01;?> ],
+        rangeLabel: ['0', '100'],
+        centralLabel: '<?=$getProjectProgress?>%'
+    }
+    // Drawing and updating the chart
+    GaugeChart.gaugeChart(elementGauge, 150, gaugeOptions)
+</script>
+<script>
+    <?php
+                                    $myArray = array();
+foreach($taskStatus as $status) {
+    $myArray[$status['slug']] = $status;
+} ?>
+    var ctx = document.getElementById("task-chart");
+    var myChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: [
+                <?php foreach($myArray as $slug) {
+                    $labelTranslate = json_decode($slug['column_name'], true);
+                    echo '"'.$labelTranslate[LANG_ISO].'",';
+                } ?>
+            ],
+            datasets: [{
+                label: 'Dataset 1',
+                data: [
+                    <?php foreach($myArray as $slug) {
+                        echo $slug['status_count'].',';
+                    } ?>
+                ],
+                backgroundColor: [
+                    <?php foreach($myArray as $slug) {
+                        echo '"'.$slug['label_color'].'",';
+                    } ?>
+                ],
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                }
+            }
+        },
+    });
 </script>

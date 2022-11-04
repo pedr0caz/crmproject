@@ -71,24 +71,38 @@
                                         </div>
                                         <div class="card-body border-0 pl-0">
                                             <div class="row">
-                                                <div class="col-10">
+                                                <div class="col-col-sm-8">
                                                     <h4 class="card-title f-15 f-w-500 text-darkest-grey mb-0">
                                                         <?=$employee['name']?>
                                                     </h4>
                                                 </div>
                                                 <div class="col-2 text-right">
-                                                    <button type="button" class="btn btn-primary btn-sm"
-                                                        data-toggle="modal" data-target="#exampleModal">
-                                                        <?=G_EDIT;?>
+                                                    <a
+                                                        href="<?=ROOT;?>/employee/<?=$id?>?edit">
+                                                        <button type="button" class="btn btn-primary btn-sm">
+                                                            <?=G_EDIT;?>
+                                                        </button>
+                                                    </a>
+
+                                                </div>
+                                                <div class="col-2 text-right">
+                                                    <a
+                                                        href="<?=ROOT;?>/messages/<?=$id?>">
+                                                        <button type="button" class="btn btn-primary btn-sm">
+                                                            <?=G_MESSENGER;?>
+                                                        </button>
+                                                    </a>
                                                 </div>
                                             </div>
                                             <p class="f-13 font-weight-normal text-dark-grey mb-0">
-                                                <?=$employee['designation_name']?>
+                                                <span
+                                                    class='badge badge-info mb-1'><?=$employee['designation_name']?></span>
                                             </p>
                                             <p class="card-text f-12 text-lightest">
                                                 <?php foreach($teams as $team): ?>
-                                                •
-                                                <?=$team['team_name']?>
+
+                                                <span
+                                                    class='badge badge-primary'><?=$team['team_name']?></span>
                                                 <?php endforeach; ?>
                                             </p>
                                             <div class="card-footer bg-white border-top-grey pl-0">
@@ -172,7 +186,8 @@
                                                 <?=G_DATE_OF_BIRTH;?>
                                             </p>
                                             <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">
-                                                <?=$employee['date_of_birth']?>
+                                                <?=ucwords(strftime('%d %B %Y', strtotime($employee['date_of_birth'])));?>
+
                                             </p>
                                         </div>
                                         <div class="col-12 px-0 pb-3 d-lg-flex d-md-flex d-block">
@@ -214,10 +229,15 @@
                                             </div>
                                             <div class="card-body p-0 ">
                                                 <div class="text-center text-lightest p-20" style="height: 250px">
+                                                    <?php if(empty($getEmployeeTasks)): ?>
                                                     <i class="side-icon f-21 bi bi-pie-chart"></i>
                                                     <div class="f-15 mt-4">
                                                         <?=G_NOT_ENOUGH_DATA;?>
                                                     </div>
+                                                    <?php else: ?>
+                                                    <canvas id="task-chart" height="250" width="250"
+                                                        style="display: block; box-sizing: border-box; height: 250px; width: 250px;"></canvas>
+                                                    <?php endif; ?>
                                                 </div>
                                             </div>
                                         </div>
@@ -243,7 +263,7 @@
                             <div class="card-horizontal">
                                 <div class="card-header m-0 p-0 bg-white rounded">
                                     <span
-                                        class="f-12 p-1 "><?=date('M', strtotime($activity['created_at']))?></span>
+                                        class="f-12 p-1 "><?=ucwords(strftime('%b', strtotime($activity['created_at'])));?></span>
                                     <span
                                         class="f-13 f-w-500 rounded-bottom"><?=date('d', strtotime($activity['created_at']))?></span>
                                 </div>
@@ -335,7 +355,7 @@
                                  } else {
                                      echo ' <span class="badge badge-danger">'.G_EXPIRED.'</span>';
                                      echo '<br>';
-                                     echo '<span class="text-danger">'.$project['deadline'].'</span>';
+                                     echo '<span class="text-danger">'.ucwords(strftime('%d %B %Y', strtotime($project['deadline']))).'</span>';
                                  }
 
                                  ?>
@@ -522,7 +542,7 @@
                                             } else {
                                                 echo ' <span class="badge badge-danger">'.G_EXPIRED.'</span>';
                                                 echo '<br>';
-                                                echo '<span class="text-danger">'.$due_data.'</span>';
+                                                echo '<span class="text-danger">'.ucwords(strftime('%d %B %Y', strtotime($due_data))).'</span>';
                                             }
 
                                             ?>
@@ -736,7 +756,8 @@
                                     <div class="card-body pr-2">
                                         <div class="d-flex flex-grow-1">
                                             <h4 class="card-title f-12 text-dark-grey mr-3 text-truncate"
-                                                data-toggle="tooltip" data-original-title="asdsad">
+                                                data-toggle="tooltip"
+                                                data-original-title=" <?=$file['name']?>">
                                                 <?=$file['name']?>
                                             </h4>
                                             <div class="dropdown ml-auto file-action">
@@ -914,5 +935,44 @@
             }
 
         });
+
+
+
+        var ctx = document.getElementById("task-chart");
+        var myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: [
+                    <?php foreach ($taskPie as $key => $value) {
+                        $labelTranslate = json_decode($taskPie[$key]['label'], true);
+                        echo '"'.$labelTranslate[LANG_ISO].'",';
+                    } ?>
+                ],
+                datasets: [{
+                    label: 'Dataset 1',
+                    data: [
+                        <?php foreach ($taskPie as $key => $value) {
+                            echo '"'.$taskPie[$key]['value'].'",';
+                        } ?>
+                    ],
+                    backgroundColor: [
+                        <?php foreach ($taskPie as $key => $value) {
+                            echo '"'.$taskPie[$key]['color'].'",';
+                        } ?>
+                    ],
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    }
+                }
+            },
+        });
+
     });
 </script>

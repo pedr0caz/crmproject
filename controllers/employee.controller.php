@@ -120,7 +120,7 @@ if (!isset($_SESSION["user_id"])) {
                     }
                 } elseif (isset($_GET['emplooyeDepartment']) &&  $_GET['emplooyeDepartment'] == 'edit') {
                     if (isset($_POST['department_name']) && !empty($_POST['department_name']) && isset($_POST['id']) && !empty($_POST['id'])) {
-                        $department = $employeeModel->editDepartment($_POST['id'], $_POST['department_name']);
+                        $department = $employeeModel->editDepartment($_POST['id'], trim($_POST['department_name']));
                         if ($department) {
                             header('Content-Type: application/json; charset=utf-8');
                             echo json_encode(['status' => 'success', 'data' => $_POST['department_name']]);
@@ -140,7 +140,7 @@ if (!isset($_SESSION["user_id"])) {
                     }
                 } elseif (isset($_GET['emplooyeDepartment']) && $_GET['emplooyeDepartment'] == 'add') {
                     if (isset($_POST['department_name']) && !empty($_POST['department_name'])) {
-                        $department_name = $_POST['department_name'];
+                        $department_name = trim($_POST['department_name']);
                         $department = $employeeModel->newDepartment($department_name);
                         if ($department) {
                             header('Content-Type: application/json; charset=utf-8');
@@ -241,11 +241,11 @@ if (!isset($_SESSION["user_id"])) {
             
                                             <div class="dropdown-menu dropdown-menu-right border-grey rounded b-shadow-4 p-0" aria-labelledby="dropdownMenuLink" tabindex="0">
             
-                                                <a class="cursor-pointer d-block text-dark-grey f-13 pt-3 px-3 " target="_blank" href="'.ROOT."/".$data['filename'].'">View</a>
+                                                <a class="cursor-pointer d-block text-dark-grey f-13 pt-3 px-3 " target="_blank" href="'.ROOT."/".$data['filename'].'">'.G_VIEW.'</a>
             
                                                 <a class="cursor-pointer d-block text-dark-grey f-13 py-3 px-3 " href="'.ROOT."/".$data['filename'].'">Download</a>
             
-                                                <a class="cursor-pointer d-block text-dark-grey f-13 pb-3 px-3 delete-file" data-row-id="1" href="javascript:;">Delete</a>
+                                                <a class="cursor-pointer d-block text-dark-grey f-13 pb-3 px-3 delete-file" data-row-id="1" href="javascript:;">'.G_DELETE.'</a>
                                             </div>
                                         </div>
                                     </div>
@@ -269,6 +269,20 @@ if (!isset($_SESSION["user_id"])) {
                     $projects = $employeeModel->getProjectsOfEmployee($id);
                     $employeeFiles = $employeeModel->getFiles($id);
                     $getEmployeeTasks = $employeeModel->getEmployeeTasks($id);
+                    
+                    $taskPie = array();
+
+                    foreach ($getEmployeeTasks as $task) {
+                        foreach ($taskLabels as $label) {
+                            if ($task['slug'] == $label['slug']) {
+                                $taskPie[$label['slug']]['label'] = $label['column_name'];
+                                $taskPie[$label['slug']]['value'] = isset($taskPie[$label['slug']]['value']) ? $taskPie[$label['slug']]['value'] + 1 : 1;
+                                $taskPie[$label['slug']]['color'] = $label['label_color'];
+                            }
+                        }
+                    }
+
+                   
 
                     $title =  G_EMPLOYEE ." - ". $employee["name"];
 

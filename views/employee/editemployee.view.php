@@ -193,11 +193,11 @@
                                     <select name="gender" class="form-control  selectpicker  height-35 f-14" id="gender"
                                         required>
 
-                                        <option value="male" <?=$employee['gender'] == 'male' ?: 'selected';?>><?=G_GENDER_MALE;?>
+                                        <option value="male" <?=$employee['gender'] == 'male' ? 'selected' : null;?>><?=G_GENDER_MALE;?>
                                         </option>
-                                        <option value="female" <?=$employee['gender'] == 'female' ?: 'selected';?>><?=G_GENDER_FEMALE;?>
+                                        <option value="female" <?=$employee['gender'] == 'female' ? 'selected' : null;?>><?=G_GENDER_FEMALE;?>
                                         </option>
-                                        <option value="other" <?=$employee['gender'] == 'other' ?: 'selected';?>><?=G_GENDER_OTHER;?>
+                                        <option value="other" <?=$employee['gender'] == 'other' ? 'selected': null;?>><?=G_GENDER_OTHER;?>
                                         </option>
                                     </select>
 
@@ -411,8 +411,8 @@
                         icon: 'warning',
                         showCancelButton: true,
                         focusConfirm: false,
-                        confirmButtonText: "<?=SWAL_CONFIRM_DELETE;?>" ,
-                        cancelButtonText: "<?=G_CANCEL;?>" ,
+                        confirmButtonText: "<?=SWAL_CONFIRM_DELETE;?>",
+                        cancelButtonText: "<?=G_CANCEL;?>",
                         customClass: {
                             confirmButton: 'btn btn-primary mr-3',
                             cancelButton: 'btn btn-secondary'
@@ -676,8 +676,8 @@
                         icon: 'warning',
                         showCancelButton: true,
                         focusConfirm: false,
-                        confirmButtonText:" <?=SWAL_CONFIRM_DELETE;?>" ,
-                        cancelButtonText: "<?=G_CANCEL;?>" ,
+                        confirmButtonText: " <?=SWAL_CONFIRM_DELETE;?>",
+                        cancelButtonText: "<?=G_CANCEL;?>",
                         customClass: {
                             confirmButton: 'btn btn-primary mr-3',
                             cancelButton: 'btn btn-secondary'

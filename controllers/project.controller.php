@@ -105,10 +105,11 @@ if (!isset($_SESSION["user_id"])) {
             } elseif ($_SESSION["user_role"] == "3") {
                 $project = $projectsModel->getProjectIDClient($id, $_SESSION['user_client_id']);
             }
+    
             if (empty($project)) {
                 http_response_code(404);
                 $title = "Not Found";
-                require("views/project/error404.view.php");
+                require("views/error404.view.php");
                 exit;
             }
 
@@ -286,6 +287,15 @@ if (!isset($_SESSION["user_id"])) {
                     $getProjectProgress = $projectsModel->getProjectProgress($id);
                     $getProjectFiles = $projectsModel->getFiles($id);
                     $getProjectMembers = $projectsModel->getProjectTeamMembers($id);
+                    $memberPerTeam = array();
+                    foreach ($getProjectMembers as $member) {
+                        $memberPerTeam[$member['user_id']]['name'] = $member['name'];
+                        $memberPerTeam[$member['user_id']]['image'] = $member['image'];
+                        $memberPerTeam[$member['user_id']]['employee_designation'] = $member['employee_designation'];
+                        $memberPerTeam[$member['user_id']]['teams'][$member['team_id']] = ['team_name' => $member['team_name'] , 'team_id' => $member['team_id']];
+                    }
+                   
+     
                     $tasks = $task->getProjectTasks($id);
                     $chats = $chatModel->getChat($id);
                     $getChatCount = $chatModel->getChatCount($id);
@@ -305,7 +315,7 @@ if (!isset($_SESSION["user_id"])) {
                             isset($_POST["team_id"]) &&
                             isset($_POST["project_description"]) && mb_strlen($_POST["project_description"]) > 0) {
                             $project = $projectsModel->editProject($id, $_POST);
-             
+                            
                             if ($project["status"]) {
                                 header('Content-Type: application/json; charset=utf-8');
                                 echo json_encode(['status' => 'success', 'message' => SWAL_PROJECT_CHANGED, 'id' => $project["id"]]);

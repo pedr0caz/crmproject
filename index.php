@@ -4,12 +4,12 @@ date_default_timezone_set('Europe/Lisbon');
 
 
 session_start();
-if (isset($_GET['lang'])) {
-    $_SESSION['lang'] = $_GET['lang'];
-} elseif (!$_SESSION['lang']) {
-    $_SESSION['lang'] = 'en';
+if (isset($_COOKIE["lang"])) {
+    $lang = $_COOKIE["lang"];
+} else {
+    $lang = "en";
 }
-include('lib/locale/'.$_SESSION['lang'].'.php');
+include('lib/locale/'.$lang.'.php');
 
 
 setlocale(LC_ALL, LANG_ISO);

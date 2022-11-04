@@ -54,11 +54,19 @@ if (!isset($_SESSION["user_id"])) {
         }
         if (isset($users)) {
             foreach ($users as $key => $user) {
+                $birthdaysY = date('d-F-Y', strtotime($user["date_of_birth"]));
+                $birthdays = strtotime($user["date_of_birth"]);
+                $time = $birthdays;
+                $day = date('d', $time);
+                $month = date('m', $time);
+                $year = date('Y', $time);
+                $currentYear = date('Y');
+
                 $eventsCalendar[] = array(
                     "idEvent" => $user["id"],
                     "type" => "Birthday",
-                    "title" => "🎂 ".$user["name"],
-                    "start" => $user["date_of_birth"],
+                    "title" => "🎂 ".$user["name"]. " " . G_EMPLOYEE,
+                    "start" => $currentYear . "-" . $month . "-" . $day,
                     "backgroundColor" => "#FF0000",
                     "borderColor" => "#FF0000",
                     "textColor" => "#fff",

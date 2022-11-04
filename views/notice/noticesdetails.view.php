@@ -57,7 +57,8 @@
                                     <?=G_DATE;?>
                                 </p>
                                 <p class="mb-0 text-dark-grey f-14 w-70 text-wrap">
-                                    <?=$notice['created_at'];?>
+
+                                    <?=ucwords(strftime('%d %B %Y %H:%M', strtotime($notice['created_at'])))?>
                                 </p>
                             </div>
 

@@ -105,7 +105,8 @@ class Project extends Base
     LEFT JOIN project_teams pt ON p.id = pt.project_id
     LEFT JOIN users u ON cd.user_id = u.id
     LEFT JOIN teams t ON pt.id = t.id
-    WHERE p.id = ? AND p.client_id = ?;
+    WHERE p.id = ? AND p.client_id = ?
+    GROUP BY p.id;
         ");
         $query->execute([$id, $user_id]);
         return $query->fetch(PDO::FETCH_ASSOC);

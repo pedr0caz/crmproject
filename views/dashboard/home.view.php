@@ -150,14 +150,8 @@ if ($_SESSION['user_role'] <= 2) {
                                                     <?=ucfirst(strftime('%b', strtotime($birthday['date_of_birth'])));?></span>
                                             </td>
                                             <td class="pr-20">
-                                                <span class="badge badge-light p-2"><?php if(date("d-m-Y", strtotime($birthday['date_of_birth'])) == date("d-m-Y")) {
-                                                    echo "Today";
-                                                } elseif(date("d-m-Y", strtotime($birthday['date_of_birth'])) < strtotime(date("d-m-Y"))) {
-                                                    echo date_diff(date_create($birthday['date_of_birth']), date_create('today'))->format(G_IN.' %a '.G_DAYS);
-                                                } else {
-                                                    echo date_diff(date_create($birthday['date_of_birth']), date_create('today'))->format('%a '.G_DAYS.' '.G_AGO);
-                                                } ?></span>
-
+                                                <span class="badge badge-light p-2">
+                                                    <?=countdays($birthday['date_of_birth']);?>
                                                 </span>
 
                                             </td>
