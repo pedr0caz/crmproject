@@ -340,10 +340,98 @@ if (!isset($_SESSION["user_id"])) {
                                 exit;
                             }
                         }
+                    } elseif (isset($_GET['action']) && $_GET["action"] == "uploadfile") {
+                        if (!isset($_FILES["file"])) {
+                            die("No file selected");
+                        }
+                        $filepath = $_FILES["file"]["tmp_name"];
+                        $fileSize = $_FILES["file"]["size"];
+                        $fileinfot = finfo_open(FILEINFO_MIME_TYPE);
+                        $fileType = finfo_file($fileinfot, $filepath);
+                        $allowedTypes = [
+                            'image/png' => 'png',
+                            'image/jpeg' => 'jpg',
+                            'application/pdf' => 'pdf',
+                            'application/msword' => 'doc',
+                            'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'docx',
+                            'application/vnd.ms-excel' => 'xls',
+                            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => 'xlsx',
+                            'application/vnd.ms-powerpoint' => 'ppt',
+                            'application/vnd.openxmlformats-officedocument.presentationml.presentation' => 'pptx',
+                            'text/plain' => 'txt'
+                         ];
+                        if (!array_key_exists($fileType, $allowedTypes)) {
+                            die("File type not allowed");
+                        }
+                        $filename = basename($filepath);
+                        $extension = $allowedTypes[$fileType];
+                        $targetDirectory = 'uploads/';
+                        $newFilepath = $targetDirectory . $filename . "." . $extension;
+                        if (!copy($filepath, $newFilepath)) {
+                            die("Error copying file");
+                        }
+                        unlink($filepath);
+                        $data = $clientModel->newFile($id, $_POST['name'], $newFilepath);
+            
+                        if ($data) {
+                            $time = date_diff(date_create('now'), date_create($data['created_at']));
+                            if ($time->format('%a') == 0 && $time->format('%h') == 0 && $time->format('%i') == 0) {
+                                $time = $time->format('%s '.G_SECONDS.' '.G_AGO);
+                            } elseif ($time->format('%a') == 0 && $time->format('%h') == 0 && $time->format('%i') > 0) {
+                                $time = $time->format('%i '.G_MINUTES.' '.G_AGO);
+                            } elseif ($time->format('%a') == 0 && $time->format('%h') > 0) {
+                                $time = $time->format('%h '.G_HOURS.' '.G_AGO);
+                            } else {
+                                $time = $time->format('%a '.G_DAYS.' '.G_AGO);
+                            }
+                            $data = '<div class="card bg-white border-grey file-card mr-3 mb-3">
+                            <div class="card-horizontal">
+                                <div class="card-img mr-0">
+                                    <img src="'.ROOT."/".$data['filename'].'">
+                                </div>
+                                <div class="card-body pr-2">
+                                    <div class="d-flex flex-grow-1">
+                                        <h4 class="card-title f-12 text-dark-grey mr-3 text-truncate" data-toggle="tooltip" >'.$data['name'].'</h4>
+                                        <div class="dropdown ml-auto file-action">
+                                            <button class="btn btn-lg f-14 p-0 text-lightest text-capitalize rounded  dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="bi bi-three-dots-vertical"></i>
+                                            </button>
+            
+                                            <div class="dropdown-menu dropdown-menu-right border-grey rounded b-shadow-4 p-0" aria-labelledby="dropdownMenuLink" tabindex="0">
+            
+                                                <a class="cursor-pointer d-block text-dark-grey f-13 pt-3 px-3 " target="_blank" href="'.ROOT."/".$data['filename'].'">'.G_VIEW.'</a>
+            
+                                                <a class="cursor-pointer d-block text-dark-grey f-13 py-3 px-3 " href="'.ROOT."/".$data['filename'].'">Download</a>
+            
+                                                <a class="cursor-pointer d-block text-dark-grey f-13 pb-3 px-3 delete-file" data-row-id="1" href="javascript:;">'.G_DELETE.'</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-date f-11 text-lightest">
+                                        '.$time.'
+                                    </div>
+                                </div>
+                            </div>
+                        </div>';
+            
+                            
+                            header('Content-Type: application/json; charset=utf-8');
+                            echo json_encode(['status' => 'success', 'message' => SWAL_FILE_ADDED, 'data' => $data]);
+                        }
+                    } elseif (isset($_GET['action']) && $_GET["action"] == "deletefile") {
+                        $file = $clientModel->deleteFile($_POST['id'], $client['user_id']);
+                        if ($file) {
+                            header('Content-Type: application/json; charset=utf-8');
+                            echo json_encode(['status' => 'success', 'message' => "Ok"]);
+                        } else {
+                            header('Content-Type: application/json; charset=utf-8');
+                            echo json_encode(['status' => 'error', 'message' => "Error"]);
+                        }
                     }
                 } else {
                     $projects = $projectsModel->getProjectByClientID($id);
                     $notes = $clientModel->getClientNotes($id, $_SESSION['user_id']);
+                    $files = $clientModel->getFiles($client['user_id']);
                     $title = G_CLIENT . ' • ' . $client['name'];
                     require("views/client/clientdetails.view.php");
                 }

@@ -89,9 +89,9 @@
                     </div>
                 </div>
             </div>
-       
+
         </div>
-  
+
         <div class="row mt-4">
             <div class="col-xl-12 col-lg-12 col-md-12 mb-4 mb-xl-0 mb-lg-4">
                 <div class="card bg-white border-0 b-shadow-4">
@@ -196,7 +196,7 @@
         if (isset($_GET['tab']) && $_GET['tab'] == "projects") {
             ?>
         <div class="col-lg-12 col-md-12 mb-4 mb-xl-0 mb-lg-4">
-    
+
             <div class="d-flex" id="table-actions">
                 <a href="<?=ROOT?>/project/create?client_id=<?=$client['client_id'];?>"
                     class="btn-primary rounded f-14 p-2 mr-3 "
@@ -206,7 +206,7 @@
                     <?=G_PROJECT;?>
                 </a>
             </div>
-        
+
             <div class="d-flex flex-column w-tables rounded mt-3 bg-white">
                 <div id="projects-table_wrapper">
                     <div class="row">
@@ -392,7 +392,7 @@
                         visibility: visible;
                     }
                 </style>
-               
+
                 <div class="tab-pane fade show active mt-5" role="tabpanel" aria-labelledby="nav-email-tab">
                     <div class="card bg-white border-0 b-shadow-4">
                         <div class="card-header bg-white border-0 text-capitalize d-flex justify-content-between p-20">
@@ -452,12 +452,80 @@
                                 </div>
                             </form>
                             <div class="d-flex flex-wrap mt-3" id="task-file-list">
+                                <?php foreach($files as $file):
+                                    $time = date_diff(date_create('now'), date_create($file['created_at']));
+                                    if ($time->format('%a') == 0 && $time->format('%h') == 0 && $time->format('%i') == 0) {
+                                        $time = $time->format('%s '.G_SECONDS.' '.G_AGO);
+                                    } elseif ($time->format('%a') == 0 && $time->format('%h') == 0 && $time->format('%i') > 0) {
+                                        $time = $time->format('%i '.G_MINUTES.' '.G_AGO);
+                                    } elseif ($time->format('%a') == 0 && $time->format('%h') > 0) {
+                                        $time = $time->format('%h '.G_HOURS.' '.G_AGO);
+                                    } else {
+                                        $time = $time->format('%a '.G_DAYS.' '.G_AGO);
+                                    }
+                                    ?>
+                                <div class="card bg-white border-grey file-card mr-3 mb-3">
+                                    <div class="card-horizontal">
+                                        <div class="card-img mr-0">
+                                            <?php
+                                                $fileE = explode('.', $file['filename']);
+                                    $extension = ltrim($fileE[count($fileE) - 1]);
+                                    if($extension == 'pdf') {
+                                        $img = ' <i class="bi bi-file-pdf mr-2 text-lightest" style="font-size: 16px;"></i>';
+                                    } elseif($extension == 'docx') {
+                                        $img = ' <i class="bi bi-filetype-docx mr-2 text-lightest" style="font-size: 16px;"></i>';
+                                    } elseif($extension == 'jpg' || $extension == 'jpeg' || $extension == 'png' || $extension == 'gif') {
+                                        $img = '<img src="'.ROOT.'/'.$file["filename"].'">';
+                                    } else {
+                                        $img = ' <i class="bi bi-file-earmark mr-2 text-lightest" style="font-size: 16px;"></i>';
+                                    }
+                                    ?>
+                                            <?=$img?>
+                                        </div>
+                                        <div class="card-body pr-2">
+                                            <div class="d-flex flex-grow-1">
+                                                <h4 class="card-title f-12 text-dark-grey mr-3 text-truncate"
+                                                    data-toggle="tooltip"
+                                                    data-original-title=" <?=$file['name']?>">
+                                                    <?=$file['name']?>
+                                                </h4>
+                                                <div class="dropdown ml-auto file-action">
+                                                    <button
+                                                        class="btn btn-lg f-14 p-0 text-lightest text-capitalize rounded  dropdown-toggle"
+                                                        type="button" data-toggle="dropdown" aria-haspopup="true"
+                                                        aria-expanded="false">
+                                                        <i class="bi bi-three-dots-vertical"></i>
+                                                    </button>
 
+                                                    <div class="dropdown-menu dropdown-menu-right border-grey rounded b-shadow-4 p-0"
+                                                        aria-labelledby="dropdownMenuLink" tabindex="0">
+
+                                                        <a class="cursor-pointer d-block text-dark-grey f-13 pt-3 px-3 "
+                                                            target="_blank"
+                                                            href="<?=ROOT?>/<?=$file['filename']?>"><?=G_VIEW;?></a>
+
+                                                        <a class="cursor-pointer d-block text-dark-grey f-13 py-3 px-3 "
+                                                            href="<?=ROOT?>/<?=$file['filename']?>"><?=G_DOWNLOAD;?></a>
+
+
+                                                        <a class="cursor-pointer d-block text-dark-grey f-13 pb-3 px-3 delete-file"
+                                                            data-row-id="<?=$file['id']?>"
+                                                            href="javascript:;"><?=G_DELETE;?></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-date f-11 text-lightest">
+                                                <?=$time?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php endforeach; ?>
                             </div>
                         </div>
                     </div>
                 </div>
-             
+
                 <script>
                     $('#add-task-file').click(function() {
                         $(this).closest('.row').addClass('d-none');
@@ -468,34 +536,6 @@
                         // Basic
                         $('.dropify').dropify();
 
-
-
-                        // Used events
-                        var drEvent = $('#input-file-events').dropify();
-
-                        drEvent.on('dropify.beforeClear', function(event, element) {
-                            return confirm("Do you really want to delete \"" + element.file.name +
-                                "\" ?");
-                        });
-
-                        drEvent.on('dropify.afterClear', function(event, element) {
-                            alert('File deleted');
-                        });
-
-                        drEvent.on('dropify.errors', function(event, element) {
-                            console.log('Has Errors');
-                        });
-
-                        var drDestroy = $('#input-file-to-destroy').dropify();
-                        drDestroy = drDestroy.data('dropify')
-                        $('#toggleDropify').on('click', function(e) {
-                            e.preventDefault();
-                            if (drDestroy.isDropified()) {
-                                drDestroy.destroy();
-                            } else {
-                                drDestroy.init();
-                            }
-                        })
                     });
 
 
@@ -525,6 +565,7 @@
 
                     $('body').on('click', '.delete-file', function() {
                         var id = $(this).data('row-id');
+                        var card = $(this).closest('.file-card');
                         Swal.fire({
                             title: "<?=SWAL_TITLE_DELETE;?>",
                             text: "You will not be able to recover the deleted record!",
@@ -544,20 +585,18 @@
                             buttonsStyling: false
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                var url = "employee-docs/:id";
-                                url = url.replace(':id', id);
+
 
 
                                 $.ajax({
                                     type: 'POST',
-                                    url: url,
+                                    url: '<?=ROOT;?>/client/<?=$id;?>?action=deletefile',
                                     data: {
-                                        '_token': token,
-                                        '_method': 'DELETE'
+                                        id: id
                                     },
                                     success: function(response) {
                                         if (response.status == "success") {
-                                            $('#task-file-list').html(response.view);
+                                            card.remove();
                                         }
                                     }
                                 });
@@ -570,10 +609,10 @@
         } elseif(isset($_GET['tab']) && $_GET['tab'] == "notes") {
             ?>
             <div class="content-wrapper border-top-0 client-detail-wrapper">
-             
+
                 <div class="row pb-5">
                     <div class="col-lg-12 col-md-12 mb-4 mb-xl-0 mb-lg-4">
-                     
+
                         <div class="d-flex justify-content-between action-bar">
                             <div id="table-actions" class="d-flex align-items-center">
 
@@ -663,7 +702,7 @@
 
                             </div>
                         </div>
-                 
+
                     </div>
                 </div>
 

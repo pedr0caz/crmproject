@@ -259,7 +259,7 @@
                         });
                     </script>
                 </div>
-            
+
             </div>
             <?php } elseif(isset($id) && $id == 'tab' && isset($_GET['files'])) { ?>
             <div class="tab-content" id="nav-tabContent" style="position: static; zoom: 1;">
@@ -393,7 +393,7 @@
 
 
                                                     <a class="cursor-pointer d-block text-dark-grey f-13 pb-3 px-3 delete-file"
-                                                        data-row-id="1"
+                                                        data-row-id="<?=$file['id']?>"
                                                         href="javascript:;"><?=G_DELETE;?></a>
                                                 </div>
                                             </div>
@@ -451,6 +451,8 @@
 
     $('body').on('click', '.delete-file', function() {
         var id = $(this).data('row-id');
+        var card = $(this).closest('.file-card');
+
         Swal.fire({
             title: "<?=SWAL_TITLE_DELETE;?>",
             text: "You will not be able to recover the deleted record!",
@@ -470,20 +472,16 @@
             buttonsStyling: false
         }).then((result) => {
             if (result.isConfirmed) {
-                var url = "employee-docs/:id";
-                url = url.replace(':id', id);
-
 
                 $.ajax({
                     type: 'POST',
-                    url: url,
+                    url: '<?=ROOT;?>/profile/file?deletefile',
                     data: {
-                        '_token': token,
-                        '_method': 'DELETE'
+                        id: id
                     },
                     success: function(response) {
                         if (response.status == "success") {
-                            $('#task-file-list').html(response.view);
+                            card.remove();
                         }
                     }
                 });

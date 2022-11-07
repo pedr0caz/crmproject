@@ -487,4 +487,27 @@ class Client extends Base
             return $query->fetch(PDO::FETCH_ASSOC);
         }
     }
+
+    public function deleteFile($id, $user_id)
+    {
+        $query = $this->db->prepare("
+        DELETE FROM client_docs WHERE id = ? AND user_id = ?
+        ");
+        $query->execute([$id, $user_id]);
+        if ($query->rowCount()) {
+            $query = $this->db->prepare("
+            INSERT INTO user_activities (user_id, activity, created_at)
+            VALUES (?, ?, ?)
+            ");
+            $query->execute([
+                $user_id,
+                json_encode([
+                    "en" => "File deleted by ".$_SESSION['user_name'],
+                    "pt" => "Ficheiro eliminado por ".$_SESSION['user_name']
+                ]),
+                date("Y-m-d H:i:s")
+            ]);
+            return true;
+        }
+    }
 }

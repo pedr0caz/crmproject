@@ -155,6 +155,20 @@ if (!isset($_SESSION["user_id"])) {
                     header('Content-Type: application/json; charset=utf-8');
                     echo json_encode(['status' => 'success', 'message' => SWAL_FILE_ADDED, 'data' => $data]);
                 }
+            } elseif (isset($_GET['deletefile'])) {
+                if ($_SESSION["user_role"] <= 2) {
+                    $data = $employeeModel->deleteFile($_POST['id'], $_SESSION["user_id"]);
+                } else {
+                    $data = $clientModel->deleteFile($_POST['id'], $_SESSION["user_id"]);
+                }
+
+                if ($data) {
+                    header('Content-Type: application/json; charset=utf-8');
+                    echo json_encode(['status' => 'success', 'message' => 'File deleted successfully']);
+                } else {
+                    header('Content-Type: application/json; charset=utf-8');
+                    echo json_encode(['status' => 'error', 'message' => 'Error deleting file']);
+                }
             }
         } else {
             if ($_SESSION['user_role'] <= 2) {
