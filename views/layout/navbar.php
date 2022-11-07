@@ -1,14 +1,14 @@
 <aside class="sidebar-dark">
-    <!-- MOBILE CLOSE SIDEBAR PANEL START -->
+
     <div class="mobile-close-sidebar-panel w-100 h-100" onclick="closeMobileMenu()" id="mobile_close_panel"></div>
-    <!-- MOBILE CLOSE SIDEBAR PANEL END -->
-    <!-- MAIN SIDEBAR START -->
+
+
     <div class="main-sidebar" id="mobile_menu_collapse">
-        <!-- SIDEBAR BRAND START -->
+   
         <div class="sidebar-brand-box dropdown cursor-pointer ">
             <div class="dropdown-toggle sidebar-brand d-flex align-items-center justify-content-between  w-100"
                 type="link" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <!-- SIDEBAR BRAND NAME START -->
+        
                 <div class="sidebar-brand-name">
                     <h1 class="mb-0 f-16 f-w-500 text-white-shade mt-0" data-placement="bottom" data-toggle="tooltip"
                         data-original-title="">CRM
@@ -23,7 +23,7 @@
                     </div>
                 </div>
             </div>
-            <!-- DROPDOWN - INFORMATION -->
+         
             <div class="dropdown-menu dropdown-menu-right sidebar-brand-dropdown ml-3"
                 aria-labelledby="dropdownMenuLink" tabindex="0">
                 <div class="d-flex justify-content-between align-items-center profile-box">
@@ -52,8 +52,7 @@
                 </a>
             </div>
         </div>
-        <!-- SIDEBAR BRAND END -->
-        <!-- SIDEBAR MENU START -->
+      
         <div class="sidebar-menu " id="sideMenuScroll">
             <ul>
                 <?php if($_SESSION['user_role'] == 1): ?>
@@ -66,11 +65,11 @@
                             class="pl-3"><?=MENU_DASHBOARD;?></span>
                     </a>
                     <div class="accordionItemContent pb-2 a">
-                        <!-- COLLAPSE - INFORMATION -->
+                       
                         <a class="f-14 text-lightest"
                             href="<?=ROOT?>/adminhome"
                             title="Admin Dashboard"><?=MENU_DASHBOARD;?></a>
-                        <!-- COLLAPSE - INFORMATION -->
+                      
                         <a class="f-14 text-lightest"
                             href="<?=ROOT?>/home"
                             title="Private Dashboard"><?=MENU_PRIVATE_DASHBOARD;?></a>
@@ -109,7 +108,7 @@
                     </a>
                 </li>
                 <?php endif; ?>
-                <!-- NAV ITEM - WORK COLLAPASE MENU -->
+            
                 <li class="accordionItem closeIt">
                     <a class="nav-item text-lightest f-15 sidebar-text-color accordionItemHeading  <?php if (str_contains($controller, 'project') || str_contains($controller, 'task')) {
                         echo 'active';
@@ -118,19 +117,18 @@
                         <span class="pl-3"><?=MENU_WORK;?></span>
                     </a>
                     <div class="accordionItemContent pb-2">
-                        <!-- COLLAPSE - INFORMATION -->
+                     
                         <a class="f-14 text-lightest"
                             href="<?=ROOT?>/project"
                             title="Projects"><?=MENU_PROJECTS;?></a>
-                        <!-- COLLAPSE - INFORMATION -->
+                       
                         <a class="f-14 text-lightest"
                             href="<?=ROOT?>/task"
                             title="Tasks"><?=MENU_TASKS;?></a>
-                        <!-- COLLAPSE - INFORMATION -->
+                        
                     </div>
                 </li>
-                <!-- NAV ITEM - FINANCE COLLAPASE MENU -->
-                <!-- NAV ITEM - EVENTS -->
+              
                 <li class="accordionItem closeIt">
                     <a class="nav-item text-lightest f-15 sidebar-text-color  <?php if (str_contains($controller, 'event')) {
                         echo 'active';
@@ -140,7 +138,7 @@
                         <span class="pl-3"><?=MENU_EVENTS;?></span>
                     </a>
                 </li>
-                <!-- NAV ITEM - MESSAGES -->
+            
                 <li class="accordionItem closeIt message-menu">
                     <a class="nav-item text-lightest f-15 sidebar-text-color  <?php if (str_contains($controller, 'message')) {
                         echo 'active';
@@ -150,8 +148,7 @@
                         <span class="pl-3"><?=MENU_MESSAGES;?></span>
                     </a>
                 </li>
-                <!-- NAV ITEM - GDPR -->
-                <!-- NAV ITEM - NOTICES -->
+           
                 <li class="accordionItem closeIt">
                     <a class="nav-item text-lightest f-15 sidebar-text-color  <?php if (str_contains($controller, 'notice')) {
                         echo 'active';
@@ -175,7 +172,7 @@
                 </li>
             </ul>
         </div>
-        <!-- SIDEBAR MENU END -->
+
     </div>
 </aside>
 

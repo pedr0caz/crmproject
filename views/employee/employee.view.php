@@ -1,10 +1,9 @@
 <?php require_once("views/layout/header.php"); ?>
 <?php require_once("views/layout/navbar.php"); ?>
 <section class="main-container bg-additional-grey" id="fullscreen">
-    <!-- PAGE TITLE END -->
-    <!-- CONTENT WRAPPER START -->
+
     <div class="content-wrapper">
-        <!-- Add Task Export Buttons Start -->
+
         <div class="d-flex justify-content-between action-bar">
             <div id="table-actions" class="d-block d-lg-flex align-items-center">
                 <a href="<?=ROOT;?>/employee/create"
@@ -30,8 +29,7 @@
 
             </div>
         </div>
-        <!-- Add Task Export Buttons End -->
-        <!-- Task Box Start -->
+
         <div class="d-flex flex-column w-tables rounded mt-3 bg-white">
 
             <div class="row">
@@ -160,9 +158,9 @@
             </div>
 
         </div>
-        <!-- Task Box End -->
+    
     </div>
-    <!-- CONTENT WRAPPER END -->
+
 </section>
 <script>
     $(document).ready(function() {

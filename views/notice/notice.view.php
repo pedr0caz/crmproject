@@ -3,7 +3,7 @@
 <section class="main-container bg-additional-grey" id="fullscreen">
 
     <div class="content-wrapper">
-        <!-- Add Task Export Buttons Start -->
+   
         <?php if ($_SESSION["user_role"] == "1") : ?>
         <div class="d-flex justify-content-between action-bar">
             <div id="table-actions" class="flex-grow-1 align-items-center mt-3">
@@ -85,9 +85,9 @@
                 </div>
             </div>
         </div>
-        <!-- Task Box End -->
+ 
     </div>
-    <!-- CONTENT WRAPPER END -->
+
 </section>
 <?php require_once("views/layout/footer.php");
 ?>

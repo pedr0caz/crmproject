@@ -2,7 +2,7 @@
 <?php require_once("views/layout/navbar.php"); ?>
 <section class="main-container bg-additional-grey" id="fullscreen">
 
-    <!-- PAGE TITLE END -->
+
     <div class="content-wrapper">
         <div class="row">
             <div class="col-sm-12">
@@ -56,7 +56,7 @@
                                                     data-original-title="Show/Hide Value"
                                                     class="btn btn-outline-secondary border-grey height-35 toggle-password">
                                                     <i class="bi bi-eye-slash"></i>
-                                                    <!-- <i class="fa fa-eye"></i> Font Awesome fontawesome.com -->
+                                               
                                                 </button>
                                             </div>
                                             <div class="input-group-append">
@@ -64,7 +64,7 @@
                                                     data-original-title="<?=G_GENERATE_PASSWORD;?>"
                                                     class="btn btn-outline-secondary border-grey height-35">
                                                     <i class="bi bi-shuffle font-weight-bolder"></i>
-                                                    <!-- <i class="fa fa-random"></i> Font Awesome fontawesome.com -->
+                                                 
                                                 </button>
                                             </div>
                                         </div>

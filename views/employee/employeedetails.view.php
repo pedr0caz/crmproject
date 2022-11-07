@@ -56,9 +56,9 @@
 		<?php if(!isset($_GET['tab'])) { ?>
 		<div class="d-lg-flex">
 			<div class="project-left w-100 py-0 py-lg-5 py-md-0">
-				<!-- ROW START -->
+		
 				<div class="row">
-					<!--  USER CARDS START -->
+				
 					<div class="col-lg-12 col-md-12 mb-4 mb-xl-0 mb-lg-4 mb-md-0">
 						<div class="row">
 							<div class="col-xl-6 col-md-6 mb-4 mb-lg-0">
@@ -71,28 +71,33 @@
 										</div>
 										<div class="card-body border-0 pl-0">
 											<div class="row">
-												<div class="col-col-sm-8">
+												<div class="col-9">
 													<h4 class="card-title f-15 f-w-500 text-darkest-grey mb-0">
 														<?=$employee['name']?>
 													</h4>
 												</div>
-												<div class="col-2 text-right">
+												<div class="col-3">
 													<a
 														href="<?=ROOT;?>/employee/<?=$id?>?edit">
 														<button type="button" class="btn btn-primary btn-sm">
-															<?=G_EDIT;?>
+															<i class="bi bi-pencil-fill"></i>
+
+
 														</button>
 													</a>
-
-												</div>
-												<div class="col-2 text-right">
+													<?php if($_SESSION['user_id'] != $id): ?>
 													<a
 														href="<?=ROOT;?>/messages/<?=$id?>">
 														<button type="button" class="btn btn-primary btn-sm">
-															<?=G_MESSENGER;?>
+															<i class="bi bi-chat-left-text-fill"></i>
+
+
 														</button>
 													</a>
+													<?php endif; ?>
+
 												</div>
+
 											</div>
 											<p class="f-13 font-weight-normal text-dark-grey mb-0">
 												<span
@@ -468,7 +473,7 @@
 
 
 
-				<!-- Add Task Export Buttons Start -->
+			
 				<div class="d-flex justify-content-between action-bar">
 					<div id="table-actions" class="align-items-center">
 						<a href="<?=ROOT;?>/task/create?user=<?=$id;?>"
@@ -484,7 +489,7 @@
 				</div>
 
 
-				<!-- Task Box Start -->
+			
 				<div class="d-flex flex-column w-tables rounded mt-3 bg-white">
 
 					<div id="allTasks-table_wrapper" class="">
@@ -567,8 +572,7 @@
 										                        echo ROOT.'/'.$member['employee_image'];
 										                    } else {
 										                        echo 'https://www.gravatar.com/avatar/f7e016ba33bbc6009459c4f37ce1c0e4.png?s=200&amp;d=mp';
-										                    }?>"
-																title="<?=$member['employee_name']?>" /></a>
+										                    }?>" title="<?=$member['employee_name']?>" /></a>
 													</div>
 													<?php endforeach;?>
 
@@ -632,7 +636,7 @@
 					</div>
 
 				</div>
-				<!-- Task Box End -->
+			
 			</div>
 		</div>
 		<?php } elseif(isset($_GET['tab']) && $_GET['tab'] == 'documents') { ?>
@@ -647,7 +651,6 @@
 				}
 			</style>
 
-			<!-- TAB CONTENT START -->
 			<div class="tab-pane fade show active mt-5" role="tabpanel" aria-labelledby="nav-email-tab">
 				<div class="card bg-white border-0 b-shadow-4">
 					<div class="card-header bg-white border-0 text-capitalize d-flex justify-content-between p-20">
@@ -796,7 +799,7 @@
 					</div>
 				</div>
 			</div>
-			<!-- TAB CONTENT END -->
+			
 
 			<script>
 				$('#add-task-file').click(function() {

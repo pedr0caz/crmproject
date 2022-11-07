@@ -38,6 +38,7 @@ $controllers = [
     "event",
     "forgotpassword",
     "profile",
+    "homeadmin",
 
 ];
 

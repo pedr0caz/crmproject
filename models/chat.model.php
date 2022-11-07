@@ -180,7 +180,7 @@ class Messages extends Base
     {
         $timestamp = strtotime($date_time);
    
-        $strTime = array("second", "minute", "hour", "day", "month", "year");
+        $strTime = array(G_SECONDS, G_MINUTES, G_HOURS, G_DAYS, "month", "year");
         $length = array("60","60","24","30","12","10");
      
         $currentTime = time();
@@ -194,7 +194,7 @@ class Messages extends Base
             if ($diff < 59 && $strTime[$i] == "second") {
                 return 'Active';
             } else {
-                return $diff . " " . $strTime[$i] . "(s) ago ";
+                return $diff . " " . $strTime[$i] . " ". G_AGO;
             }
         }
     }

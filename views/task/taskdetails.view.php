@@ -70,7 +70,7 @@ require_once("views/layout/navbar.php");
                                 </p>
                                 <p class="mb-0 text-dark-grey f-14 w-70">
 
-                                    <!-- <i class="fa fa-circle mr-1 text-red f-10"></i> Font Awesome fontawesome.com -->
+
                                     <?php
                                     if ($task['task_priority'] == "low") {
                                         echo '<i class="bi bi-circle-fill mr-1 text-green f-10"></i>';
@@ -162,7 +162,7 @@ require_once("views/layout/navbar.php");
                         </div>
                     </div>
 
-                    <!-- TASK TABS START -->
+
                     <div class="bg-additional-grey rounded my-3">
 
                         <div class="s-b-inner s-b-notifications bg-white b-shadow-4 rounded">
@@ -207,7 +207,7 @@ require_once("views/layout/navbar.php");
                                         }
                                     </style>
 
-                                    <!-- TAB CONTENT START -->
+
                                     <div class="tab-pane fade show active" role="tabpanel" id="files">
                                         <div class="p-20">
 
@@ -520,7 +520,7 @@ require_once("views/layout/navbar.php");
 
 
                     </div>
-                    <!-- TASK TABS END -->
+
 
 
 

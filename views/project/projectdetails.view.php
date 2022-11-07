@@ -54,15 +54,15 @@
             </nav>
         </div>
     </div>
-    <!-- PAGE TITLE END -->
+
     <div class="content-wrapper pt-0 border-top-0 client-detail-wrapper">
         <?php if(!isset($_GET['tab'])) { ?>
 
         <div class="d-lg-flex">
             <div class="project-left w-100 py-0 py-lg-5 py-md-0 ">
-                <!-- PROJECT PROGRESS AND CLIENT START -->
+
                 <div class="row">
-                    <!-- PROJECT PROGRESS START -->
+
                     <div class="col-8">
                         <div class="row">
                             <div class="col-12 mb-4">
@@ -111,7 +111,7 @@
                                         class="card-body d-flex d-xl-flex d-lg-block d-md-flex  justify-content-between align-items-center">
                                         <div id="progressGauge"></div>
 
-                                        <!-- PROGRESS START DATE START -->
+
                                         <div class="p-start-date mb-xl-0 mb-lg-3">
                                             <h5 class="text-lightest f-14 font-weight-normal">
                                                 <?=PROJECT_START_DATE;?>
@@ -120,8 +120,7 @@
                                                 <?=ucwords(strftime('%d %B %Y', strtotime($project['start_date'])));?>
                                             </p>
                                         </div>
-                                        <!-- PROGRESS START DATE END -->
-                                        <!-- PROGRESS END DATE START -->
+
                                         <div class="p-end-date">
                                             <h5 class="text-lightest f-14 font-weight-normal">
                                                 <?=G_DEADLINE;?>
@@ -139,14 +138,14 @@
             ?>
                                             </p>
                                         </div>
-                                        <!-- PROGRESS END DATE END -->
+
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- PROJECT PROGRESS END -->
-                    <!-- CLIENT START -->
+
+
                     <div class="col-4 h-75 ">
                         <div class="d-flex align-content-center flex-lg-row-reverse mb-4">
                             <div class="ml-lg-3 ml-md-0 ml-0 mr-3 mr-lg-0 mr-md-3">
@@ -236,7 +235,7 @@
 
                         </div>
                     </div>
-                    <!-- CLIENT END -->
+
                 </div>
                 <div class="row mt-4">
                     <div class="col-md-12 mb-4">
@@ -255,18 +254,17 @@
                         </div>
                     </div>
                 </div>
-                <!-- PROJECT DETAILS END -->
+
             </div>
-            <!-- PROJECT RIGHT START -->
+
             <div class="project-right pt-0 pb-4 p-lg-0">
                 <div class="bg-white">
-                    <!-- ACTIVITY HEADING START -->
+
                     <div class="p-activity-heading d-flex align-items-center justify-content-between b-shadow-4 p-20">
                         <p class="mb-0 f-18 f-w-500"><?=G_ACTIVITY;?>
                         </p>
                     </div>
-                    <!-- ACTIVITY HEADING END -->
-                    <!-- ACTIVITY DETAIL START -->
+
                     <div class="p-activity-detail cal-info b-shadow-4 scroll ps ps--active-y" data-menu-vertical="1"
                         data-menu-scroll="1" data-menu-dropdown-timeout="500" id="projectActivityDetail"
                         style="height: 386px; overflow: hidden;">
@@ -456,7 +454,7 @@
                                                             data-task-id="<?=$projectTasks['task_id']?>">
                                                             <i class="bi bi-trash-fill mr-2"
                                                                 style="font-size: 16px;"></i>
-                                                            <!-- <i class="fa fa-trash mr-2"></i> Font Awesome fontawesome.com -->
+
                                                             <?=G_DELETE?>
                                                         </a>
                                                         <?php endif; ?>
@@ -483,7 +481,7 @@
                 visibility: visible;
             }
         </style>
-        <!-- TAB CONTENT START -->
+
         <div class="tab-pane fade show active mt-5" role="tabpanel" aria-labelledby="nav-email-tab">
             <div class="card bg-white border-0 b-shadow-4">
                 <div class="card-header bg-white border-0 text-capitalize d-flex justify-content-between p-20">
@@ -535,7 +533,7 @@
                                     </a>
                                     <button type="button" class="btn-primary rounded f-14 p-2" id="submit-document">
                                         <i class="bi bi-check mr-2" style="font-size: 16px;"></i>
-                                        <!-- <i class="fa fa-check mr-1"></i> Font Awesome fontawesome.com -->
+
                                         <?=G_SAVE;?>
                                     </button>
                                 </div>
@@ -587,7 +585,7 @@
                                                 type="button" data-toggle="dropdown" aria-haspopup="true"
                                                 aria-expanded="false">
                                                 <i class="bi bi-three-dots-vertical" style="font-size: 16px;"></i>
-                                                <!-- <i class="fa fa-ellipsis-h"></i> Font Awesome fontawesome.com -->
+
                                             </button>
                                             <div class="dropdown-menu dropdown-menu-right border-grey rounded b-shadow-4 p-0"
                                                 aria-labelledby="dropdownMenuLink" tabindex="0">
@@ -615,7 +613,7 @@
                 </div>
             </div>
         </div>
-        <!-- TAB CONTENT END -->
+
         <script>
             $('#add-task-file').click(function() {
                 $(this).closest('.row').addClass('d-none');
@@ -726,7 +724,7 @@
                 padding: 0;
             }
         </style>
-        <!-- CONTENT WRAPPER START -->
+
         <div class="w-task-board-box px-4 py-2 pt-3 bg-white">
             <div class="w-task-board-panel d-flex" id="taskboard-columns">
                 <?php foreach($taskLabels as $label):
@@ -757,7 +755,7 @@
                                     <div class="d-flex mb-1 justify-content-between">
                                         <div>
                                             <i class="bi bi-layers" style="font-size: 16px;"></i>
-                                            <!-- <i class="fa fa-layer-group f-11 text-lightest"></i> Font Awesome fontawesome.com --><span
+                                            <span
                                                 class="ml-2 f-11 text-lightest"><?=$task['heading'];?></span>
                                         </div>
                                     </div>
@@ -1149,14 +1147,14 @@
         </script>
     </div>
     <?php } elseif(isset($_GET['tab']) && $_GET['tab'] == 'members') { ?>
-    <!-- ROW START -->
+
     <div class="row py-5">
         <div class="col-lg-12 col-md-12 mb-4 mb-xl-0 mb-lg-4">
             <?php if($_SESSION['user_role'] == 1): ?>
             <button type="button" class="btn-primary rounded f-14 p-2 type-btn mb-3" id="add-project-member"
                 data-toggle="modal" data-target="#myModal">
                 <i class="bi bi-plus" style="font-size: 16px;"></i>
-                <!-- <i class="fa fa-plus mr-1"></i> Font Awesome fontawesome.com -->
+
                 <?=PROJECT_ADDTEAMMEMBER;?>
             </button>
             <?php endif; ?>

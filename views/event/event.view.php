@@ -2,7 +2,7 @@
 <?php require_once('views/layout/navbar.php'); ?>
 <section class="main-container bg-additional-grey" id="fullscreen">
     <div class="content-wrapper">
-        <!-- Add Task Export Buttons Start -->
+    
         <div class="d-flex my-3">
             <div id="table-actions" class="flex-grow-1 align-items-center">
                 <i class="bi bi-circle-fill m-2" style="color: #3366ff;"></i>

@@ -172,7 +172,7 @@ if (!isset($_SESSION["user_id"])) {
                                         <div class="dropdown ml-auto file-action">
                                             <button class="btn btn-lg f-14 p-0 text-lightest text-capitalize rounded  dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <i class="bi bi-three-dots-vertical"></i>
-                                                <!-- <i class="fa fa-ellipsis-h"></i> Font Awesome fontawesome.com -->
+                                                
                                             </button>
             
                                             <div class="dropdown-menu dropdown-menu-right border-grey rounded b-shadow-4 p-0" aria-labelledby="dropdownMenuLink" tabindex="0">

@@ -74,7 +74,7 @@
                                                     data-original-title="Show/Hide Value"
                                                     class="btn btn-outline-secondary border-grey height-35 toggle-password">
                                                     <i class="bi bi-eye-slash"></i>
-                                                    <!-- <i class="fa fa-eye"></i> Font Awesome fontawesome.com -->
+
                                                 </button>
                                             </div>
                                             <div class="input-group-append">
@@ -82,7 +82,7 @@
                                                     data-original-title="<?=G_GENERATE_PASSWORD;?>"
                                                     class="btn btn-outline-secondary border-grey height-35">
                                                     <i class="bi bi-shuffle font-weight-bolder"></i>
-                                                    <!-- <i class="fa fa-random"></i> Font Awesome fontawesome.com -->
+
                                                 </button>
                                             </div>
                                         </div>
@@ -160,7 +160,7 @@
 
                                 </div>
                             </div>
-                            <!-- Buttons Start -->
+
                             <div class="w-100 border-top-grey set-btns">
                                 <div class="settings-btns py-3 d-flex justify-content-start px-4">
                                     <button type="button" class="btn-primary rounded f-14 p-2 mr-3" id="save-form">
@@ -170,7 +170,7 @@
 
                                 </div>
                             </div>
-                            <!-- Buttons End -->
+
 
                         </div>
                     </form>
@@ -259,7 +259,7 @@
                         });
                     </script>
                 </div>
-                <!-- TAB CONTENT END -->
+            
             </div>
             <?php } elseif(isset($id) && $id == 'tab' && isset($_GET['files'])) { ?>
             <div class="tab-content" id="nav-tabContent" style="position: static; zoom: 1;">

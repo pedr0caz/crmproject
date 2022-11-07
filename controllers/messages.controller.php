@@ -40,12 +40,13 @@
             $chats = $chat->getChatAjax($_SESSION["user_id"], $_POST["id_2"]);
   
             if ($chats != null) {
+                $chats['created_at'] = 	ucwords(strftime('%d %b %Y %T', strtotime($chats['created_at'])));
                 header("Content-Type: application/json");
                 echo json_encode($chats);
             }
         } elseif ($id === 'sendMessage') {
             $chat->insertMessage($_SESSION["user_id"], $_POST["to_id"], $_POST["message"]);
-            $time = date("h:i:s a");
+            $time = ucwords(strftime('%d %b %Y %T', strtotime(date('Y-m-d H:i:s'))));
             echo '<p class="rtext align-self-end
              border rounded p-2 mb-1">
       '.$_POST["message"].'

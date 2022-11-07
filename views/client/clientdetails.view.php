@@ -1,8 +1,7 @@
 <?php require_once("views/layout/header.php"); ?>
 <?php require_once("views/layout/navbar.php"); ?>
 <section class="main-container bg-additional-grey" id="fullscreen">
-    <!-- FILTER START -->
-    <!-- PROJECT HEADER STARTmplete -->
+
     <div class="d-flex filter-box project-header bg-white">
         <div class="project-menu d-lg-flex" id="mob-client-detail">
             <a href="<?=ROOT?>/client/<?=$id?>"
@@ -26,11 +25,11 @@
 
     <div class="content-wrapper border-top-0 client-detail-wrapper">
         <?php if (!isset($_GET['tab'])) { ?>
-        <!-- ROW START -->
+
         <div class="row">
             <div class="col-sm-12">
             </div>
-            <!--  USER CARDS START -->
+
             <div class="col-xl-7 col-lg-12 col-md-12 mb-4 mb-xl-0 mb-lg-4 mb-md-0">
                 <div class="row">
                     <div class="col-xl-7 col-lg-6 col-md-6 mb-4 mb-lg-0">
@@ -90,11 +89,9 @@
                     </div>
                 </div>
             </div>
-            <!--  USER CARDS END -->
-            <!--  WIDGETS END -->
+       
         </div>
-        <!-- ROW END -->
-        <!-- ROW START -->
+  
         <div class="row mt-4">
             <div class="col-xl-12 col-lg-12 col-md-12 mb-4 mb-xl-0 mb-lg-4">
                 <div class="card bg-white border-0 b-shadow-4">
@@ -199,7 +196,7 @@
         if (isset($_GET['tab']) && $_GET['tab'] == "projects") {
             ?>
         <div class="col-lg-12 col-md-12 mb-4 mb-xl-0 mb-lg-4">
-            <!-- Add Task Export Buttons Start -->
+    
             <div class="d-flex" id="table-actions">
                 <a href="<?=ROOT?>/project/create?client_id=<?=$client['client_id'];?>"
                     class="btn-primary rounded f-14 p-2 mr-3 "
@@ -209,8 +206,7 @@
                     <?=G_PROJECT;?>
                 </a>
             </div>
-            <!-- Add Task Export Buttons End -->
-            <!-- Task Box Start -->
+        
             <div class="d-flex flex-column w-tables rounded mt-3 bg-white">
                 <div id="projects-table_wrapper">
                     <div class="row">
@@ -396,7 +392,7 @@
                         visibility: visible;
                     }
                 </style>
-                <!-- TAB CONTENT START -->
+               
                 <div class="tab-pane fade show active mt-5" role="tabpanel" aria-labelledby="nav-email-tab">
                     <div class="card bg-white border-0 b-shadow-4">
                         <div class="card-header bg-white border-0 text-capitalize d-flex justify-content-between p-20">
@@ -461,7 +457,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- TAB CONTENT END -->
+             
                 <script>
                     $('#add-task-file').click(function() {
                         $(this).closest('.row').addClass('d-none');
@@ -574,10 +570,10 @@
         } elseif(isset($_GET['tab']) && $_GET['tab'] == "notes") {
             ?>
             <div class="content-wrapper border-top-0 client-detail-wrapper">
-                <!-- ROW START -->
+             
                 <div class="row pb-5">
                     <div class="col-lg-12 col-md-12 mb-4 mb-xl-0 mb-lg-4">
-                        <!-- Add Task Export Buttons Start -->
+                     
                         <div class="d-flex justify-content-between action-bar">
                             <div id="table-actions" class="d-flex align-items-center">
 
@@ -667,7 +663,7 @@
 
                             </div>
                         </div>
-                        <!-- Task Box End -->
+                 
                     </div>
                 </div>
 

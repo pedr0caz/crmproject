@@ -4,20 +4,20 @@
 <section class="main-container bg-additional-grey" id="fullscreen">
 
 
-	<!-- CONTENT WRAPPER START -->
+
 	<div class="px-4 py-2 border-top-0 emp-dashboard">
-		<!-- WELOCOME START -->
+	
 		<div class="d-lg-flex d-md-flex d-block py-4">
-			<!-- WELOCOME NAME START -->
+	
 			<div class="">
 				<h4 class=" mb-0 f-21 text-capitalize font-weight-bold">
 					<?=G_WELCOME?>
 					<?=$_SESSION['user_name'];?>
 				</h4>
 			</div>
-			<!-- WELOCOME NAME END -->
+		
 
-			<!-- CLOCK IN CLOCK OUT START -->
+		
 			<div
 				class="ml-auto d-flex clock-in-out mb-3 mb-lg-0 mb-md-0 m mt-4 mt-lg-0 mt-md-0 justify-content-between">
 				<p
@@ -33,15 +33,14 @@
 
 
 			</div>
-			<!-- CLOCK IN CLOCK OUT END -->
+	
 		</div>
-		<!-- WELOCOME END -->
-		<!-- EMPLOYEE DASHBOARD DETAIL START -->
+	
 		<div class="row emp-dash-detail">
-			<!-- EMP DASHBOARD INFO NOTICES START -->
+		
 			<div class="col-xl-5 col-lg-12 col-md-12 e-d-info-notices">
 				<div class="row">
-					<!-- EMP DASHBOARD INFO START -->
+			
 					<div class="col-md-12">
 						<div class="card border-0 b-shadow-4 mb-3 e-d-info">
 							<div class="card-horizontal align-items-center">
@@ -99,10 +98,7 @@ if ($_SESSION['user_role'] <= 2) {
 							</div>
 						</div>
 					</div>
-					<!-- EMP DASHBOARD INFO END -->
-
-
-					<!-- EMP DASHBOARD BIRTHDAY START -->
+			
 					<div class="col-sm-12">
 						<div class="card bg-white border-0 b-shadow-4 e-d-info mb-3">
 							<div
@@ -162,20 +158,16 @@ if ($_SESSION['user_role'] <= 2) {
 							</div>
 						</div>
 					</div>
-					<!-- EMP DASHBOARD BIRTHDAY END -->
-
-
-					<!-- EMP DASHBOARD NOTICE START -->
+				
 					<div class="col-md-12">
 						<div class="mb-3 b-shadow-4 rounded bg-white pb-2">
-							<!-- NOTICE HEADING START -->
+							
 							<div class="d-flex align-items-center b-shadow-4 p-20">
 								<p class="mb-0 f-18 f-w-500">
 									<?=G_NOTICES;?>
 								</p>
 							</div>
-							<!-- NOTICE HEADING END -->
-							<!-- NOTICE DETAIL START -->
+							
 							<div class="b-shadow-4 cal-info scroll ps" data-menu-vertical="1" data-menu-scroll="1"
 								data-menu-dropdown-timeout="500" id="empDashNotice" style="overflow: hidden;">
 								<?php if(empty($notices)) : ?>
@@ -209,17 +201,16 @@ if ($_SESSION['user_role'] <= 2) {
 								<?php endforeach; ?>
 							</div>
 
-							<!-- NOTICE DETAIL END -->
+						
 						</div>
 					</div>
-					<!-- EMP DASHBOARD NOTICE END -->
+				
 
 				</div>
 			</div>
-			<!-- EMP DASHBOARD INFO NOTICES END -->
-			<!-- EMP DASHBOARD TASKS PROJECTS EVENTS START -->
+			
 			<div class="col-xl-7 col-lg-12 col-md-12 e-d-tasks-projects-events">
-				<!-- EMP DASHBOARD TASKS PROJECTS START -->
+				
 				<div class="row mb-3 mt-xl-0 mt-lg-4 mt-md-4 mt-4">
 					<div class="col-md-6">
 						<div
@@ -282,7 +273,7 @@ if ($_SESSION['user_role'] <= 2) {
 						</div>
 					</div>
 				</div>
-				<!-- EMP DASHBOARD TASKS PROJECTS END -->
+				
 
 				<div class="row">
 					<div class="col-sm-12">
@@ -383,15 +374,15 @@ if ($_SESSION['user_role'] <= 2) {
 				</div>
 
 
-				<!-- EMP DASHBOARD EVENTS END -->
+				
 			</div>
-			<!-- EMP DASHBOARD TASKS PROJECTS EVENTS END -->
+		
 		</div>
-		<!-- EMPLOYEE DASHBOARD DETAIL END -->
+	
 
 
 	</div>
-	<!-- CONTENT WRAPPER END -->
+	
 
 
 </section>

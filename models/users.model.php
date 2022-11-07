@@ -271,8 +271,8 @@ class User extends Base
             FROM users u
             INNER JOIN employee_details e ON u.id = e.user_id
             INNER JOIN designations d ON e.designation_id = d.id
-            WHERE MONTH(e.date_of_birth) = MONTH(CURDATE()) 
-            ORDER BY e.date_of_birth ASC
+            WHERE MONTH(e.date_of_birth) = MONTH(CURDATE())  OR MONTH(e.date_of_birth) = MONTH(CURDATE() + INTERVAL 1 MONTH)
+            ORDER BY  MONTH(e.date_of_birth), DAY(e.date_of_birth) ASC;
 
         ");
         $query->execute();

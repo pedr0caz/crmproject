@@ -1,16 +1,16 @@
 <head>
-    <!-- Required meta tags -->
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Simple Line Icons -->
+
     <link rel="stylesheet"
         href="<?=ROOT?>/css/simple-line-icons.css">
-    <!-- Bootstrap Icons -->
+
     <link rel="stylesheet" href="<?=ROOT?>/css/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css">
     <link rel="stylesheet" href="https://jeremyfagis.github.io/dropify/dist/css/dropify.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.css">
-    <!-- Template CSS -->
+
     <link type=" text/css" rel="stylesheet" media="all"
         href="<?=ROOT?>/css/main.css">
 
@@ -25,7 +25,7 @@
     <header class="main-header clearfix bg-white" id="header">
 
         <div class="navbar-left float-left d-flex align-items-center">
-            <!-- PAGE TITLE START -->
+
             <div class="page-title d-none d-lg-flex">
                 <div class="page-heading">
                     <h2 class="mb-0 pr-3 text-dark f-18 font-weight-bold">
@@ -39,12 +39,10 @@
             </div>
 
         </div>
-        <!-- NAVBAR LEFT(MOBILE MENU COLLAPSE) END-->
-        <!-- NAVBAR RIGHT(SEARCH, ADD, NOTIFICATION, LOGOUT) START-->
+
         <div class="page-header-right float-right d-flex align-items-center">
             <ul>
-                <!-- START TIMER END -->
-                <!-- ADD START -->
+
                 <li>
                     <div class="mr-2">
                         <select class="selectpicker" id="flag" data-width="fit">
@@ -80,18 +78,17 @@
                         </div>
                     </div>
                 </li> -->
-                <!-- NOTIFICATIONS END -->
-                <!-- LOGOUT START -->
+
                 <li>
                     <div class="logout_box" style="    margin-top: 5px;">
                         <a class="d-block header-icon-box"
                             href="<?=ROOT?>/logout">
                             <i class="bi bi-power f-w-500 text-dark-grey f-20"></i>
-                            <!-- <i class="fa fa-power-off f-16 text-dark-grey"></i> Font Awesome fontawesome.com -->
+
                         </a>
                     </div>
                 </li>
-                <!-- LOGOUT END -->
+
             </ul>
         </div>
 

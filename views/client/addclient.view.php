@@ -3,7 +3,7 @@
 
 <section class="main-container bg-additional-grey" id="fullscreen">
 
-	<!-- PAGE TITLE END -->
+
 	<div class="content-wrapper">
 		<div class="row">
 			<div class="col-sm-12">
@@ -57,7 +57,7 @@
 													data-original-title="Show/Hide Value"
 													class="btn btn-outline-secondary border-grey height-35 toggle-password">
 													<i class="bi bi-eye-slash"></i>
-													<!-- <i class="fa fa-eye"></i> Font Awesome fontawesome.com -->
+										
 												</button>
 											</div>
 											<div class="input-group-append">
@@ -65,7 +65,7 @@
 													data-original-title="<?=G_GENERATE_PASSWORD;?>"
 													class="btn btn-outline-secondary border-grey height-35">
 													<i class="bi bi-shuffle font-weight-bolder"></i>
-													<!-- <i class="fa fa-random"></i> Font Awesome fontawesome.com -->
+													
 												</button>
 											</div>
 										</div>
@@ -136,8 +136,7 @@
 										<i class="bi bi-question-circle-fill f-14 text-dark-grey ml-1"
 											data-toggle="tooltip" data-placement="top"
 											title="Profile picture of the client"></i>
-										<!-- <i class="fa fa-question-circle" data-toggle="popover" data-placement="top" data-content="only .jpg, .jpeg, .png formats are allowed." data-html="true" data-trigger="hover" data-original-title="" title=""></i> Font Awesome fontawesome.com -->
-									</label>
+										</label>
 									<input type="file" name="uploadfile" id="input-file-now-custom-2" class="dropify"
 										data-height="131" data-allowed-file-extensions="gif png jpg jpeg" />
 								</div>

@@ -141,7 +141,7 @@
     </div>
 </section>
 <?php require_once("views/layout/footer.php");?>
-<!-- Modal -->
+
 <div class="modal" id="myModal">
     <div class="modal-dialog">
         <div class="modal-content">
