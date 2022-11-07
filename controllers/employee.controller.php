@@ -270,6 +270,7 @@ if (!isset($_SESSION["user_id"])) {
                     $employeeFiles = $employeeModel->getFiles($id);
                     $getEmployeeTasks = $employeeModel->getEmployeeTasks($id);
                     
+                    
                     $taskPie = array();
 
                     foreach ($getEmployeeTasks as $task) {
