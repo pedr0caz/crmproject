@@ -5,9 +5,14 @@
 <IfModule mod_rewrite.c>
 Options -Indexes
 RewriteEngine On
-RewriteBase /Backend/loja/
+RewriteBase /Projeto/
 RewriteRule ^index\.php$ - [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . /Projeto/index.php [L]
+
+RewriteCond %{REQUEST_METHOD} POST
+RewriteCond %{REMOTE_ADDR} !127.0.0.1
+## RewriteCond %{REMOTE_ADDR} !MeuIP
+RewriteRule ^ / [F]   
 </IfModule>
