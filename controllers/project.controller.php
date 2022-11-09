@@ -39,6 +39,15 @@ if (!isset($_SESSION["user_id"])) {
             require("views/project/projects.view.php");
         } elseif ($_SESSION["user_role"] <= 1 && isset($id) && $id == "create") {
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                foreach ($_POST as $key=>$value) {
+                    if (is_array($_POST[$key])) {
+                        foreach ($_POST[$key] as $k=>$v) {
+                            $_POST[$key][$k] = htmlspecialchars($v);
+                        }
+                    } else {
+                        $_POST[$key] = htmlspecialchars($value);
+                    }
+                }
                 if (isset($_GET['submit'])) {
                     if (isset($_POST["project_name"]) && mb_strlen($_POST["project_name"]) > 0 &&
                     isset($_POST["category_id"]) && is_numeric($_POST["category_id"]) &&
@@ -117,6 +126,15 @@ if (!isset($_SESSION["user_id"])) {
 
             if (!isset($_GET['edit'])) {
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                    foreach ($_POST as $key=>$value) {
+                        if (is_array($_POST[$key])) {
+                            foreach ($_POST[$key] as $k=>$v) {
+                                $_POST[$key][$k] = htmlspecialchars($v);
+                            }
+                        } else {
+                            $_POST[$key] = htmlspecialchars($value);
+                        }
+                    }
                     if (isset($_GET['action']) && $_GET["action"] == "uploadfile" && $_SESSION["user_role"] <= 2) {
                         if (!isset($_FILES["file"])) {
                             die("No file selected");
@@ -140,7 +158,7 @@ if (!isset($_SESSION["user_id"])) {
                         if (!array_key_exists($fileType, $allowedTypes)) {
                             die("File type not allowed");
                         }
-                        $filename = basename($filepath);
+                        $filename = uniqid() . "-" . time();
                         $extension = $allowedTypes[$fileType];
                         $targetDirectory = 'uploads/';
                         $newFilepath = $targetDirectory . $filename . "." . $extension;
@@ -210,7 +228,7 @@ if (!isset($_SESSION["user_id"])) {
                             echo json_encode(['status' => 'error', 'message' => SWAL_FILE_ERROR]);
                         }
                     } elseif (isset($_GET['msg']) && $_GET["msg"] == "add") {
-                        if (isset($_POST['message']) && mb_strlen($_POST['message'] > 0)) {
+                        if (isset($_POST['message']) && mb_strlen($_POST['message']) > 0) {
                             $newChat =  $chatModel->newChat($_POST['message'], $id, $_SESSION['user_id']);
                             if ($newChat) {
                                 header('Content-Type: application/json; charset=utf-8');
@@ -221,7 +239,7 @@ if (!isset($_SESSION["user_id"])) {
                             }
                         }
                     } elseif (isset($_GET['msg']) && $_GET["msg"] == "fetch") {
-                        if (isset($_POST['lastid']) && mb_strlen($_POST['lastid'] > 0 && is_numeric($_POST['lastid']))) {
+                        if (isset($_POST['lastid']) && mb_strlen($_POST['lastid']) > 0 && is_numeric($_POST['lastid'])) {
                             $fetchChat =  $chatModel->getChatAjax($id, $_POST['lastid']);
                         
                             if ($fetchChat) {
@@ -230,7 +248,7 @@ if (!isset($_SESSION["user_id"])) {
                             }
                         }
                     } elseif (isset($_GET['action']) && $_GET["action"] == "change_status" && $_SESSION["user_role"] <= 1) {
-                        if (isset($_POST['status']) && mb_strlen($_POST['status'] > 0)) {
+                        if (isset($_POST['status']) && mb_strlen($_POST['status']) > 0) {
                             if ($_POST['status'] == "on hold") {
                                 $lang = PROJECT_ONHOLD;
                             } elseif ($_POST['status'] == "in progress") {
@@ -255,7 +273,7 @@ if (!isset($_SESSION["user_id"])) {
                         }
                     } elseif (isset($_GET['action']) && $_GET["action"] == "delete_member" && $_SESSION["user_role"] <= 1) {
                         if (isset($_POST['user_id']) && isset($_POST['team_id']) &&
-                            mb_strlen($_POST['user_id'] > 0) && mb_strlen($_POST['team_id'] > 0)) {
+                            mb_strlen($_POST['user_id'] > 0) && mb_strlen($_POST['team_id']) > 0) {
                             $deleteMember =  $projectsModel->deleteMemberFromProject($_POST['team_id'], $_POST['user_id']);
                            
                             if ($deleteMember) {
@@ -267,7 +285,7 @@ if (!isset($_SESSION["user_id"])) {
                             }
                         }
                     } elseif (isset($_GET['action']) && $_GET["action"] == "edit_departments" && $_SESSION["user_role"] <= 1) {
-                        if (isset($_POST['department']) && mb_strlen($_POST['department'] > 0)) {
+                        if (isset($_POST['department']) && mb_strlen($_POST['department']) > 0) {
                             $editDepartments =  $projectsModel->editTeamsOnProject($id, $_POST['department']);
             
                             if ($editDepartments) {
@@ -306,6 +324,15 @@ if (!isset($_SESSION["user_id"])) {
                 }
             } elseif (isset($_GET['edit']) && $_SESSION['user_role'] == 1) {
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                    foreach ($_POST as $key=>$value) {
+                        if (is_array($_POST[$key])) {
+                            foreach ($_POST[$key] as $k=>$v) {
+                                $_POST[$key][$k] = htmlspecialchars($v);
+                            }
+                        } else {
+                            $_POST[$key] = htmlspecialchars($value);
+                        }
+                    }
                     if (isset($_GET['submit'])) {
                         if (isset($_POST["project_name"]) && mb_strlen($_POST["project_name"]) > 0 &&
                             isset($_POST["category_id"]) && is_numeric($_POST["category_id"]) &&

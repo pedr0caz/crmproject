@@ -153,7 +153,7 @@ require_once("views/layout/navbar.php");
                                     <?=G_DESCRIPTION;?>
                                 </p>
                                 <div class="mb-0 text-dark-grey f-14 w-70 text-wrap ql-editor p-0">
-                                    <?=$task['description']?>
+                                    <?=htmlspecialchars_decode($task['description'])?>
                                 </div>
                             </div>
 
@@ -454,7 +454,7 @@ require_once("views/layout/navbar.php");
                                                             <?php endif; ?>
                                                         </div>
                                                         <div class="card-text f-14 text-dark-grey text-justify">
-                                                            <?=$comment['comment']?>
+                                                            <?=htmlspecialchars_decode($comment['comment']);?>
                                                         </div>
                                                     </div>
                                                 </div>

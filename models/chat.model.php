@@ -8,8 +8,8 @@ class Messages extends Base
         $query = $this->db->prepare("
         SELECT * FROM chats
         WHERE (from_id = :id_1 AND to_id = :id_2)
-        OR (from_id = :id_2 AND to_id = :id_1)
-        ORDER BY chat_id ASC");
+        OR (from_id = :id_2 AND to_id = :id_1) AND opened = 1
+        ORDER BY chat_id ASC ");
         $query->execute([
             "id_1" => $id_1,
             "id_2" => $id_2
@@ -191,7 +191,7 @@ class Messages extends Base
             }
      
             $diff = round($diff);
-            if ($diff < 59 && $strTime[$i] == "second") {
+            if ($diff < 59 && $strTime[$i] == G_SECONDS) {
                 return 'Active';
             } else {
                 return $diff . " " . $strTime[$i] . " ". G_AGO;

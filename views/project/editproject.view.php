@@ -430,7 +430,7 @@
         }).then(editor => {
             project_description = editor;
             project_description.setData(
-                `<?=$project['project_summary'];?>`
+                `<?=htmlspecialchars_decode($project['project_summary']);?>`
             );
 
 
@@ -444,7 +444,7 @@
         }).then(editor => {
             notes = editor;
             notes.setData(
-                `<?=$project['notes'];?>`
+                `<?=htmlspecialchars_decode($project['notes']);?>`
             );
 
         })

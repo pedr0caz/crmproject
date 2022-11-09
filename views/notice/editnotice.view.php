@@ -124,7 +124,7 @@
                     }).then(editor => {
                         noticeDetails = editor;
                         noticeDetails.setData(
-                            `<?=$notice['description'];?>`
+                            `<?=htmlspecialchars_decode($notice['description']);?>`
                         );
 
                     })
