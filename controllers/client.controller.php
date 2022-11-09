@@ -22,6 +22,15 @@ if (!isset($_SESSION["user_id"])) {
             require("views/client/clients.view.php");
         } elseif ($_SESSION["user_role"] <= 1 && isset($id) && $id == "create") {
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                foreach ($_POST as $key=>$value) {
+                    if (is_array($_POST[$key])) {
+                        foreach ($_POST[$key] as $k=>$v) {
+                            $_POST[$key][$k] = htmlspecialchars($v);
+                        }
+                    } else {
+                        $_POST[$key] = htmlspecialchars($value);
+                    }
+                }
                 if (isset($_GET["submit"])) {
                     if (isset($_POST["name"]) && mb_strlen($_POST["name"]) > 0 &&
                     isset($_POST["email"]) && mb_strlen($_POST["email"]) > 0 && filter_var($_POST["email"], FILTER_VALIDATE_EMAIL) &&
@@ -44,7 +53,7 @@ if (!isset($_SESSION["user_id"])) {
                                 header('Content-Type: application/json; charset=utf-8');
                                 die(json_encode(['status' => 'error', 'message' => 'File type not allowed']));
                             }
-                            $filename = basename($filepath);
+                            $filename = uniqid() . "-" . time();
                             $extension = $allowedTypes[$fileType];
                             $targetDirectory = 'uploads/';
                             $newFilepath = $targetDirectory . $filename . "." . $extension;
@@ -261,6 +270,15 @@ if (!isset($_SESSION["user_id"])) {
             }
             if (!isset($_GET['edit'])) {
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                    foreach ($_POST as $key=>$value) {
+                        if (is_array($_POST[$key])) {
+                            foreach ($_POST[$key] as $k=>$v) {
+                                $_POST[$key][$k] = htmlspecialchars($v);
+                            }
+                        } else {
+                            $_POST[$key] = htmlspecialchars($value);
+                        }
+                    }
                     if (isset($_GET['delete'])) {
                         if (isset($_POST['user_id']) && !empty($_POST['user_id']) && is_numeric($_POST['user_id'])) {
                             if ($client['user_id'] != $_POST['user_id']) {
@@ -363,7 +381,7 @@ if (!isset($_SESSION["user_id"])) {
                         if (!array_key_exists($fileType, $allowedTypes)) {
                             die("File type not allowed");
                         }
-                        $filename = basename($filepath);
+                        $filename = uniqid() . "-" . time();
                         $extension = $allowedTypes[$fileType];
                         $targetDirectory = 'uploads/';
                         $newFilepath = $targetDirectory . $filename . "." . $extension;
@@ -437,6 +455,15 @@ if (!isset($_SESSION["user_id"])) {
                 }
             } elseif (isset($_GET['edit']) && $_SESSION['user_role'] <= 1) {
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                    foreach ($_POST as $key=>$value) {
+                        if (is_array($_POST[$key])) {
+                            foreach ($_POST[$key] as $k=>$v) {
+                                $_POST[$key][$k] = htmlspecialchars($v);
+                            }
+                        } else {
+                            $_POST[$key] = htmlspecialchars($value);
+                        }
+                    }
                     if (isset($_GET['submit'])) {
                         if (isset($_POST["name"]) && mb_strlen($_POST["name"]) > 0 &&
                         isset($_POST["email"]) && mb_strlen($_POST["email"]) > 0 && filter_var($_POST["email"], FILTER_VALIDATE_EMAIL) &&
@@ -457,7 +484,7 @@ if (!isset($_SESSION["user_id"])) {
                                     header('Content-Type: application/json; charset=utf-8');
                                     die(json_encode(['status' => 'error', 'message' => 'File type not allowed']));
                                 }
-                                $filename = basename($filepath);
+                                $filename = uniqid() . "-" . time();
                                 $extension = $allowedTypes[$fileType];
                                 $targetDirectory = 'uploads/';
                                 $newFilepath = $targetDirectory . $filename . "." . $extension;

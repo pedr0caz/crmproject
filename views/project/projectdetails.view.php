@@ -318,6 +318,10 @@
                         <i class="bi bi-person-fill mr-2" style="font-size: 16px;"></i>
                         <?=TASKS_MY_TASKS;?>
                     </button>
+                    <button type="button" class="btn-secondary rounded f-14 p-2 mr-3 float-left" id="filter-my-task2">
+                        <i class="bi bi-person-fill"></i></i>
+                        <?=G_HIDE_COMPLETED_TASKS;?>
+                    </button>
                 </div>
             </div>
             <?php endif; ?>
@@ -378,7 +382,7 @@
                                         ?>
                                         </td>
                                         <td data-search="<?php foreach($employeeModel->getTaskEmployees($projectTasks['task_id']) as $member) {
-                                            echo $member['employee_name'];
+                                            echo $member['employee_name'].",";
                                         } ?> ">
                                             <div class="position-relative">
                                                 <?php
@@ -401,7 +405,8 @@
                                                 <?php endforeach;?>
                                             </div>
                                         </td>
-                                        <td
+                                        <?php $labelJSON = json_decode($projectTasks['column_name'], true); ?>
+                                        <td data-search="<?=$labelJSON[LANG_ISO];?>"
                                             data-order="<?=$projectTasks['board_column_id']?>">
                                             <?php if($_SESSION['user_role'] <= 1): ?>
                                             <select class="selectpicker" id="status_task">
@@ -780,8 +785,10 @@
                                         <div class="d-flex text-red">
                                             <i class="f-11 bi bi-calendar"></i><span class="f-12 ml-1"><?php if($task['due_date']) {
                                                 $diff = date_diff(date_create('now'), date_create($task['due_date']));
-                                                if($diff->format('%R%a') < 0) {
+                                                if($diff->format('%R%a') < 0 && $task['board_column_id'] != 2) {
                                                     echo '<span class="badge badge-pill badge-danger">'.G_OVERDUE.'</span>';
+                                                } elseif($diff->format('%R%a') < 0 && $task['board_column_id'] == 2) {
+                                                    echo '<span class="badge badge-pill badge-success">'.G_COMPLETED.'</span>';
                                                 } else {
                                                     echo '<span class="badge badge-pill badge-primary">'.$diff->format('%a '.G_DAYS.' '.G_LEFT).'</span>';
                                                 }
@@ -1386,7 +1393,49 @@
 ?>
 <script>
     $(document).ready(function() {
-        $('#tasks-table').DataTable();
+        var tasksTable = $('#tasks-table').DataTable({
+            language: {
+                url: 'https://cdn.datatables.net/plug-ins/1.12.1/i18n/<?=LANG;?>.json'
+            }
+        });
+
+        $('#filter-my-task').on('click', function() {
+            var task = $('#filter-my-task').hasClass('btn-info');
+            if (task) {
+                $('#filter-my-task').removeClass('btn-info');
+                $('#filter-my-task').addClass('btn-secondary');
+                tasksTable.columns(4).search('').draw();
+
+            } else {
+                tasksTable.columns(4).search(
+                    '<?=$_SESSION['user_name'];?>'
+                ).draw();
+                $('#filter-my-task').removeClass('btn-secondary').addClass('btn-info');
+            }
+        });
+
+        $('#filter-my-task2').on('click', function() {
+            var task = $('#filter-my-task2').hasClass('btn-info');
+            if (task) {
+
+
+
+                $('#filter-my-task2').removeClass('btn-info');
+                $('#filter-my-task2').addClass('btn-secondary');
+                tasksTable.columns(5).search('').draw();
+            } else {
+                var searchSource = 'Incomplete, In Progress, Em Progresso, Incompleto';
+                var searchTerm = searchSource.split(', ').join(')|(');
+                $('#filter-my-task2').removeClass('btn-secondary').addClass('btn-info');
+                tasksTable.column(5).search("^(" + searchTerm + ")$", true, false, true).draw();
+
+
+            }
+        });
+
+
+
+
         var changeStatus = $('.change-status');
         changeStatus.selectpicker('val',
             '<?=$project['status'];?>');

@@ -43,6 +43,15 @@ if (!isset($_SESSION["user_id"])) {
             }
         } elseif ($_SESSION["user_role"] == "1" && isset($id) && is_numeric($id) && isset($_GET['edit'])) {
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                foreach ($_POST as $key=>$value) {
+                    if (is_array($_POST[$key])) {
+                        foreach ($_POST[$key] as $k=>$v) {
+                            $_POST[$key][$k] = htmlspecialchars($v);
+                        }
+                    } else {
+                        $_POST[$key] = htmlspecialchars($value);
+                    }
+                }
                 if (isset($_POST["to"]) && isset($_POST["heading"]) && !empty($_POST["heading"]) && mb_strlen($_POST["heading"]) >= 3) {
                     $_POST['to'] = $_POST['to'] == "employee" ? 2 : 3;
                     $result = $noticeModel->editNotice($_POST, $id);
@@ -64,6 +73,15 @@ if (!isset($_SESSION["user_id"])) {
             }
         } elseif ($_SESSION["user_role"] == "1" && isset($id) && is_numeric($id) && isset($_GET['delete'])) {
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                foreach ($_POST as $key=>$value) {
+                    if (is_array($_POST[$key])) {
+                        foreach ($_POST[$key] as $k=>$v) {
+                            $_POST[$key][$k] = htmlspecialchars($v);
+                        }
+                    } else {
+                        $_POST[$key] = htmlspecialchars($value);
+                    }
+                }
                 if (isset($_POST["id"]) && !empty($_POST["id"]) && is_numeric($_POST["id"])) {
                     $result = $noticeModel->deleteNotice($_POST["id"]);
                  

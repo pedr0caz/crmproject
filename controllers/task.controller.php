@@ -29,6 +29,15 @@ if (!isset($_SESSION["user_id"])) {
             require("views/task/task.view.php");
         } elseif ($_SESSION["user_role"] <= 2 && isset($id) && $id == "create") {
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                foreach ($_POST as $key=>$value) {
+                    if (is_array($_POST[$key])) {
+                        foreach ($_POST[$key] as $k=>$v) {
+                            $_POST[$key][$k] = htmlspecialchars($v);
+                        }
+                    } else {
+                        $_POST[$key] = htmlspecialchars($value);
+                    }
+                }
                 if (isset($_GET['project_id']) && !empty($_GET['project_id'])) {
                     $project_id = $_GET['project_id'];
                     if ($_SESSION["user_role"] == 1) {
@@ -159,6 +168,15 @@ if (!isset($_SESSION["user_id"])) {
 
             if (!isset($_GET['edit'])) {
                 if ($_SERVER["REQUEST_METHOD"] == "POST"  && $_SESSION["user_role"] <= 3) {
+                    foreach ($_POST as $key=>$value) {
+                        if (is_array($_POST[$key])) {
+                            foreach ($_POST[$key] as $k=>$v) {
+                                $_POST[$key][$k] = htmlspecialchars($v);
+                            }
+                        } else {
+                            $_POST[$key] = htmlspecialchars($value);
+                        }
+                    }
                     if (isset($_GET["action"]) && $_GET["action"] == "change_task_status" && $_SESSION["user_role"] == 1) {
                         $result = $taskModel->changeTaskStatus($id, $_POST["status"]);
                         if ($result) {
@@ -191,7 +209,7 @@ if (!isset($_SESSION["user_id"])) {
                         if (!array_key_exists($fileType, $allowedTypes)) {
                             die("File type not allowed");
                         }
-                        $filename = basename($filepath);
+                        $filename = uniqid() . "-" . time();
                         $extension = $allowedTypes[$fileType];
                         $targetDirectory = 'uploads/';
                         $newFilepath = $targetDirectory . $filename . "." . $extension;
@@ -356,6 +374,15 @@ if (!isset($_SESSION["user_id"])) {
                     exit;
                 }
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                    foreach ($_POST as $key=>$value) {
+                        if (is_array($_POST[$key])) {
+                            foreach ($_POST[$key] as $k=>$v) {
+                                $_POST[$key][$k] = htmlspecialchars($v);
+                            }
+                        } else {
+                            $_POST[$key] = htmlspecialchars($value);
+                        }
+                    }
                     if (isset($_GET['submit'])) {
                         if (isset($_POST['heading']) && !empty($_POST['heading']) &&
                             isset($_POST['description']) && !empty($_POST['description']) &&

@@ -175,6 +175,7 @@ define('G_LEFT', 'em falta');
 define('G_SUCCESS', 'Sucesso');
 define('G_SOMETHING_WENT_WRONG', 'Por favor, tente novamente');
 define('G_ERROR', 'Erro');
+define('G_HIDE_COMPLETED_TASKS', 'Ocultar Concluídas');
 define('LANG', 'pt-PT');
 define('LANG_ISO', 'pt');
 define('LANG_NAME', 'Português');

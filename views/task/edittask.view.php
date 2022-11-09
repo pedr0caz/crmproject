@@ -300,7 +300,7 @@
                     }).then((newEditor) => {
                         editor = newEditor;
                         editor.setData(
-                            '<?=$task['description'];?>'
+                            '<?=htmlspecialchars_decode($task['description']);?>'
                         );
                     })
                     .catch(error => {

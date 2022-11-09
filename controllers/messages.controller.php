@@ -45,6 +45,15 @@
                 echo json_encode($chats);
             }
         } elseif ($id === 'sendMessage') {
+            foreach ($_POST as $key=>$value) {
+                if (is_array($_POST[$key])) {
+                    foreach ($_POST[$key] as $k=>$v) {
+                        $_POST[$key][$k] = htmlspecialchars($v);
+                    }
+                } else {
+                    $_POST[$key] = htmlspecialchars($value);
+                }
+            }
             $chat->insertMessage($_SESSION["user_id"], $_POST["to_id"], $_POST["message"]);
             $time = ucwords(strftime('%d %b %Y %T', strtotime(date('Y-m-d H:i:s'))));
             echo '<p class="rtext align-self-end

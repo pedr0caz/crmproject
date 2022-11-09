@@ -15,7 +15,20 @@ if (!isset($_SESSION["user_id"])) {
         $clientModel = new Client();
         $user = $userModel->getUser($_SESSION["user_id"]);
         $countries = $userModel->getCountries();
+        if ($_SESSION['user_role'] <= 2) {
+            $departmentEmployees = $employeeModel->getEmployeeTeams($_SESSION["user_id"]);
+            $employee = $employeeModel->getEmployee($_SESSION["user_id"]);
+        }
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            foreach ($_POST as $key=>$value) {
+                if (is_array($_POST[$key])) {
+                    foreach ($_POST[$key] as $k=>$v) {
+                        $_POST[$key][$k] = htmlspecialchars($v);
+                    }
+                } else {
+                    $_POST[$key] = htmlspecialchars($value);
+                }
+            }
             if (isset($_GET['submit'])) {
                 if (isset($_POST['name']) && mb_strlen($_POST['name']) > 2 &&
                 isset($_POST['email']) && mb_strlen($_POST['email']) > 2 && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
@@ -35,7 +48,7 @@ if (!isset($_SESSION["user_id"])) {
                             header('Content-Type: application/json; charset=utf-8');
                             die(json_encode(['status' => 'error', 'message' => 'File type not allowed']));
                         }
-                        $filename = basename($filepath);
+                        $filename = uniqid() . "-" . time();
                         $extension = $allowedTypes[$fileType];
                         $targetDirectory = 'uploads/';
                         $newFilepath = $targetDirectory . $filename . "." . $extension;
@@ -95,7 +108,8 @@ if (!isset($_SESSION["user_id"])) {
                 if (!array_key_exists($fileType, $allowedTypes)) {
                     die("File type not allowed");
                 }
-                $filename = basename($filepath);
+                /*  $filename = basename($filepath); */
+                $filename = uniqid() . "-" . time();
                 $extension = $allowedTypes[$fileType];
                 $targetDirectory = 'uploads/';
                 $newFilepath = $targetDirectory . $filename . "." . $extension;

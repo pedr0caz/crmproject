@@ -175,6 +175,7 @@ define('G_IN', 'in');
 define('G_SUCCESS', 'Success');
 define('G_SOMETHING_WENT_WRONG', 'Something went wrong');
 define('G_ERROR', 'Error');
+define('G_HIDE_COMPLETED_TASKS', 'Hide completed');
 define('LANG', 'en-GB');
 define('LANG_ISO', 'en');
 define('LANG_NAME', 'English');
